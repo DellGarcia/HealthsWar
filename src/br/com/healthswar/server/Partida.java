@@ -80,17 +80,19 @@ public class Partida extends Thread {
 			int vez = game.getTurno() % 2 == 0 ? 0 : 1;
 			int outro = game.getTurno() % 2 != 0 ? 0 : 1;
 			Player player = players[vez];
+			Player p2 = players[outro];
 			
 			try {
 				player.out.writeObject(MatchResponse.YOUR_TURN);
 				player.out.writeObject(game.getPhase());
-				players[outro].out.writeObject(MatchResponse.OPPONENT_TURN);
+				p2.out.writeObject(MatchResponse.OPPONENT_TURN);
 				
 				MatchRequest request = (MatchRequest) player.in.readObject();
 
 				switch (request) {
 					case DRAW_A_CARD:
-						game.comprarCarta(player);
+						MatchResponse r = game.comprarCarta(player);
+						player.out.writeObject(r);
 						break;
 
 					case SEND_A_FIGHTER:
@@ -110,6 +112,7 @@ public class Partida extends Thread {
 						break;
 						
 					case GET_PHASE:
+						player.out.writeObject(game.getPhase());
 						break;
 				}
 

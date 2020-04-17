@@ -43,15 +43,14 @@ public class Game {
 	}
 	
 	// Açoes do player
-		public void comprarCarta(Player player) throws IOException {
-			if(phase == Phases.DRAW_PHASE) {
-				if(player.getDeck().getCartas().size() > 0) {
-					player.out.writeObject(MatchResponse.AVALIBLE_CARD);
-					player.getDeck().getCartas().remove(0);
-					this.phase = Phases.MAIN_PHASE;
-				} else {
-					player.out.writeObject(MatchResponse.NO_CARDS);
-				}
+		public MatchResponse comprarCarta(Player player) throws IOException {
+			if(player.getDeck().getCartas().size() > 0 && player.getHand().getCartas().size() < 7) {
+				player.getHand().getCartas().add(player.getDeck().getCartas().get(0));
+				player.getDeck().getCartas().remove(0);
+				this.phase = Phases.MAIN_PHASE;
+				return MatchResponse.AVALIBLE_CARD;
+			} else {
+				return MatchResponse.NO_CARDS;
 			}
 		}
 		

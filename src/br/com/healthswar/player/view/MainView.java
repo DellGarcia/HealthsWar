@@ -112,6 +112,7 @@ public class MainView extends JFrame {
 		for(Carta card: cartas) {
 			card.setSize(100, 141);
 			card.setLocation(x, 1080 - 300);
+			card.setVisible(true);
 			container.add(card);
 			x+=110;
 		}
@@ -119,7 +120,7 @@ public class MainView extends JFrame {
 	
 	private void colocarPhase() {
 		lblPhase = new Label(
-				200, 40,
+				300, 40,
 				"", new Font("Verdana", Font.PLAIN, 20),
 				Color.WHITE, container.getBackground(),
 				SwingConstants.CENTER, SwingConstants.CENTER
@@ -144,6 +145,9 @@ public class MainView extends JFrame {
 	public void update() {
 		container.removeAll();
 		container.repaint();
+		container = new Panel(new Color(54,54,54));
+		container.setSize(getSize());
+		setContentPane(container);
 		
 		colocarPhase();
 		colocarHealthPoint();
@@ -164,13 +168,16 @@ public class MainView extends JFrame {
 					MatchResponse response = (MatchResponse) player.in.readObject();
 					
 					if(response == MatchResponse.YOUR_TURN) {
-						player.out.writeObject(MatchRequest.GET_PHASE);
 						Phases phase = (Phases) player.in.readObject();
+						
+						btnEndTurn.setVisible(true);
+						myTurn = true;
 						
 						switch (phase) {
 							case DRAW_PHASE:
-								drawCard();
 								lblPhase.setText("Your Turn: DRAW PHASE");
+								// Aqui pode ter uma animacao
+								drawCard();
 								break;
 							case BATTLE_PHASE:
 								lblPhase.setText("Your Turn: BATTLE PHASE");
@@ -183,8 +190,6 @@ public class MainView extends JFrame {
 								break;
 						}
 						
-						btnEndTurn.setVisible(true);
-						myTurn = true;
 					} else {
 						lblPhase.setText("Opponent Turn");
 						awaitYourTurn().start();
@@ -208,6 +213,7 @@ public class MainView extends JFrame {
 				player.getHand().getCartas().add(card);
 				player.getDeck().getCartas().remove(0);
 				update();
+				awaitYourTurn().start();
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
