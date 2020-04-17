@@ -2,6 +2,8 @@ package br.com.healthswar.gameplay;
 
 import java.awt.event.MouseEvent;
 
+import br.com.healthswar.player.view.MainView;
+
 public class Item extends Carta  {
 
 	/**
@@ -11,45 +13,94 @@ public class Item extends Carta  {
 
 	public Item() {
 		super();
+		this.frontImg = "src/br/com/healthswar/assets/item-sm.png";
 		super.repaint();
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
+
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		virado = !virado;
-		this.repaint();
+		switch (local) {
+			case DECK:
+				
+				break;
+	
+			case HAND:
+				MainView.INSTANCE.mostarCardView(this);
+				break;
+				
+			case FIELD:
+				
+				break;
+				
+			case MEMORY:
+				
+				break;
+		}
 	}
+
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		switch (local) {
+			case DECK:
+				
+				break;
+	
+			case HAND:
+				setLocation(getX(), getY() - 20); 
+				break;
+				
+			case FIELD:
+				
+				break;
+				
+			case MEMORY:
+				
+				break;
+		}
 	}
+
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		switch (local) {
+			case DECK:
+				
+				break;
+	
+			case HAND:
+				setLocation(getX(), getY() + 20); 
+				break;
+				
+			case FIELD:
+				
+				break;
+				
+			case MEMORY:
+				
+				break;
+		}
 	}
+
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void mouseMoved(MouseEvent e) {

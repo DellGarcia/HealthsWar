@@ -2,6 +2,7 @@ package br.com.healthswar.gameplay;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Deck implements Serializable{
 	
@@ -17,17 +18,22 @@ public class Deck implements Serializable{
 		this.deckTheme = deckTheme;
 		switch (deckTheme) {
 			case IMMUNE_SYSTEM:
-				for(int i = 0; i < 60; i++) {
+				for(int i = 0; i < 20; i++) {
 					cartas.add(new Combatente());
+					cartas.add(new Energia());
+					cartas.add(new Item());
 				}
 				break;
 	
 			case FOREIGN_BODIES:
-				for(int i = 0; i < 60; i++) {
+				for(int i = 0; i < 20; i++) {
 					cartas.add(new Combatente());
+					cartas.add(new Energia());
+					cartas.add(new Item());
 				}
 				break;
 		}
+		Collections.shuffle(cartas);
 	}
 
 	public ArrayList<Carta> getCartas() {

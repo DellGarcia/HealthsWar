@@ -3,6 +3,8 @@ package br.com.healthswar.gameplay;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
+import br.com.healthswar.player.view.MainView;
+
 public class Combatente extends Carta implements Serializable {	
 	/**
 	 * 
@@ -12,13 +14,14 @@ public class Combatente extends Carta implements Serializable {
 
 	public Combatente() {
 		super();
+		this.frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
 		super.repaint();
 	}
 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 
 
@@ -36,7 +39,7 @@ public class Combatente extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				
+				MainView.INSTANCE.mostarCardView(this);
 				break;
 				
 			case FIELD:

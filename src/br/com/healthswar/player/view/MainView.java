@@ -18,6 +18,7 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.CardLocal;
+import br.com.healthswar.gameplay.CardView;
 import br.com.healthswar.gameplay.Carta;
 import br.com.healthswar.gameplay.Deck;
 import br.com.healthswar.gameplay.Hand;
@@ -32,6 +33,8 @@ public class MainView extends JFrame {
 	private Panel container;
 	
 	public Player player;
+	
+	private CardView cardView;
 	
 	private Label lblPhase;
 	private Label myHP;
@@ -154,6 +157,16 @@ public class MainView extends JFrame {
 		colocarDeck(player.getDeck().getCartas());
 		colocarMao(player.getHand().getCartas());
 		colocarEndTurn();
+	}
+	
+	public void mostarCardView(Carta card) {
+		if(cardView != null) {
+			container.remove(cardView);
+		}
+		cardView = new CardView(card);
+		cardView.setLocation(container.getWidth()/2 - cardView.getWidth()/2, container.getHeight()/2 - cardView.getHeight()/2);
+		container.add(cardView);
+		container.repaint();
 	}
 	
 	/**

@@ -22,8 +22,8 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	protected boolean virado;
 	protected CardLocal local;
 	
-	protected final String frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
-	protected final String backImg  = "src/br/com/healthswar/assets/backImg-sm.png";
+	protected String frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
+	protected final String backImg  = "src/br/com/healthswar/assets/backImg2-sm.jpg";
 
 	public Carta() {
 		virado = true;
