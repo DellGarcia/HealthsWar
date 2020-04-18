@@ -36,6 +36,7 @@ public class Game {
 			player.setHealthsPoint(8000);
 			player.setDeck(decks.get(i));
 			player.setHand(new Hand(player.getDeck().getCartas()));
+			player.setField(new Field());
 			i++;
 		}
 		Collections.shuffle(Arrays.asList(players));
@@ -66,7 +67,7 @@ public class Game {
 			}
 		}
 		
-		public void atacar(Combatente escolhido, Combatente alvo) {
+		public void atacar(Fighter escolhido, Fighter alvo) {
 			if(phase == Phases.BATTLE_PHASE) {
 				
 			}

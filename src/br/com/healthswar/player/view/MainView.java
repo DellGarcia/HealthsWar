@@ -20,6 +20,7 @@ import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.CardView;
 import br.com.healthswar.gameplay.Carta;
+import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Deck;
 import br.com.healthswar.gameplay.Hand;
 import br.com.healthswar.gameplay.Player;
@@ -39,6 +40,8 @@ public class MainView extends JFrame {
 	private Label lblPhase;
 	private Label myHP;
 	private Label opHP;
+	
+	private Fighter[] fighterField;
 	
 	private boolean myTurn;
 	
@@ -60,9 +63,12 @@ public class MainView extends JFrame {
 		container.setSize(getSize());
 		setContentPane(container);
 		
+		fighterField = new Fighter[5];
+		
 		init();
 		awaitYourTurn().start();
 		
+		continuousRefresh().start();
 		setVisible(true);
 	}
 	
@@ -111,10 +117,10 @@ public class MainView extends JFrame {
 	}
 	
 	private void colocarMao(ArrayList<Carta> cartas) {
-		int x = 100;
+		int x = container.getWidth() /2 - (cartas.size()*110 - 10)/2;
 		for(Carta card: cartas) {
 			card.setSize(100, 141);
-			card.setLocation(x, 1080 - 300);
+			card.setLocation(x, 1080 -200);
 			card.setVisible(true);
 			container.add(card);
 			x+=110;
@@ -134,7 +140,7 @@ public class MainView extends JFrame {
 	
 	private void colocarEndTurn() {
 		btnEndTurn = new Button(
-				container.getWidth()/2 - 100, container.getHeight() - 90,
+				container.getWidth() - 170, container.getHeight()/2 - 50/2,
 				150, 50,
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.NORMAL, "End Turn",
@@ -143,6 +149,27 @@ public class MainView extends JFrame {
 		btnEndTurn.setVisible(false);
 		btnEndTurn.addActionListener(endTurn());
 		container.add(btnEndTurn);
+	}
+	
+	public void colocarCombatentes(Fighter[] fighters) {
+		for(int i = 0; i < fighters.length; i++) {
+			if(fighters[i] != null) {
+				
+			}
+		}
+		
+	}
+	
+	public void colocarMemoria(ArrayList<Fighter> memory) {
+		for(int i = 0; i < memory.size(); i++) {
+			memory.get(i).setSize(100, 141);
+//			memory.get(i).setLocation(x, y);
+//			if((i+1) % 3 == 0) {
+//				x++;
+//				y++;
+//			}
+//			container.add(cartas.get(i));
+		}
 	}
 	
 	public void update() {
@@ -251,6 +278,22 @@ public class MainView extends JFrame {
 		};
 	}
 	
+	private Thread continuousRefresh() {
+		return new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						container.repaint();
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
 	
 	/**
 	 * Singletown methods

@@ -1,27 +1,25 @@
 package br.com.healthswar.gameplay;
 
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 
 import br.com.healthswar.player.view.MainView;
 
-public class Combatente extends Carta implements Serializable {	
+public class Energy extends Carta  {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -851267654637882260L;
-	
+	private static final long serialVersionUID = -1138132937122501319L;
 
-	public Combatente() {
+	public Energy() {
 		super();
-		this.frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
+		this.frontImg = "src/br/com/healthswar/assets/energy-sm.jpg";
 		super.repaint();
 	}
-
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 
@@ -109,5 +107,5 @@ public class Combatente extends Carta implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

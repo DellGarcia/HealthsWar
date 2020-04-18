@@ -17,6 +17,7 @@ public class Player {
 	
 	private Deck deck;
 	private Hand hand;
+	private Field field;
 	
 	public Player(Socket socket) throws IOException {
 		this.socket = socket;
@@ -46,6 +47,14 @@ public class Player {
 
 	public void setHealthsPoint(int healthsPoint) {
 		this.healthsPoint = healthsPoint;
+	}
+	
+	public Field getField() {
+		return field;
+	}
+
+	public void setField(Field field) {
+		this.field = field;
 	}
 
 	@Override

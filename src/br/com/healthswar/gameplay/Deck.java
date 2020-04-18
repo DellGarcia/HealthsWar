@@ -19,16 +19,16 @@ public class Deck implements Serializable{
 		switch (deckTheme) {
 			case IMMUNE_SYSTEM:
 				for(int i = 0; i < 20; i++) {
-					cartas.add(new Combatente());
-					cartas.add(new Energia());
+					cartas.add(new Fighter());
+					cartas.add(new Energy());
 					cartas.add(new Item());
 				}
 				break;
 	
 			case FOREIGN_BODIES:
 				for(int i = 0; i < 20; i++) {
-					cartas.add(new Combatente());
-					cartas.add(new Energia());
+					cartas.add(new Fighter());
+					cartas.add(new Energy());
 					cartas.add(new Item());
 				}
 				break;

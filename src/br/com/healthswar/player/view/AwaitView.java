@@ -42,7 +42,7 @@ public class AwaitView extends JFrame {
 		container.add(lblMsg);
 		
 		setVisible(true);
-		animacao().start();
+		animacao("Aguardando segundo jogador").start();
 	
 		aguardarPartida().start();
 	}
@@ -69,23 +69,21 @@ public class AwaitView extends JFrame {
 	}
 	
 	/**
-	 * Animação besta so pra dizer q ta aguardando...
+	 * Animação so pra dizer q ta aguardando...
 	 * */
-	private Thread animacao() {
+	private Thread animacao(String msg) {
 		return new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				while(true) {
 					try {
-						lblMsg.setText("Aguardando os outros jogadores");
+						lblMsg.setText(msg);
 						Thread.sleep(500);
-						lblMsg.setText("Aguardando os outros jogadores.");
-						Thread.sleep(500);
-						lblMsg.setText("Aguardando os outros jogadores..");
-						Thread.sleep(500);
-						lblMsg.setText("Aguardando os outros jogadores...");
-						Thread.sleep(500);
+						for(int i = 0; i < 3; i++) {
+							lblMsg.setText(lblMsg.getText() + ".");
+							Thread.sleep(500);
+						}
 					} catch(Exception e) {
 						
 					}

@@ -18,10 +18,10 @@ public class CardView extends Carta {
 	private static final long serialVersionUID = 534020604704164574L;
 
 	public CardView(Carta card) {
-		if(card instanceof Combatente) {
+		if(card instanceof Fighter) {
 			this.frontImg = "src/br/com/healthswar/assets/card-md.jpg";
 		}
-		if(card instanceof Energia) {
+		if(card instanceof Energy) {
 			this.frontImg = "src/br/com/healthswar/assets/energy-md.jpg";
 		}
 		if(card instanceof Item) {

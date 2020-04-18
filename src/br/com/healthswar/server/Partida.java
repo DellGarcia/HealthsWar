@@ -7,7 +7,7 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
-import br.com.healthswar.gameplay.Combatente;
+import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Player;
 
@@ -104,7 +104,7 @@ public class Partida extends Thread {
 						break;
 						
 					case ATACK_THE_OPONENT:
-						game.atacar(new Combatente(), new Combatente());
+						game.atacar(new Fighter(), new Fighter());
 						break;
 					
 					case END_THE_TURN:
