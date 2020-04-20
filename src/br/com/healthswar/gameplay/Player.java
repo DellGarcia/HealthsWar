@@ -21,6 +21,10 @@ public class Player {
 		in 	= new ObjectInputStream(socket.getInputStream());
 	}
 	
+	public Player(Field field) {
+		this.field = field;
+	}
+	
 	public Field getField() {
 		return field;
 	}

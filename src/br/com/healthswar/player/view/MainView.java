@@ -42,7 +42,8 @@ public class MainView extends JFrame {
 	private Label myHP;
 	private Label opHP;
 	
-	private FighterField[] fighters;
+	private FighterField[] myFighters;
+	private FighterField[] opFighters;
 	
 	private boolean myTurn;
 	
@@ -64,9 +65,14 @@ public class MainView extends JFrame {
 		container.setSize(getSize());
 		setContentPane(container);
 		
-		fighters = new FighterField[5];
-		for(int i = 0; i < fighters.length; i++) {
-			fighters[i] = new FighterField();
+		myFighters = new FighterField[5];
+		for(int i = 0; i < myFighters.length; i++) {
+			myFighters[i] = new FighterField();
+		}
+		
+		opFighters = new FighterField[5];
+		for(int i = 0; i < opFighters.length; i++) {
+			opFighters[i] = new FighterField();
 		}
 		
 		init();
@@ -79,16 +85,12 @@ public class MainView extends JFrame {
 	private void init() {
 		try {
 			player.setField((Field) player.in.readObject());
+			opponent = new Player((Field) player.in.readObject());
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
 		
-		colocarPhase();
-		colocarHealthPoint();
-		colocarDeck(player.getField().getDeck().getCartas());
-		colocarMao(player.getField().getHand().getCartas());
-		colocarFighters();
-		colocarEndTurn();
+		update();
 	}
 	
 //	private void atualizarHealtPoints(Label label, int novaVida) {
@@ -105,24 +107,45 @@ public class MainView extends JFrame {
 		container.add(opHP);
 	}
 	
-	private void colocarDeck(ArrayList<Carta> cartas) {
+	private void colocarDeck(ArrayList<Carta> myDeck, ArrayList<Carta> opDeck) {
 		int x = 1920 - 200, y = 1080 - 200;
-		for(int i = 0; i < cartas.size(); i++) {
-			cartas.get(i).setSize(100, 141);
-			cartas.get(i).setLocation(x, y);
+		for(int i = 0; i < myDeck.size(); i++) {
+			myDeck.get(i).setSize(100, 141);
+			myDeck.get(i).setLocation(x, y);
 			if((i+1) % 3 == 0) {
 				x++;
 				y++;
 			}
-			container.add(cartas.get(i));
+			container.add(myDeck.get(i));
+		}
+		
+		x = 200; y = 200;
+		for(int i = 0; i < opDeck.size(); i++) {
+			opDeck.get(i).setSize(100, 141);
+			opDeck.get(i).setLocation(x, y);
+			if((i+1) % 3 == 0) {
+				x++;
+				y++;
+			}
+			container.add(opDeck.get(i));
 		}
 	}
 	
-	private void colocarMao(ArrayList<Carta> cartas) {
-		int x = container.getWidth() /2 - (cartas.size()*110 - 10)/2;
-		for(Carta card: cartas) {
+	private void colocarMao(ArrayList<Carta> myHand, ArrayList<Carta> opHand) {
+		int x = container.getWidth() /2 - (myHand.size()*110 - 10)/2;
+		for(Carta card: myHand) {
 			card.setSize(100, 141);
-			card.setLocation(x, 1080 -200);
+			card.setLocation(x, container.getHeight() - 200);
+			card.setVisible(true);
+			container.add(card);
+			x+=110;
+		}
+		
+		x = container.getWidth() /2 - (opHand.size()*110 - 10)/2;
+		for(Carta card: opHand) {
+			card.setSize(100, 141);
+			card.setLocation(x, 200);
+			card.setVirado(true);
 			card.setVisible(true);
 			container.add(card);
 			x+=110;
@@ -155,9 +178,16 @@ public class MainView extends JFrame {
 	
 	private void colocarFighters() {
 		int x = container.getWidth()/2 - (5*120-20)/2;
-		for(int i = 0; i < fighters.length; i++) {
-			fighters[i].setLocation(x, container.getHeight() - 400);
-			container.add(fighters[i]);
+		for(int i = 0; i < myFighters.length; i++) {
+			myFighters[i].setLocation(x, container.getHeight() - 400);
+			container.add(myFighters[i]);
+			x += 120;
+		}
+		
+		x = container.getWidth()/2 - (5*120-20)/2;
+		for(int i = 0; i < opFighters.length; i++) {
+			opFighters[i].setLocation(x, 400);
+			container.add(opFighters[i]);
 			x += 120;
 		}
 	}
@@ -182,8 +212,8 @@ public class MainView extends JFrame {
 		
 		colocarPhase();
 		colocarHealthPoint();
-		colocarDeck(player.getField().getDeck().getCartas());
-		colocarMao(player.getField().getHand().getCartas());
+		colocarDeck(player.getField().getDeck().getCartas(), opponent.getField().getDeck().getCartas());
+		colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 		colocarFighters();
 		colocarEndTurn();
 		container.repaint();
@@ -234,10 +264,51 @@ public class MainView extends JFrame {
 						}
 						
 					} else {
-						lblPhase.setText("Opponent Turn");
-						awaitYourTurn().start();
 						myTurn = false;
+						Phases phase = (Phases) player.in.readObject();
+						
+						switch (phase) {
+							case DRAW_PHASE:
+								lblPhase.setText("Opponent Turn: DRAW PHASE");
+								break;
+							case BATTLE_PHASE:
+								lblPhase.setText("Opponent Turn: BATTLE PHASE");
+								break;
+							case END_PHASE:
+								lblPhase.setText("Opponent Turn: END PHASE");
+								break;
+							case MAIN_PHASE:
+								lblPhase.setText("Opponent Turn: MAIN PHASE");
+								break;
+						}
+						
+						MatchResponse res = (MatchResponse) player.in.readObject();
+						
+						switch (res) {
+							case AVALIBLE_CARD:
+								break;
+							case FIGHTER_READY:
+								break;
+							case IMPOSSIBLE_TO_USE:
+								break;
+							case ITEM_USED:
+								break;
+							case NO_CARDS:
+								break;
+							case NO_FIGHTER:
+								break;
+							case OPPONENT_TURN:
+								break;
+							case SUCCESSFUL_ATACK:
+								break;
+							case YOUR_TURN:
+								break;
+							default:
+								break;
+						}
+						
 					}
+					awaitYourTurn().start();
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}
@@ -256,7 +327,7 @@ public class MainView extends JFrame {
 				player.getField().getHand().getCartas().add(card);
 				player.getField().getDeck().getCartas().remove(0);
 				update();
-				awaitYourTurn().start();
+				
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

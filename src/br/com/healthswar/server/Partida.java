@@ -64,13 +64,13 @@ public class Partida extends Thread {
 	public void run() {
 		game = new Game(players);
 		players = game.sortDeck();
-		for (Player player : players) {
-			try {
-				game.init(player);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		
+		try {
+			game.init(players);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
 
 		while (game.isAtivo()) {
 			int vez = game.getTurno() % 2 == 0 ? 0 : 1;
@@ -82,6 +82,7 @@ public class Partida extends Thread {
 				player.out.writeObject(MatchResponse.YOUR_TURN);
 				player.out.writeObject(game.getPhase());
 				p2.out.writeObject(MatchResponse.OPPONENT_TURN);
+				p2.out.writeObject(game.getPhase());
 				
 				MatchRequest request = (MatchRequest) player.in.readObject();
 
@@ -89,6 +90,7 @@ public class Partida extends Thread {
 					case DRAW_A_CARD:
 						MatchResponse r = game.comprarCarta(player.getField());
 						player.out.writeObject(r);
+						p2.out.writeObject(r);
 						break;
 
 					case SEND_A_FIGHTER:

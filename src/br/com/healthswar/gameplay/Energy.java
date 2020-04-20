@@ -59,7 +59,8 @@ public class Energy extends Carta  {
 				break;
 	
 			case HAND:
-				setLocation(getX(), getY() - 20); 
+				if(!virado)
+					setLocation(getX(), getY() - 20); 
 				break;
 				
 			case FIELD:
@@ -81,7 +82,8 @@ public class Energy extends Carta  {
 				break;
 	
 			case HAND:
-				setLocation(getX(), getY() + 20); 
+				if(!virado)
+					setLocation(getX(), getY() + 20);
 				break;
 				
 			case FIELD:

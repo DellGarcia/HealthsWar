@@ -43,12 +43,14 @@ public class Game {
 		return players;
 	}
 	
-	public void init(Player player) throws IOException {
-		player.out.writeObject(Response.MATCH_READY);
-		player.out.writeObject(player.getField());
-//		player.out.writeInt(player.getHealthsPoint());
-//		player.out.writeObject(player.getField().getDeck());
-//		player.out.writeObject(player.getField().getHand());
+	public void init(Player[] players) throws IOException {
+		players[0].out.writeObject(Response.MATCH_READY);
+		players[0].out.writeObject(players[0].getField());
+		players[0].out.writeObject(players[1].getField());
+		
+		players[1].out.writeObject(Response.MATCH_READY);
+		players[1].out.writeObject(players[1].getField());
+		players[1].out.writeObject(players[0].getField());
 	}
 	 
 	// Açoes do player

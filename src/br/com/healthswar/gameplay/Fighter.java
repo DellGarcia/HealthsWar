@@ -61,7 +61,8 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				setLocation(getX(), getY() - 20); 
+				if(!virado)
+					setLocation(getX(), getY() - 20);
 				break;
 				
 			case FIELD:
@@ -83,7 +84,8 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				setLocation(getX(), getY() + 20); 
+				if(!virado)
+					setLocation(getX(), getY() + 20); 
 				break;
 				
 			case FIELD:
