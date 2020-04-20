@@ -8,6 +8,7 @@ import java.util.List;
 
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
+import br.com.healthswar.comunication.Response;
 
 public class Game {
 
@@ -33,21 +34,28 @@ public class Game {
 	public Player[] sortDeck() {
 		int i = 0;
 		for(Player player: players) {
-			player.setHealthsPoint(8000);
-			player.setDeck(decks.get(i));
-			player.setHand(new Hand(player.getDeck().getCartas()));
-			player.setField(new Field());
+			player.setField(new Field(decks.get(i)));
 			i++;
+			if(i > 1) 
+				i = 0;
 		}
 		Collections.shuffle(Arrays.asList(players));
 		return players;
 	}
 	
+	public void init(Player player) throws IOException {
+		player.out.writeObject(Response.MATCH_READY);
+		player.out.writeObject(player.getField());
+//		player.out.writeInt(player.getHealthsPoint());
+//		player.out.writeObject(player.getField().getDeck());
+//		player.out.writeObject(player.getField().getHand());
+	}
+	 
 	// Açoes do player
-		public MatchResponse comprarCarta(Player player) throws IOException {
-			if(player.getDeck().getCartas().size() > 0 && player.getHand().getCartas().size() < 7) {
-				player.getHand().getCartas().add(player.getDeck().getCartas().get(0));
-				player.getDeck().getCartas().remove(0);
+		public MatchResponse comprarCarta(Field field) throws IOException {
+			if(field.getDeck().getCartas().size() > 0 && field.getHand().getCartas().size() < 7) {
+				field.getHand().getCartas().add(field.getDeck().getCartas().get(0));
+				field.getDeck().getCartas().remove(0);
 				this.phase = Phases.MAIN_PHASE;
 				return MatchResponse.AVALIBLE_CARD;
 			} else {
@@ -55,13 +63,13 @@ public class Game {
 			}
 		}
 		
-		public void enviarCombatente(Player player) {
+		public void enviarCombatente(Field field) {
 			if(phase == Phases.MAIN_PHASE) {
-				
+
 			}
 		}
 		
-		public void usarItem(Player player) {
+		public void usarItem(Field field) {
 			if(phase == Phases.MAIN_PHASE) {
 				
 			}
@@ -73,7 +81,7 @@ public class Game {
 			}
 		}
 		
-		public void encerrarTurno(Player player) {
+		public void encerrarTurno() {
 			this.turno++;
 			phase = Phases.DRAW_PHASE;
 		}

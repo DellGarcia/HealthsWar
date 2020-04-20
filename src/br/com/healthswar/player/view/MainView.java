@@ -21,8 +21,8 @@ import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.CardView;
 import br.com.healthswar.gameplay.Carta;
 import br.com.healthswar.gameplay.Fighter;
-import br.com.healthswar.gameplay.Deck;
-import br.com.healthswar.gameplay.Hand;
+import br.com.healthswar.gameplay.FighterField;
+import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.view.Fonts;
 
@@ -34,6 +34,7 @@ public class MainView extends JFrame {
 	private Panel container;
 	
 	public Player player;
+	public Player opponent;
 	
 	private CardView cardView;
 	
@@ -41,7 +42,7 @@ public class MainView extends JFrame {
 	private Label myHP;
 	private Label opHP;
 	
-	private Fighter[] fighterField;
+	private FighterField[] fighters;
 	
 	private boolean myTurn;
 	
@@ -63,29 +64,30 @@ public class MainView extends JFrame {
 		container.setSize(getSize());
 		setContentPane(container);
 		
-		fighterField = new Fighter[5];
+		fighters = new FighterField[5];
+		for(int i = 0; i < fighters.length; i++) {
+			fighters[i] = new FighterField();
+		}
 		
 		init();
 		awaitYourTurn().start();
 		
-		continuousRefresh().start();
 		setVisible(true);
 	}
 	
 	
 	private void init() {
 		try {
-			player.setHealthsPoint(player.in.readInt());
-			player.setDeck((Deck) player.in.readObject());
-			player.setHand((Hand) player.in.readObject());
+			player.setField((Field) player.in.readObject());
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
 		
 		colocarPhase();
 		colocarHealthPoint();
-		colocarDeck(player.getDeck().getCartas());
-		colocarMao(player.getHand().getCartas());
+		colocarDeck(player.getField().getDeck().getCartas());
+		colocarMao(player.getField().getHand().getCartas());
+		colocarFighters();
 		colocarEndTurn();
 	}
 	
@@ -94,11 +96,11 @@ public class MainView extends JFrame {
 //	}
 	
 	private void colocarHealthPoint() {
-		myHP = new Label(200, 40, player.getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		myHP = new Label(200, 40, player.getField().getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		myHP.setLocation(0, 0);
 		container.add(myHP);
 		
-		opHP = new Label(200, 40, player.getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		opHP = new Label(200, 40, player.getField().getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		opHP.setLocation(container.getWidth() - opHP.getWidth(), 0);
 		container.add(opHP);
 	}
@@ -151,13 +153,13 @@ public class MainView extends JFrame {
 		container.add(btnEndTurn);
 	}
 	
-	public void colocarCombatentes(Fighter[] fighters) {
+	private void colocarFighters() {
+		int x = container.getWidth()/2 - (5*120-20)/2;
 		for(int i = 0; i < fighters.length; i++) {
-			if(fighters[i] != null) {
-				
-			}
+			fighters[i].setLocation(x, container.getHeight() - 400);
+			container.add(fighters[i]);
+			x += 120;
 		}
-		
 	}
 	
 	public void colocarMemoria(ArrayList<Fighter> memory) {
@@ -174,16 +176,17 @@ public class MainView extends JFrame {
 	
 	public void update() {
 		container.removeAll();
-		container.repaint();
 		container = new Panel(new Color(54,54,54));
 		container.setSize(getSize());
 		setContentPane(container);
 		
 		colocarPhase();
 		colocarHealthPoint();
-		colocarDeck(player.getDeck().getCartas());
-		colocarMao(player.getHand().getCartas());
+		colocarDeck(player.getField().getDeck().getCartas());
+		colocarMao(player.getField().getHand().getCartas());
+		colocarFighters();
 		colocarEndTurn();
+		container.repaint();
 	}
 	
 	public void mostarCardView(Carta card) {
@@ -194,6 +197,7 @@ public class MainView extends JFrame {
 		cardView.setLocation(container.getWidth()/2 - cardView.getWidth()/2, container.getHeight()/2 - cardView.getHeight()/2);
 		container.add(cardView);
 		container.repaint();
+		container.requestFocus();
 	}
 	
 	/**
@@ -216,17 +220,16 @@ public class MainView extends JFrame {
 						switch (phase) {
 							case DRAW_PHASE:
 								lblPhase.setText("Your Turn: DRAW PHASE");
-								// Aqui pode ter uma animacao
 								drawCard();
 								break;
 							case BATTLE_PHASE:
 								lblPhase.setText("Your Turn: BATTLE PHASE");
 								break;
 							case END_PHASE:
-								lblPhase.setText("Your Turn: End Phase");
+								lblPhase.setText("Your Turn: END PHASE");
 								break;
 							case MAIN_PHASE:
-								lblPhase.setText("Your Turn: Main Phase");
+								lblPhase.setText("Your Turn: MAIN PHASE");
 								break;
 						}
 						
@@ -247,11 +250,11 @@ public class MainView extends JFrame {
 			player.out.writeObject(MatchRequest.DRAW_A_CARD);
 			MatchResponse res = (MatchResponse) player.in.readObject();
 			if(res == MatchResponse.AVALIBLE_CARD) {
-				Carta card = player.getDeck().getCartas().get(0);
+				Carta card = player.getField().getDeck().getCartas().get(0);
 				card.setVirado(false);
 				card.setLocal(CardLocal.HAND);
-				player.getHand().getCartas().add(card);
-				player.getDeck().getCartas().remove(0);
+				player.getField().getHand().getCartas().add(card);
+				player.getField().getDeck().getCartas().remove(0);
 				update();
 				awaitYourTurn().start();
 			}
@@ -276,23 +279,6 @@ public class MainView extends JFrame {
 				}
 			}
 		};
-	}
-	
-	private Thread continuousRefresh() {
-		return new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						container.repaint();
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
 	}
 	
 	/**

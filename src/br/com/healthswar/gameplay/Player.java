@@ -13,40 +13,12 @@ public class Player {
 	public ObjectInputStream in;
 	
 	// Configuracao da partida
-	private int healthsPoint;
-	
-	private Deck deck;
-	private Hand hand;
 	private Field field;
 	
 	public Player(Socket socket) throws IOException {
 		this.socket = socket;
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in 	= new ObjectInputStream(socket.getInputStream());
-	}
-	
-	public Deck getDeck() {
-		return deck;
-	}
-
-	public void setDeck(Deck deck) {
-		this.deck = deck;
-	}
-	
-	public Hand getHand() {
-		return hand;
-	}
-
-	public void setHand(Hand hand) {
-		this.hand = hand;
-	}
-
-	public int getHealthsPoint() {
-		return healthsPoint;
-	}
-
-	public void setHealthsPoint(int healthsPoint) {
-		this.healthsPoint = healthsPoint;
 	}
 	
 	public Field getField() {
@@ -59,8 +31,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [socket=" + socket + ", out=" + out + ", in=" + in + ", healthsPoint=" + healthsPoint + ", deck="
-				+ deck + ", hand=" + hand + "]";
+		return "Player [socket=" + socket + ", out=" + out + ", in=" + in + "]";
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.healthswar.player;
+package br.com.healthswar.app;
 
 import br.com.healthswar.player.view.InitView;
 

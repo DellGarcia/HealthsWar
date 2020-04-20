@@ -17,7 +17,11 @@ public class CardView extends Carta {
 	 */
 	private static final long serialVersionUID = 534020604704164574L;
 
+	@SuppressWarnings("unused")
+	private Carta card;
+	
 	public CardView(Carta card) {
+		this.card = card;
 		if(card instanceof Fighter) {
 			this.frontImg = "src/br/com/healthswar/assets/card-md.jpg";
 		}
@@ -64,7 +68,7 @@ public class CardView extends Carta {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

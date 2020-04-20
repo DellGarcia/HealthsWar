@@ -16,12 +16,15 @@ public class FighterField extends Panel {
 	private Fighter fighter;
 	
 	public FighterField() {
+		super();
+		setBackground(null);
+		setSize(100, 141);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fighter = null;
 	}
 	
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
-		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	public Fighter getFighter() {

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Request;
-import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Player;
@@ -67,10 +66,7 @@ public class Partida extends Thread {
 		players = game.sortDeck();
 		for (Player player : players) {
 			try {
-				player.out.writeObject(Response.MATCH_READY);
-				player.out.writeInt(player.getHealthsPoint());
-				player.out.writeObject(player.getDeck());
-				player.out.writeObject(player.getHand());
+				game.init(player);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -91,16 +87,16 @@ public class Partida extends Thread {
 
 				switch (request) {
 					case DRAW_A_CARD:
-						MatchResponse r = game.comprarCarta(player);
+						MatchResponse r = game.comprarCarta(player.getField());
 						player.out.writeObject(r);
 						break;
 
 					case SEND_A_FIGHTER:
-						game.enviarCombatente(player);
+						game.enviarCombatente(player.getField());
 						break;
 						
 					case USE_AN_ITEM:
-						game.usarItem(player);
+						game.usarItem(player.getField());
 						break;
 						
 					case ATACK_THE_OPONENT:
@@ -108,7 +104,7 @@ public class Partida extends Thread {
 						break;
 					
 					case END_THE_TURN:
-						game.encerrarTurno(player);
+						game.encerrarTurno();
 						break;
 						
 					case GET_PHASE:
