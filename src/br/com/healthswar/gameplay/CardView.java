@@ -23,6 +23,15 @@ public class CardView extends Carta {
 	
 	public CardView(Carta card) {
 		this.card = card;
+		
+		setCard(card);
+		
+		setSize(300, 424);
+		setVisible(false);
+		virado = false;
+	}
+
+	public void setCard(Carta card) {
 		try {
 			if(card instanceof Fighter) {
 				this.frontImg = Carta.class.getResource("../assets/card-md.jpg").toURI();
@@ -36,10 +45,9 @@ public class CardView extends Carta {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		setSize(300, 424);
-		virado = false;
 	}
-
+	
+	
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);

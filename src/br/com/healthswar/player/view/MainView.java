@@ -90,7 +90,17 @@ public class MainView extends JFrame {
 			e.printStackTrace();
 		}
 		
-		update();
+		cardView = new CardView(null);
+		cardView.setLocation(container.getWidth()/2 - cardView.getWidth()/2, container.getHeight()/2 - cardView.getHeight()/2);
+		container.add(cardView);
+		
+		colocarPhase();
+		colocarHealthPoint();
+		colocarDeck(player.getField().getDeck().getCartas(), opponent.getField().getDeck().getCartas());
+		colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+		colocarFighters();
+		colocarEndTurn();
+		container.repaint();
 	}
 	
 //	private void atualizarHealtPoints(Label label, int novaVida) {
@@ -204,30 +214,10 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	public void update() {
-		container.removeAll();
-		container = new Panel(new Color(54,54,54));
-		container.setSize(getSize());
-		setContentPane(container);
-		
-		colocarPhase();
-		colocarHealthPoint();
-		colocarDeck(player.getField().getDeck().getCartas(), opponent.getField().getDeck().getCartas());
-		colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
-		colocarFighters();
-		colocarEndTurn();
-		container.repaint();
-	}
-	
 	public void mostarCardView(Carta card) {
-		if(cardView != null) {
-			container.remove(cardView);
-		}
-		cardView = new CardView(card);
-		cardView.setLocation(container.getWidth()/2 - cardView.getWidth()/2, container.getHeight()/2 - cardView.getHeight()/2);
-		container.add(cardView);
-		container.repaint();
-		container.requestFocus();
+		cardView.setCard(card);
+		cardView.setVisible(true);
+//		container.repaint();
 	}
 	
 	/**
@@ -291,7 +281,7 @@ public class MainView extends JFrame {
 								card.setLocal(CardLocal.HAND);
 								opponent.getField().getHand().getCartas().add(card);
 								opponent.getField().getDeck().getCartas().remove(0);
-								update();
+								colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 								break;
 							case FIGHTER_READY:
 								break;
@@ -333,7 +323,7 @@ public class MainView extends JFrame {
 				card.setLocal(CardLocal.HAND);
 				player.getField().getHand().getCartas().add(card);
 				player.getField().getDeck().getCartas().remove(0);
-				update();
+				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -349,7 +339,6 @@ public class MainView extends JFrame {
 					if(myTurn) {
 						player.out.writeObject(MatchRequest.END_THE_TURN);
 						btnEndTurn.setVisible(false);
-						awaitYourTurn().start();
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();

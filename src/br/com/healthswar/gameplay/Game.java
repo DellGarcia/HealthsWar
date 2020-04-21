@@ -61,6 +61,7 @@ public class Game {
 				this.phase = Phases.MAIN_PHASE;
 				return MatchResponse.AVALIBLE_CARD;
 			} else {
+				this.phase = Phases.MAIN_PHASE;
 				return MatchResponse.NO_CARDS;
 			}
 		}
