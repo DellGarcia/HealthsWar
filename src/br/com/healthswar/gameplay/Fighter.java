@@ -2,6 +2,7 @@ package br.com.healthswar.gameplay;
 
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 
 import br.com.healthswar.player.view.MainView;
 
@@ -12,9 +13,9 @@ public class Fighter extends Carta implements Serializable {
 	private static final long serialVersionUID = -851267654637882260L;
 	
 
-	public Fighter() {
+	public Fighter() throws URISyntaxException {
 		super();
-		this.frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
+		this.frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
 		super.repaint();
 	}
 
@@ -39,7 +40,8 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				MainView.INSTANCE.mostarCardView(this);
+				if(!virado) 
+					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
 			case FIELD:

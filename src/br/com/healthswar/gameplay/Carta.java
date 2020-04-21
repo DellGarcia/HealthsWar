@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,12 +24,18 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	protected boolean virado;
 	protected CardLocal local;
 	
-	protected String frontImg = "src/br/com/healthswar/assets/card-sm.jpg";
-	protected final String backImg  = "src/br/com/healthswar/assets/backImg2-sm.jpg";
+	protected URI frontImg;
+	protected URI backImg;
 
 	public Carta() {
 		virado = true;
 		local = CardLocal.DECK;
+		try {
+			frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
+			backImg = Carta.class.getResource("../assets/backImg2-sm.jpg").toURI();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}

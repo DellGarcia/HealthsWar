@@ -112,7 +112,7 @@ public class MainView extends JFrame {
 		for(int i = 0; i < myDeck.size(); i++) {
 			myDeck.get(i).setSize(100, 141);
 			myDeck.get(i).setLocation(x, y);
-			if((i+1) % 3 == 0) {
+			if((i+1) % 4 == 0) {
 				x++;
 				y++;
 			}
@@ -123,9 +123,9 @@ public class MainView extends JFrame {
 		for(int i = 0; i < opDeck.size(); i++) {
 			opDeck.get(i).setSize(100, 141);
 			opDeck.get(i).setLocation(x, y);
-			if((i+1) % 3 == 0) {
-				x++;
-				y++;
+			if((i+1) % 5 == 0) {
+				x--;
+				y--;
 			}
 			container.add(opDeck.get(i));
 		}
@@ -286,6 +286,12 @@ public class MainView extends JFrame {
 						
 						switch (res) {
 							case AVALIBLE_CARD:
+								Carta card = opponent.getField().getDeck().getCartas().get(0);
+								card.setVirado(false);
+								card.setLocal(CardLocal.HAND);
+								opponent.getField().getHand().getCartas().add(card);
+								opponent.getField().getDeck().getCartas().remove(0);
+								update();
 								break;
 							case FIGHTER_READY:
 								break;
@@ -302,6 +308,7 @@ public class MainView extends JFrame {
 							case SUCCESSFUL_ATACK:
 								break;
 							case YOUR_TURN:
+								myTurn = true;
 								break;
 							default:
 								break;
@@ -327,7 +334,6 @@ public class MainView extends JFrame {
 				player.getField().getHand().getCartas().add(card);
 				player.getField().getDeck().getCartas().remove(0);
 				update();
-				
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

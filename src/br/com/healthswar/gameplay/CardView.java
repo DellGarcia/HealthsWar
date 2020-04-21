@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
@@ -22,14 +23,18 @@ public class CardView extends Carta {
 	
 	public CardView(Carta card) {
 		this.card = card;
-		if(card instanceof Fighter) {
-			this.frontImg = "src/br/com/healthswar/assets/card-md.jpg";
-		}
-		if(card instanceof Energy) {
-			this.frontImg = "src/br/com/healthswar/assets/energy-md.jpg";
-		}
-		if(card instanceof Item) {
-			this.frontImg = "src/br/com/healthswar/assets/item-md.png";
+		try {
+			if(card instanceof Fighter) {
+				this.frontImg = Carta.class.getResource("../assets/card-md.jpg").toURI();
+			}
+			if(card instanceof Energy) {
+				this.frontImg = Carta.class.getResource("../assets/energy-md.jpg").toURI();
+			}
+			if(card instanceof Item) {
+				this.frontImg = Carta.class.getResource("../assets/item-md.png").toURI();
+			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
 		setSize(300, 424);
 		virado = false;

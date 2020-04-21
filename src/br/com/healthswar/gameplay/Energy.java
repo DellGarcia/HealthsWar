@@ -1,6 +1,7 @@
 package br.com.healthswar.gameplay;
 
 import java.awt.event.MouseEvent;
+import java.net.URISyntaxException;
 
 import br.com.healthswar.player.view.MainView;
 
@@ -11,9 +12,9 @@ public class Energy extends Carta  {
 	 */
 	private static final long serialVersionUID = -1138132937122501319L;
 
-	public Energy() {
+	public Energy() throws URISyntaxException {
 		super();
-		this.frontImg = "src/br/com/healthswar/assets/energy-sm.jpg";
+		this.frontImg = Carta.class.getResource("../assets/energy-sm.jpg").toURI();
 		super.repaint();
 	}
 	
@@ -37,7 +38,8 @@ public class Energy extends Carta  {
 				break;
 	
 			case HAND:
-				MainView.INSTANCE.mostarCardView(this);
+				if(!virado) 
+					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
 			case FIELD:

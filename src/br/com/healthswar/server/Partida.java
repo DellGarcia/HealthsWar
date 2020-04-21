@@ -6,7 +6,6 @@ import java.util.Arrays;
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Request;
-import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Player;
 
@@ -102,11 +101,12 @@ public class Partida extends Thread {
 						break;
 						
 					case ATACK_THE_OPONENT:
-						game.atacar(new Fighter(), new Fighter());
+//						game.atacar(new Fighter(), new Fighter());
 						break;
 					
 					case END_THE_TURN:
 						game.encerrarTurno();
+						p2.out.writeObject(MatchResponse.YOUR_TURN);
 						break;
 						
 					case GET_PHASE:

@@ -1,6 +1,7 @@
 package br.com.healthswar.gameplay;
 
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,17 +20,25 @@ public class Deck implements Serializable{
 		switch (deckTheme) {
 			case IMMUNE_SYSTEM:
 				for(int i = 0; i < 20; i++) {
-					cartas.add(new Fighter());
-					cartas.add(new Energy());
-					cartas.add(new Item());
+					try {
+						cartas.add(new Fighter());
+						cartas.add(new Energy());
+						cartas.add(new Item());
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
 				}
 				break;
 	
 			case FOREIGN_BODIES:
 				for(int i = 0; i < 20; i++) {
-					cartas.add(new Fighter());
-					cartas.add(new Energy());
-					cartas.add(new Item());
+					try {
+						cartas.add(new Fighter());
+						cartas.add(new Energy());
+						cartas.add(new Item());
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
 				}
 				break;
 		}
