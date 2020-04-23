@@ -13,8 +13,8 @@ public class Fighter extends Carta implements Serializable {
 	private static final long serialVersionUID = -851267654637882260L;
 	
 
-	public Fighter() throws URISyntaxException {
-		super();
+	public Fighter(int id) throws URISyntaxException {
+		super(id);
 		//this.frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
 		super.repaint();
 	}
@@ -51,6 +51,8 @@ public class Fighter extends Carta implements Serializable {
 			case MEMORY:
 				
 				break;
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -74,6 +76,9 @@ public class Fighter extends Carta implements Serializable {
 			case MEMORY:
 				
 				break;
+				
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -96,6 +101,9 @@ public class Fighter extends Carta implements Serializable {
 				
 			case MEMORY:
 				
+				break;
+				
+			case DESCARTE:
 				break;
 		}
 	}

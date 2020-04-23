@@ -12,8 +12,8 @@ public class Energy extends Carta  {
 	 */
 	private static final long serialVersionUID = -1138132937122501319L;
 
-	public Energy() throws URISyntaxException {
-		super();
+	public Energy(int id) throws URISyntaxException {
+		super(id);
 		this.frontImg = Carta.class.getResource("../assets/energy-sm.jpg").toURI();
 		super.repaint();
 	}
@@ -49,6 +49,8 @@ public class Energy extends Carta  {
 			case MEMORY:
 				
 				break;
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -72,6 +74,8 @@ public class Energy extends Carta  {
 			case MEMORY:
 				
 				break;
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -94,6 +98,8 @@ public class Energy extends Carta  {
 				
 			case MEMORY:
 				
+				break;
+			case DESCARTE:
 				break;
 		}
 	}

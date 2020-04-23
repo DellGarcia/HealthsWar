@@ -103,6 +103,8 @@ public class MainView extends JFrame {
 		colocarFighters();
 		colocarMemoria(player.getField().getMemoria(), container.getHeight() - 400);
 		colocarMemoria(opponent.getField().getMemoria(), 280);
+		colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
+		colocarDescarte(player.getField().getDescarte(), 280);
 		colocarEndTurn();
 		container.repaint();
 	}
@@ -126,7 +128,7 @@ public class MainView extends JFrame {
 		for(int i = 0; i < myDeck.size(); i++) {
 			myDeck.get(i).setSize(100, 141);
 			myDeck.get(i).setLocation(x, y);
-			if((i+1) % 4 == 0) {
+			if((i+1) % 5 == 0) {
 				x++;
 				y++;
 			}
@@ -164,6 +166,8 @@ public class MainView extends JFrame {
 			container.add(card);
 			x+=110;
 		}
+		
+		container.repaint();
 	}
 	
 	private void colocarPhase() {
@@ -206,16 +210,29 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	public void colocarMemoria(ArrayList<Fighter> memory, int height) {
+	private void colocarMemoria(ArrayList<Fighter> memory, int height) {
 		int x = container.getWidth()/2 - (6*120-20)/2, y = height;
 		for(int i = 0; i < memory.size(); i++) {
 			memory.get(i).setSize(100, 141);
 			memory.get(i).setLocation(x, y);
-			if((i+1) % 3 == 0) {
+			if((i+1) % 5 == 0) {
 				x++;
 				y++;
 			}
 			container.add(memory.get(i));
+		}
+	}
+	
+	private void colocarDescarte(ArrayList<Carta> descarte, int height) {
+		int x = container.getWidth()/2 + (6*120)/2, y = height;
+		for(int i = 0; i < descarte.size(); i++) {
+			descarte.get(i).setSize(100, 141);
+			descarte.get(i).setLocation(x, y);
+			if((i+1) % 5 == 0) {
+				x++;
+				y++;
+			}
+			container.add(descarte.get(i));
 		}
 	}
 	
@@ -306,6 +323,9 @@ public class MainView extends JFrame {
 				for(int i = 0; i < opFighters.length; i++) {
 					if(opFighters[i].getFighter() == null) {
 						opFighters[i].setFighter(fighter);
+						Carta c = opponent.getField().getHand().remove(fighter);
+						container.remove(c);
+						colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 						break;
 					}
 				}
@@ -313,6 +333,11 @@ public class MainView extends JFrame {
 			case IMPOSSIBLE_TO_USE:
 				break;
 			case ITEM_USED:
+				Item item = (Item) player.in.readObject();
+				opponent.getField().getDescarte().add(item);
+				opponent.getField().getHand().remove(item);
+				colocarDescarte(opponent.getField().getDescarte(), 280);
+				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 				break;
 			case NO_CARDS:
 				break;
@@ -358,12 +383,20 @@ public class MainView extends JFrame {
 					for(int i = 0; i < myFighters.length; i++) {
 						if(myFighters[i].getFighter() == null) {
 							myFighters[i].setFighter(fighter);
+							Carta c = player.getField().getHand().remove(fighter);
+							container.remove(c);
+							colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 							break;
 						}
 					}
 					break;
 	
 				case ITEM_USED:
+					Item item = (Item) player.in.readObject();
+					player.getField().getDescarte().add(item);
+					player.getField().getHand().remove(item);
+					colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
+					colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 					break;
 					
 				default:
@@ -388,7 +421,14 @@ public class MainView extends JFrame {
 	}
 	
 	public void useItem(Item item) {
-		
+		if(myTurn) {
+			try {
+				player.out.writeObject(MatchRequest.USE_AN_ITEM);
+				player.out.writeObject(item);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void putEnergy(Energy energy) {

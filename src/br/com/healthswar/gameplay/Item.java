@@ -12,8 +12,8 @@ public class Item extends Carta  {
 	 */
 	private static final long serialVersionUID = -5422150266430590077L;
 
-	public Item() throws URISyntaxException {
-		super();
+	public Item(int id) throws URISyntaxException {
+		super(id);
 		this.frontImg = Carta.class.getResource("../assets/item-sm.png").toURI();
 		super.repaint();
 	}
@@ -49,6 +49,8 @@ public class Item extends Carta  {
 			case MEMORY:
 				
 				break;
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -72,6 +74,8 @@ public class Item extends Carta  {
 			case MEMORY:
 				
 				break;
+			case DESCARTE:
+				break;
 		}
 	}
 
@@ -94,6 +98,8 @@ public class Item extends Carta  {
 				
 			case MEMORY:
 				
+				break;
+			case DESCARTE:
 				break;
 		}
 	}

@@ -6,8 +6,10 @@ import java.util.Arrays;
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Request;
+import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
+import br.com.healthswar.gameplay.Item;
 import br.com.healthswar.gameplay.Player;
 
 public class Partida extends Thread {
@@ -85,26 +87,37 @@ public class Partida extends Thread {
 				p2.out.writeObject(game.getPhase());
 				
 				MatchRequest request = (MatchRequest) player.in.readObject();
-				MatchResponse res;
+				MatchResponse response;
 				
 				switch (request) {
 					case DRAW_A_CARD:
-						res = game.comprarCarta(player.getField());
-						player.out.writeObject(res);
-						p2.out.writeObject(res);
+						response = game.comprarCarta(player.getField());
+						player.out.writeObject(response);
+						p2.out.writeObject(response);
 						break;
 
 					case SEND_A_FIGHTER:
 						Fighter fighter = (Fighter) player.in.readObject();
-						res = game.enviarCombatente(player.getField(), fighter);
-						player.out.writeObject(res);
-						player.out.writeObject(fighter);
-						p2.out.writeObject(res);
-						p2.out.writeObject(fighter);
+						response = game.enviarCombatente(player.getField(), fighter);
+						player.out.writeObject(response);
+						p2.out.writeObject(response);
+						if(response == MatchResponse.FIGHTER_READY) {
+							fighter.setLocal(CardLocal.FIELD);
+							player.out.writeObject(fighter);
+							p2.out.writeObject(fighter);
+						}
 						break;
 						
 					case USE_AN_ITEM:
-						game.usarItem(player.getField());
+						Item item = (Item) player.in.readObject();
+						response = game.usarItem(player.getField(), item);
+						player.out.writeObject(response);
+						p2.out.writeObject(response);
+						if(response == MatchResponse.ITEM_USED) {
+							item.setLocal(CardLocal.DESCARTE);
+							player.out.writeObject(item);
+							p2.out.writeObject(item);
+						}
 						break;
 						
 					case ATACK_THE_OPONENT:

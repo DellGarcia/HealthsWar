@@ -15,6 +15,7 @@ public class Game {
 	private int turno;
 	private Phases phase;
 	private boolean ativo;
+	private boolean summonAvalible;
 	
 	private Player[] players;
 	
@@ -28,6 +29,7 @@ public class Game {
 		this.turno = 1;
 		this.phase = Phases.DRAW_PHASE;
 		this.ativo = true;
+		this.summonAvalible = true;
 		Collections.shuffle(decks);
 	}
 	
@@ -67,10 +69,12 @@ public class Game {
 		}
 		
 		public MatchResponse enviarCombatente(Field field, Fighter fighter) {
-			if(phase == Phases.MAIN_PHASE) {
+			if(phase == Phases.MAIN_PHASE && summonAvalible) {
 				for(int i = 0; i < field.getCombatentes().length; i++) {
 					if(field.getCombatentes()[i] == null) {
 						field.getCombatentes()[i] = fighter;
+						field.getHand().remove(fighter);
+						this.summonAvalible = false;
 						return MatchResponse.FIGHTER_READY;
 					}
 				}
@@ -78,10 +82,12 @@ public class Game {
 			return MatchResponse.NO_FIGHTER;
 		}
 		
-		public void usarItem(Field field) {
+		public MatchResponse usarItem(Field field, Item item) {
 			if(phase == Phases.MAIN_PHASE) {
-				
+				field.getHand().remove(item);
+				return MatchResponse.ITEM_USED;
 			}
+			return MatchResponse.IMPOSSIBLE_TO_USE;
 		}
 		
 		public void atacar(Fighter escolhido, Fighter alvo) {
@@ -92,6 +98,7 @@ public class Game {
 		
 		public void encerrarTurno() {
 			this.turno++;
+			this.summonAvalible = true;
 			phase = Phases.DRAW_PHASE;
 		}
 		

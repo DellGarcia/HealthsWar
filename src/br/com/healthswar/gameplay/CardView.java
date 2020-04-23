@@ -13,7 +13,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -55,12 +54,15 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 		try {
 			if(card instanceof Fighter) {
 				this.frontImg = Carta.class.getResource("../assets/card-md.jpg").toURI();
+				lblFundo.setText("Enviar");
 			}
 			if(card instanceof Energy) {
 				this.frontImg = Carta.class.getResource("../assets/energy-md.jpg").toURI();
+				lblFundo.setText("Colocar");
 			}
 			if(card instanceof Item) {
 				this.frontImg = Carta.class.getResource("../assets/item-md.png").toURI();
+				lblFundo.setText("Usar");
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -102,12 +104,11 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(card instanceof Fighter) {
-			if(!MainView.INSTANCE.sendFighter((Fighter) card)) {
-				JOptionPane.showMessageDialog(null, "Sem espaco");
-				System.out.println("Cheio");
-			} else {
-				System.out.println("Vazio");
-			}
+			MainView.INSTANCE.sendFighter((Fighter) card);
+		}
+		
+		if(card instanceof Item) {
+			MainView.INSTANCE.useItem((Item) card); 
 		}
 	}
 
@@ -115,6 +116,7 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		lblFundo.setVisible(true);
+		repaint();
 	}
 
 	@Override
@@ -133,7 +135,7 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

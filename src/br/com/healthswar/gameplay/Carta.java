@@ -19,6 +19,7 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	 * 
 	 */
 	private static final long serialVersionUID = 7106990056333713852L;
+	public int id;
 	protected String description;
 	
 	protected boolean virado;
@@ -27,7 +28,8 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	protected URI frontImg;
 	protected URI backImg;
 
-	public Carta() {
+	public Carta(int id) {
+		this.id = id;
 		virado = true;
 		local = CardLocal.DECK;
 		try {

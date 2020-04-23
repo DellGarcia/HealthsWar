@@ -17,13 +17,14 @@ public class Deck implements Serializable{
 	
 	public Deck(DeckTheme deckTheme) {
 		this.deckTheme = deckTheme;
+		int id = 0;
 		switch (deckTheme) {
 			case IMMUNE_SYSTEM:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cartas.add(new Fighter());
-						cartas.add(new Energy());
-						cartas.add(new Item());
+						cartas.add(new Fighter(id++));
+						cartas.add(new Energy(id++));
+						cartas.add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
@@ -33,9 +34,9 @@ public class Deck implements Serializable{
 			case FOREIGN_BODIES:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cartas.add(new Fighter());
-						cartas.add(new Energy());
-						cartas.add(new Item());
+						cartas.add(new Fighter(id++));
+						cartas.add(new Energy(id++));
+						cartas.add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}

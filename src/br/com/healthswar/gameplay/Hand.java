@@ -29,6 +29,18 @@ public class Hand implements Serializable {
 	public void setCartas(ArrayList<Carta> cartas) {
 		this.cartas = cartas;
 	}
+	
+	public Carta remove(Carta card) {
+		for(int i = 0; i < cartas.size(); i++) {
+			if(cartas.get(i).id == card.id) {
+				Carta c = cartas.get(i);
+				cartas.remove(i);
+				c.repaint();
+				return c;
+			}	
+		}
+		return null;
+	}
 
 	@Override
 	public String toString() {
