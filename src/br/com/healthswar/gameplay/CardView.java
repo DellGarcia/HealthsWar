@@ -1,37 +1,57 @@
 package br.com.healthswar.gameplay;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-public class CardView extends Carta {
-	
-	
+import br.com.dellgarcia.frontend.Label;
+import br.com.healthswar.player.view.MainView;
+import br.com.healthswar.view.Fonts;
+
+public class CardView extends JPanel implements MouseListener, MouseMotionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 534020604704164574L;
 
-	@SuppressWarnings("unused")
+	private URI frontImg;
+	
 	private Carta card;
 	
+	private Label lblFundo;
+	
 	public CardView(Carta card) {
-		this.card = card;
+		setLayout(null);
 		
 		setCard(card);
 		
 		setSize(300, 424);
 		setVisible(false);
-		virado = false;
+		addMouseListener(this);
 	}
 
 	public void setCard(Carta card) {
+		this.card = card;
+		if(lblFundo != null) {
+			this.remove(lblFundo);
+		}
+		lblFundo = new Label(getWidth(), getHeight(), "Enviar", Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
+		lblFundo.setVisible(false);
+		lblFundo.setOpaque(true);
+		this.add(lblFundo);
 		try {
 			if(card instanceof Fighter) {
 				this.frontImg = Carta.class.getResource("../assets/card-md.jpg").toURI();
@@ -56,7 +76,7 @@ public class CardView extends Carta {
 		int width = 300, height = 424;
 		
 		try {
-			imagem = ImageIO.read(new File(virado?backImg:frontImg));
+			imagem = ImageIO.read(new File(frontImg));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,18 +101,26 @@ public class CardView extends Carta {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(card instanceof Fighter) {
+			if(!MainView.INSTANCE.sendFighter((Fighter) card)) {
+				JOptionPane.showMessageDialog(null, "Sem espaco");
+				System.out.println("Cheio");
+			} else {
+				System.out.println("Vazio");
+			}
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		lblFundo.setVisible(true);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		lblFundo.setVisible(false);
 		setVisible(false);
 	}
 

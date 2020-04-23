@@ -15,7 +15,7 @@ public class Fighter extends Carta implements Serializable {
 
 	public Fighter() throws URISyntaxException {
 		super();
-		this.frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
+		//this.frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
 		super.repaint();
 	}
 

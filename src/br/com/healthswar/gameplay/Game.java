@@ -66,10 +66,16 @@ public class Game {
 			}
 		}
 		
-		public void enviarCombatente(Field field) {
+		public MatchResponse enviarCombatente(Field field, Fighter fighter) {
 			if(phase == Phases.MAIN_PHASE) {
-
+				for(int i = 0; i < field.getCombatentes().length; i++) {
+					if(field.getCombatentes()[i] == null) {
+						field.getCombatentes()[i] = fighter;
+						return MatchResponse.FIGHTER_READY;
+					}
+				}
 			}
+			return MatchResponse.NO_FIGHTER;
 		}
 		
 		public void usarItem(Field field) {
