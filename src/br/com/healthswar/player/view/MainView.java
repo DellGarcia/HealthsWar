@@ -49,7 +49,7 @@ public class MainView extends JFrame {
 	
 	private boolean myTurn;
 	
-	private Button btnEndTurn;
+	private Button btnEndTurn, btnBattle;
 	
 	public static MainView INSTANCE;
 	
@@ -105,6 +105,7 @@ public class MainView extends JFrame {
 		colocarMemoria(opponent.getField().getMemoria(), 280);
 		colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
 		colocarDescarte(player.getField().getDescarte(), 280);
+		colocarBattle();
 		colocarEndTurn();
 		container.repaint();
 	}
@@ -124,7 +125,7 @@ public class MainView extends JFrame {
 	}
 	
 	private void colocarDeck(ArrayList<Carta> myDeck, ArrayList<Carta> opDeck) {
-		int x = 1920 - 200, y = 1080 - 200;
+		int x = 1920 - 200, y = container.getHeight() - 200;
 		for(int i = 0; i < myDeck.size(); i++) {
 			myDeck.get(i).setSize(100, 141);
 			myDeck.get(i).setLocation(x, y);
@@ -166,7 +167,6 @@ public class MainView extends JFrame {
 			container.add(card);
 			x+=110;
 		}
-		
 		container.repaint();
 	}
 	
@@ -181,9 +181,22 @@ public class MainView extends JFrame {
 		container.add(lblPhase);
 	}
 	
+	private void colocarBattle() {
+		btnBattle = new Button(
+				container.getWidth() - 170, container.getHeight()/2 - 50/2 - 50,
+				150, 50,
+				Color.DARK_GRAY, Color.WHITE,
+				Fonts.NORMAL, "Battle",
+				Color.BLACK, 1,
+				new Color(65,105,225), Color.WHITE);
+		btnBattle.setVisible(false);
+		btnBattle.addActionListener(battlePhase());
+		container.add(btnBattle);
+	}
+	
 	private void colocarEndTurn() {
 		btnEndTurn = new Button(
-				container.getWidth() - 170, container.getHeight()/2 - 50/2,
+				container.getWidth() - 170, container.getHeight()/2 - 50/2 + 50,
 				150, 50,
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.NORMAL, "End Turn",
@@ -228,9 +241,9 @@ public class MainView extends JFrame {
 		for(int i = 0; i < descarte.size(); i++) {
 			descarte.get(i).setSize(100, 141);
 			descarte.get(i).setLocation(x, y);
-			if((i+1) % 5 == 0) {
-				x++;
-				y++;
+			if((i+1) % 3 == 0) {
+				x+=2;
+				y+=2;
 			}
 			container.add(descarte.get(i));
 		}
@@ -257,6 +270,7 @@ public class MainView extends JFrame {
 						Phases phase = (Phases) player.in.readObject();
 						
 						btnEndTurn.setVisible(true);
+						btnBattle.setVisible(true);
 						myTurn = true;
 						
 						switch (phase) {
@@ -264,15 +278,15 @@ public class MainView extends JFrame {
 								lblPhase.setText("Your Turn: DRAW PHASE");
 								drawCard();
 								break;
+							case MAIN_PHASE:
+								lblPhase.setText("Your Turn: MAIN PHASE");
+								awaitMainAction();
+								break;
 							case BATTLE_PHASE:
 								lblPhase.setText("Your Turn: BATTLE PHASE");
 								break;
 							case END_PHASE:
 								lblPhase.setText("Your Turn: END PHASE");
-								break;
-							case MAIN_PHASE:
-								lblPhase.setText("Your Turn: MAIN PHASE");
-								awaitMainAction();
 								break;
 						}
 						
@@ -316,6 +330,7 @@ public class MainView extends JFrame {
 				card.setLocal(CardLocal.HAND);
 				opponent.getField().getHand().getCartas().add(card);
 				opponent.getField().getDeck().getCartas().remove(0);
+				container.remove(card);
 				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 				break;
 			case FIGHTER_READY:
@@ -335,7 +350,7 @@ public class MainView extends JFrame {
 			case ITEM_USED:
 				Item item = (Item) player.in.readObject();
 				opponent.getField().getDescarte().add(item);
-				opponent.getField().getHand().remove(item);
+				container.remove(opponent.getField().getHand().remove(item));
 				colocarDescarte(opponent.getField().getDescarte(), 280);
 				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 				break;
@@ -349,6 +364,8 @@ public class MainView extends JFrame {
 				break;
 			case YOUR_TURN:
 				myTurn = true;
+				break;
+			case BATTLE_STARTED:
 				break;
 			default:
 				break;
@@ -394,7 +411,7 @@ public class MainView extends JFrame {
 				case ITEM_USED:
 					Item item = (Item) player.in.readObject();
 					player.getField().getDescarte().add(item);
-					player.getField().getHand().remove(item);
+					container.remove(player.getField().getHand().remove(item));
 					colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
 					colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
 					break;
@@ -433,6 +450,23 @@ public class MainView extends JFrame {
 	
 	public void putEnergy(Energy energy) {
 		
+	}
+	
+	private ActionListener battlePhase() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(myTurn) {
+					try {
+						player.out.writeObject(MatchRequest.START_BATTLE);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		};
 	}
 	
 	private ActionListener endTurn() {

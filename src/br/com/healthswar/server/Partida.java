@@ -120,6 +120,12 @@ public class Partida extends Thread {
 						}
 						break;
 						
+					case START_BATTLE:
+						game.comecarbatalha();
+						player.out.writeObject(MatchResponse.BATTLE_STARTED);
+						p2.out.writeObject(MatchResponse.BATTLE_STARTED);
+						break;
+						
 					case ATACK_THE_OPONENT:
 //						game.atacar(new Fighter(), new Fighter());
 						break;
@@ -130,8 +136,7 @@ public class Partida extends Thread {
 						p2.out.writeObject(MatchResponse.YOUR_TURN);
 						break;
 						
-					case GET_PHASE:
-						player.out.writeObject(game.getPhase());
+					default:
 						break;
 				}
 

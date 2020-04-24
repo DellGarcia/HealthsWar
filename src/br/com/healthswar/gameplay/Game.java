@@ -85,9 +85,14 @@ public class Game {
 		public MatchResponse usarItem(Field field, Item item) {
 			if(phase == Phases.MAIN_PHASE) {
 				field.getHand().remove(item);
+				field.getDescarte().add(item);
 				return MatchResponse.ITEM_USED;
 			}
 			return MatchResponse.IMPOSSIBLE_TO_USE;
+		}
+		
+		public void comecarbatalha() {
+			this.phase = Phases.BATTLE_PHASE;
 		}
 		
 		public void atacar(Fighter escolhido, Fighter alvo) {

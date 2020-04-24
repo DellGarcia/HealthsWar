@@ -35,7 +35,6 @@ public class Hand implements Serializable {
 			if(cartas.get(i).id == card.id) {
 				Carta c = cartas.get(i);
 				cartas.remove(i);
-				c.repaint();
 				return c;
 			}	
 		}

@@ -105,10 +105,16 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 		// TODO Auto-generated method stub
 		if(card instanceof Fighter) {
 			MainView.INSTANCE.sendFighter((Fighter) card);
+			setVisible(false);
 		}
 		
 		if(card instanceof Item) {
-			MainView.INSTANCE.useItem((Item) card); 
+			MainView.INSTANCE.useItem((Item) card);
+			setVisible(false);
+		}
+		
+		if(card instanceof Energy) {
+			
 		}
 	}
 
