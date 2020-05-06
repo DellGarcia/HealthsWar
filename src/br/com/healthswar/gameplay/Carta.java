@@ -5,12 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public abstract class Carta extends JPanel implements MouseListener, MouseMotionListener {
@@ -25,21 +22,17 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	protected boolean virado;
 	protected CardLocal local;
 	
-	protected URI frontImg;
-	protected URI backImg;
+	protected URL frontImg;
+	protected URL backImg;
 
 	public Carta(int id) {
 		this.id = id;
 		virado = true;
 		local = CardLocal.DECK;
-		try {
-			frontImg = Carta.class.getResource("../assets/card-sm.jpg").toURI();
-			backImg = Carta.class.getResource("../assets/backImg2-sm.jpg").toURI();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+		frontImg = Carta.class.getResource("../assets/card-sm.jpg");
+		backImg = Carta.class.getResource("../assets/backImg2-sm.jpg");
 		addMouseListener(this);
-		addMouseMotionListener(this);
+		addMouseMotionListener(this); 
 	}
 
 	public String getDescription() {
@@ -74,11 +67,7 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 		Image imagem = null;
 		int width = 100, height = 141;
 		
-		try {
-			imagem = ImageIO.read(new File(virado?backImg:frontImg));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		imagem = new ImageIcon(virado?backImg:frontImg).getImage();
 		
 		g2d.drawImage(imagem, 0, 0, width, height, this);
 		

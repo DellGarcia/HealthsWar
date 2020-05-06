@@ -7,6 +7,7 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.gameplay.CardLocal;
+import br.com.healthswar.gameplay.Energy;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Item;
@@ -89,6 +90,10 @@ public class Partida extends Thread {
 				MatchRequest request = (MatchRequest) player.in.readObject();
 				MatchResponse response;
 				
+				Fighter fighter;
+				Energy energy;
+				Item item;
+				
 				switch (request) {
 					case DRAW_A_CARD:
 						response = game.comprarCarta(player.getField());
@@ -97,7 +102,7 @@ public class Partida extends Thread {
 						break;
 
 					case SEND_A_FIGHTER:
-						Fighter fighter = (Fighter) player.in.readObject();
+						fighter = (Fighter) player.in.readObject();
 						response = game.enviarCombatente(player.getField(), fighter);
 						player.out.writeObject(response);
 						p2.out.writeObject(response);
@@ -109,7 +114,7 @@ public class Partida extends Thread {
 						break;
 						
 					case USE_AN_ITEM:
-						Item item = (Item) player.in.readObject();
+						item = (Item) player.in.readObject();
 						response = game.usarItem(player.getField(), item);
 						player.out.writeObject(response);
 						p2.out.writeObject(response);
@@ -117,6 +122,22 @@ public class Partida extends Thread {
 							item.setLocal(CardLocal.DESCARTE);
 							player.out.writeObject(item);
 							p2.out.writeObject(item);
+						}
+						break;
+						
+					case PUT_ENERGY:
+						fighter = (Fighter) player.in.readObject();
+						energy = (Energy) player.in.readObject();
+						response = game.colocarEnergia(player.getField(), energy, fighter);
+						
+						player.out.writeObject(response);
+						p2.out.writeObject(response);
+						if(response == MatchResponse.ENERGY_READY) {
+							player.out.writeObject(fighter);
+							player.out.writeObject(energy);
+							
+							p2.out.writeObject(fighter);
+							p2.out.writeObject(energy);
 						}
 						break;
 						
@@ -132,12 +153,9 @@ public class Partida extends Thread {
 					
 					case END_THE_TURN:
 						game.encerrarTurno();
-						player.out.writeObject(MatchResponse.OPPONENT_TURN);
 						p2.out.writeObject(MatchResponse.YOUR_TURN);
 						break;
-						
-					default:
-						break;
+
 				}
 
 			} catch (ClassNotFoundException | IOException e) {

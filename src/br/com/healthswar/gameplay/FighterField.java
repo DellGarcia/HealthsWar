@@ -4,11 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 
 import br.com.dellgarcia.frontend.Panel;
 
@@ -20,6 +19,7 @@ public class FighterField extends Panel {
 	private static final long serialVersionUID = -149395871309683109L;
 
 	private Fighter fighter;
+	private URL frontImg;
 	
 	public FighterField() {
 		super();
@@ -31,6 +31,7 @@ public class FighterField extends Panel {
 	
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
+		this.frontImg = this.fighter.frontImg;
 		repaint();
 	}
 	
@@ -49,13 +50,9 @@ public class FighterField extends Panel {
 		Image imagem = null;
 		int width = 100, height = 141;
 		
-		try {
-			if(fighter != null) {
-				imagem = ImageIO.read(new File(fighter.frontImg));
-				g2d.drawImage(imagem, 0, 0, width, height, this);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(fighter != null) {
+			imagem = new ImageIcon(frontImg).getImage();
+			g2d.drawImage(imagem, 0, 0, width, height, this);
 		}
 		
 		g2d.dispose();

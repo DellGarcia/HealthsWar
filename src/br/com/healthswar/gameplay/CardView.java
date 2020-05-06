@@ -13,14 +13,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import br.com.dellgarcia.frontend.Label;
+import br.com.dellgarcia.frontend.Panel;
 import br.com.healthswar.player.view.MainView;
 import br.com.healthswar.view.Fonts;
 
-public class CardView extends JPanel implements MouseListener, MouseMotionListener {
+public class CardView extends Panel implements MouseListener, MouseMotionListener {
 	/**
 	 * 
 	 */
@@ -33,7 +33,7 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 	private Label lblFundo;
 	
 	public CardView(Carta card) {
-		setLayout(null);
+		super();
 		
 		setCard(card);
 		
@@ -69,6 +69,9 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 		}
 	}
 	
+	public Carta getCard() {
+		return this.card;
+	}
 	
 	@Override
 	public void paintComponent(Graphics g){
@@ -90,19 +93,16 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if(card instanceof Fighter) {
 			MainView.INSTANCE.sendFighter((Fighter) card);
 			setVisible(false);
@@ -114,33 +114,30 @@ public class CardView extends JPanel implements MouseListener, MouseMotionListen
 		}
 		
 		if(card instanceof Energy) {
-			
+			MainView.INSTANCE.showSelector();
+			setVisible(false);
 		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		lblFundo.setVisible(true);
 		repaint();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		lblFundo.setVisible(false);
 		setVisible(false);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

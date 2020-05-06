@@ -14,7 +14,7 @@ public class Energy extends Carta  {
 
 	public Energy(int id) throws URISyntaxException {
 		super(id);
-		this.frontImg = Carta.class.getResource("../assets/energy-sm.jpg").toURI();
+		this.frontImg = Carta.class.getResource("../assets/energy-sm.jpg");
 		super.repaint();
 	}
 	

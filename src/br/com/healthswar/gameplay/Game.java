@@ -91,6 +91,19 @@ public class Game {
 			return MatchResponse.IMPOSSIBLE_TO_USE;
 		}
 		
+		public MatchResponse colocarEnergia(Field field, Energy energy, Fighter fighter) {
+			if(phase == Phases.MAIN_PHASE) {
+				for(Fighter lutador: field.getCombatentes()) {
+					if(lutador.id == fighter.id) {
+						field.getHand().remove(energy);
+						lutador.getEnergies().add(energy);
+						return MatchResponse.ENERGY_READY;
+					}
+				}
+			}
+			return MatchResponse.IMPOSSIBLE_TO_USE;
+		}
+		
 		public void comecarbatalha() {
 			this.phase = Phases.BATTLE_PHASE;
 		}

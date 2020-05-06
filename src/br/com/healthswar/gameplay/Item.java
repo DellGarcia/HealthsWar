@@ -14,7 +14,7 @@ public class Item extends Carta  {
 
 	public Item(int id) throws URISyntaxException {
 		super(id);
-		this.frontImg = Carta.class.getResource("../assets/item-sm.png").toURI();
+		this.frontImg = Carta.class.getResource("../assets/item-sm.png");
 		super.repaint();
 	}
 	

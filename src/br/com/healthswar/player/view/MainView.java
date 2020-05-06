@@ -23,6 +23,7 @@ import br.com.healthswar.gameplay.Carta;
 import br.com.healthswar.gameplay.Energy;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
+import br.com.healthswar.gameplay.FighterSelector;
 import br.com.healthswar.gameplay.Item;
 import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.Player;
@@ -39,6 +40,7 @@ public class MainView extends JFrame {
 	public Player opponent;
 	
 	private CardView cardView;
+	private FighterSelector fighterSelector;
 	
 	private Label lblPhase;
 	private Label myHP;
@@ -78,7 +80,7 @@ public class MainView extends JFrame {
 		}
 		
 		init();
-		awaitYourTurn().start();
+		awaitTurn().start();
 		
 		setVisible(true);
 	}
@@ -96,10 +98,14 @@ public class MainView extends JFrame {
 		cardView.setLocation(container.getWidth()/2 - cardView.getWidth()/2, container.getHeight()/2 - cardView.getHeight()/2);
 		container.add(cardView);
 		
+		fighterSelector = new FighterSelector();
+		fighterSelector.setLocation(container.getWidth()/2 - fighterSelector.getWidth()/2, container.getHeight()/2 - fighterSelector.getHeight()/2);
+		container.add(fighterSelector);
+		
 		colocarPhase();
 		colocarHealthPoint();
 		colocarDeck(player.getField().getDeck().getCartas(), opponent.getField().getDeck().getCartas());
-		colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+		colocarMao();
 		colocarFighters();
 		colocarMemoria(player.getField().getMemoria(), container.getHeight() - 400);
 		colocarMemoria(opponent.getField().getMemoria(), 280);
@@ -107,13 +113,15 @@ public class MainView extends JFrame {
 		colocarDescarte(player.getField().getDescarte(), 280);
 		colocarBattle();
 		colocarEndTurn();
-		container.repaint();
 	}
 	
 //	private void atualizarHealtPoints(Label label, int novaVida) {
 //		label.setText(""+novaVida);
 //	}
 	
+	/**
+	 * Constrution methods
+	 * */
 	private void colocarHealthPoint() {
 		myHP = new Label(200, 40, player.getField().getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		myHP.setLocation(0, 0);
@@ -148,7 +156,10 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	private void colocarMao(ArrayList<Carta> myHand, ArrayList<Carta> opHand) {
+	private void colocarMao() {
+		ArrayList<Carta> myHand = player.getField().getHand().getCartas();
+		ArrayList<Carta> opHand = opponent.getField().getHand().getCartas();
+		
 		int x = container.getWidth() /2 - (myHand.size()*110 - 10)/2;
 		for(Carta card: myHand) {
 			card.setSize(100, 141);
@@ -172,7 +183,7 @@ public class MainView extends JFrame {
 	
 	private void colocarPhase() {
 		lblPhase = new Label(
-				300, 40,
+				400, 40,
 				"", new Font("Verdana", Font.PLAIN, 20),
 				Color.WHITE, container.getBackground(),
 				SwingConstants.CENTER, SwingConstants.CENTER
@@ -190,7 +201,7 @@ public class MainView extends JFrame {
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
 		btnBattle.setVisible(false);
-		btnBattle.addActionListener(battlePhase());
+		btnBattle.addActionListener(startBattle());
 		container.add(btnBattle);
 	}
 	
@@ -249,16 +260,10 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	public void mostarCardView(Carta card) {
-		cardView.setCard(card);
-		cardView.setVisible(true);
-		cardView.repaint();
-	}
-	
 	/**
 	 * Player Actions
 	 * */
-	private Thread awaitYourTurn() {
+	private Thread awaitTurn() {
 		return new Thread(new Runnable() {
 			
 			@Override
@@ -284,17 +289,18 @@ public class MainView extends JFrame {
 								break;
 							case BATTLE_PHASE:
 								lblPhase.setText("Your Turn: BATTLE PHASE");
+								btnBattle.setVisible(false);
 								break;
 							case END_PHASE:
 								lblPhase.setText("Your Turn: END PHASE");
 								break;
 						}
 						
-					} else {
+					} else if(response == MatchResponse.OPPONENT_TURN){
 						awaitOpponentAction();
-					}
+					} 
 						
-					awaitYourTurn().start();
+					awaitTurn().start();
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}
@@ -303,8 +309,8 @@ public class MainView extends JFrame {
 	}
 	
 	public void awaitOpponentAction() throws ClassNotFoundException, IOException {
-		myTurn = false;
 		Phases phase = (Phases) player.in.readObject();
+		myTurn = false;
 		
 		switch (phase) {
 			case DRAW_PHASE:
@@ -323,6 +329,10 @@ public class MainView extends JFrame {
 		
 		MatchResponse res = (MatchResponse) player.in.readObject();
 		
+		Fighter fighter;
+		Energy energy;
+		Item item;
+		
 		switch (res) {
 			case AVALIBLE_CARD:
 				Carta card = opponent.getField().getDeck().getCartas().get(0);
@@ -331,42 +341,56 @@ public class MainView extends JFrame {
 				opponent.getField().getHand().getCartas().add(card);
 				opponent.getField().getDeck().getCartas().remove(0);
 				container.remove(card);
-				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+				colocarMao();
 				break;
 			case FIGHTER_READY:
-				Fighter fighter = (Fighter) player.in.readObject();
+				fighter = (Fighter) player.in.readObject();
 				for(int i = 0; i < opFighters.length; i++) {
 					if(opFighters[i].getFighter() == null) {
 						opFighters[i].setFighter(fighter);
+						opponent.getField().getCombatentes()[i] = fighter;
 						Carta c = opponent.getField().getHand().remove(fighter);
 						container.remove(c);
-						colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+						colocarMao();
 						break;
 					}
 				}
 				break;
-			case IMPOSSIBLE_TO_USE:
-				break;
 			case ITEM_USED:
-				Item item = (Item) player.in.readObject();
+				item = (Item) player.in.readObject();
 				opponent.getField().getDescarte().add(item);
 				container.remove(opponent.getField().getHand().remove(item));
 				colocarDescarte(opponent.getField().getDescarte(), 280);
-				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+				colocarMao();
 				break;
-			case NO_CARDS:
+			
+			case ENERGY_READY:
+				fighter = (Fighter) player.in.readObject();
+				energy = (Energy) player.in.readObject();
+				
+				System.out.println(fighter.id);
+				
+				for(Fighter lutador: opponent.getField().getCombatentes()) {
+					System.out.println(lutador);
+					if(lutador.id == fighter.id) {
+						opponent.getField().getHand().remove(energy);
+						lutador = fighter;
+						break;
+					}
+				}
+				colocarFighters();
 				break;
-			case NO_FIGHTER:
-				break;
-			case OPPONENT_TURN:
-				break;
+				
 			case SUCCESSFUL_ATACK:
 				break;
+				
 			case YOUR_TURN:
 				myTurn = true;
 				break;
+				
 			case BATTLE_STARTED:
 				break;
+				
 			default:
 				break;
 		}
@@ -383,7 +407,7 @@ public class MainView extends JFrame {
 				card.setLocal(CardLocal.HAND);
 				player.getField().getHand().getCartas().add(card);
 				player.getField().getDeck().getCartas().remove(0);
-				colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+				colocarMao();
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -394,26 +418,50 @@ public class MainView extends JFrame {
 		try {
 			MatchResponse response = (MatchResponse) player.in.readObject();
 			
+			Fighter fighter;
+			Energy energy;
+			Item item;
+			
 			switch (response) {
 				case FIGHTER_READY:
-					Fighter fighter = (Fighter) player.in.readObject();
+					fighter = (Fighter) player.in.readObject();
 					for(int i = 0; i < myFighters.length; i++) {
 						if(myFighters[i].getFighter() == null) {
 							myFighters[i].setFighter(fighter);
+							player.getField().getCombatentes()[i] = fighter;
 							Carta c = player.getField().getHand().remove(fighter);
 							container.remove(c);
-							colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+							colocarMao();
 							break;
 						}
 					}
 					break;
 	
 				case ITEM_USED:
-					Item item = (Item) player.in.readObject();
+					item = (Item) player.in.readObject();
 					player.getField().getDescarte().add(item);
 					container.remove(player.getField().getHand().remove(item));
 					colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
-					colocarMao(player.getField().getHand().getCartas(), opponent.getField().getHand().getCartas());
+					colocarMao();
+					break;
+					
+				case ENERGY_READY:
+					fighter = (Fighter) player.in.readObject();
+					energy = (Energy) player.in.readObject();
+					
+					System.out.println(fighter.id);
+					
+					for(Fighter lutador: player.getField().getCombatentes()) {
+						System.out.println(lutador);
+						if(lutador.id == fighter.id) {
+							player.getField().getHand().remove(energy);
+							lutador = fighter;
+							break;
+						}
+					}
+					System.out.println(fighter.getEnergies());
+					colocarFighters();
+					colocarMao();
 					break;
 					
 				default:
@@ -432,6 +480,7 @@ public class MainView extends JFrame {
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
+				System.out.println("Não foi possivel enviar o lutador");
 			}
 		}
 		return false;
@@ -444,23 +493,34 @@ public class MainView extends JFrame {
 				player.out.writeObject(item);
 			} catch (IOException e) {
 				e.printStackTrace();
+				System.out.println("Não foi possível usar o item");
 			}
 		}
 	}
 	
-	public void putEnergy(Energy energy) {
-		
+	public void putEnergy(Fighter fighter) {
+		if(myTurn) {
+			try {
+				Energy energy = (Energy)cardView.getCard();
+				player.out.writeObject(MatchRequest.PUT_ENERGY);
+				player.out.writeObject(fighter);
+				player.out.writeObject(energy);
+			} catch(IOException e) {
+				e.printStackTrace();
+				System.out.println("Não foi possível colocar a energia");
+			}
+		}
 	}
 	
-	private ActionListener battlePhase() {
+	private ActionListener startBattle() {
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(myTurn) {
 					try {
 						player.out.writeObject(MatchRequest.START_BATTLE);
+						btnBattle.setVisible(false);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -478,6 +538,7 @@ public class MainView extends JFrame {
 					if(myTurn) {
 						player.out.writeObject(MatchRequest.END_THE_TURN);
 						btnEndTurn.setVisible(false);
+						btnBattle.setVisible(false);
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -487,7 +548,7 @@ public class MainView extends JFrame {
 	}
 	
 	/**
-	 * Singletown methods
+	 * Singleton methods
 	 */
 	public static MainView getInstance(Player player) {
 		if(INSTANCE == null) {
@@ -501,5 +562,23 @@ public class MainView extends JFrame {
 		INSTANCE = null;
 	}
 	
+	// display methods
+	public void mostarCardView(Carta card) {
+		cardView.setCard(null);
+		cardView.setCard(card);
+		cardView.setVisible(true);
+		cardView.repaint();
+	}
 	
+	public CardView getCardView() {
+		return this.cardView;
+	}
+	
+	public void showSelector() {
+		fighterSelector.setSelector(myFighters);
+	}
+	
+	public void hideSelector() {
+		this.fighterSelector.setVisible(false);
+	}
 }
