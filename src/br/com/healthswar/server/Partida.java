@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
+import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.Energy;
@@ -153,6 +154,10 @@ public class Partida extends Thread {
 					
 					case END_THE_TURN:
 						game.encerrarTurno();
+						if(game.getPhase() == Phases.MAIN_PHASE) {
+							player.out.writeObject(MatchResponse.OPPONENT_TURN);
+						}
+						game.setPhase(Phases.DRAW_PHASE);
 						p2.out.writeObject(MatchResponse.YOUR_TURN);
 						break;
 

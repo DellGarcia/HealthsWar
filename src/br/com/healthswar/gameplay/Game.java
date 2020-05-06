@@ -117,7 +117,6 @@ public class Game {
 		public void encerrarTurno() {
 			this.turno++;
 			this.summonAvalible = true;
-			phase = Phases.DRAW_PHASE;
 		}
 		
 	// Getters e Setters

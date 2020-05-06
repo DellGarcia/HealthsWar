@@ -368,17 +368,16 @@ public class MainView extends JFrame {
 				fighter = (Fighter) player.in.readObject();
 				energy = (Energy) player.in.readObject();
 				
-				System.out.println(fighter.id);
-				
 				for(Fighter lutador: opponent.getField().getCombatentes()) {
-					System.out.println(lutador);
 					if(lutador.id == fighter.id) {
 						opponent.getField().getHand().remove(energy);
 						lutador = fighter;
 						break;
 					}
 				}
+				
 				colocarFighters();
+				colocarMao();
 				break;
 				
 			case SUCCESSFUL_ATACK:
@@ -449,17 +448,14 @@ public class MainView extends JFrame {
 					fighter = (Fighter) player.in.readObject();
 					energy = (Energy) player.in.readObject();
 					
-					System.out.println(fighter.id);
-					
 					for(Fighter lutador: player.getField().getCombatentes()) {
-						System.out.println(lutador);
 						if(lutador.id == fighter.id) {
 							player.getField().getHand().remove(energy);
 							lutador = fighter;
 							break;
 						}
 					}
-					System.out.println(fighter.getEnergies());
+					
 					colocarFighters();
 					colocarMao();
 					break;
