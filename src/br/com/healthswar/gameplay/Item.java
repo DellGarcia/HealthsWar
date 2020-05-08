@@ -14,7 +14,7 @@ public class Item extends Carta  {
 
 	public Item(int id) throws URISyntaxException {
 		super(id);
-		this.frontImg = Carta.class.getResource("../assets/item-sm.png");
+		frontImg = loadImage("../assets/item-sm.png");
 		super.repaint();
 	}
 	
@@ -51,6 +51,10 @@ public class Item extends Carta  {
 				break;
 			case DESCARTE:
 				break;
+			case SELECTOR:
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -76,6 +80,10 @@ public class Item extends Carta  {
 				break;
 			case DESCARTE:
 				break;
+			case SELECTOR:
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -100,6 +108,10 @@ public class Item extends Carta  {
 				
 				break;
 			case DESCARTE:
+				break;
+			case SELECTOR:
+				break;
+			default:
 				break;
 		}
 	}

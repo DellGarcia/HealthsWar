@@ -70,7 +70,7 @@ public class Server extends ServerSocket {
 				break;
 		}
 		
-		TelaControle.atualizarLog("Player " + player.toString() + " conectado");
+		TelaControle.atualizarLog("Player conectado");
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class Server extends ServerSocket {
 	private void verificarPartida(Partida match, Request request) {
 		if(match.getCompleto()) {
 			match.start();
-			TelaControle.atualizarLog("Partida " + match.toString() + " completa e inicida");
+			TelaControle.atualizarLog("Partida completa e inicida");
 			match = new Partida(request);
 		}
 	}

@@ -7,10 +7,8 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingConstants;
@@ -26,7 +24,7 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	 */
 	private static final long serialVersionUID = 534020604704164574L;
 
-	private URI frontImg;
+	private transient InputStream frontImg;
 	
 	private Carta card;
 	
@@ -44,6 +42,7 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 
 	public void setCard(Carta card) {
 		this.card = card;
+		
 		if(lblFundo != null) {
 			this.remove(lblFundo);
 		}
@@ -51,21 +50,17 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		lblFundo.setVisible(false);
 		lblFundo.setOpaque(true);
 		this.add(lblFundo);
-		try {
-			if(card instanceof Fighter) {
-				this.frontImg = Carta.class.getResource("../assets/card-md.jpg").toURI();
-				lblFundo.setText("Enviar");
-			}
-			if(card instanceof Energy) {
-				this.frontImg = Carta.class.getResource("../assets/energy-md.jpg").toURI();
-				lblFundo.setText("Colocar");
-			}
-			if(card instanceof Item) {
-				this.frontImg = Carta.class.getResource("../assets/item-md.png").toURI();
-				lblFundo.setText("Usar");
-			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if(card instanceof Fighter) {
+			this.frontImg = Carta.class.getResourceAsStream("../assets/card-md.jpg");
+			lblFundo.setText("Enviar");
+		}
+		if(card instanceof Energy) {
+			this.frontImg = Carta.class.getResourceAsStream("../assets/energy-md.jpg");
+			lblFundo.setText("Colocar");
+		}
+		if(card instanceof Item) {
+			this.frontImg = Carta.class.getResourceAsStream("../assets/item-md.png");
+			lblFundo.setText("Usar");
 		}
 	}
 	
@@ -81,7 +76,7 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		int width = 300, height = 424;
 		
 		try {
-			imagem = ImageIO.read(new File(frontImg));
+			imagem = ImageIO.read(frontImg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -15,9 +15,12 @@ public class Fighter extends Carta implements Serializable {
 	
 	private ArrayList<Energy> energies;
 	
+	protected int healthPoints;
+	protected int atkPower;
+	
 	public Fighter(int id) throws URISyntaxException {
 		super(id);
-		this.frontImg = Carta.class.getResource("../assets/card-sm.jpg");
+		frontImg = loadImage("../assets/card-sm.jpg");
 		this.energies = new ArrayList<Energy>();
 		super.repaint();
 	}

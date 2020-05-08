@@ -1,16 +1,18 @@
 package br.com.healthswar.gameplay;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.net.URL;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 
-public abstract class Carta extends JPanel implements MouseListener, MouseMotionListener {
+public abstract class Carta extends JLabel implements MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -22,15 +24,19 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	protected boolean virado;
 	protected CardLocal local;
 	
-	protected URL frontImg;
-	protected URL backImg;
+	protected ImageIcon frontImg;
+	protected ImageIcon backImg;
+	
+	private transient InputStream reader;
 
 	public Carta(int id) {
 		this.id = id;
-		virado = true;
-		local = CardLocal.DECK;
-		frontImg = Carta.class.getResource("../assets/card-sm.jpg");
-		backImg = Carta.class.getResource("../assets/backImg2-sm.jpg");
+		this.virado = true;
+		this.local = CardLocal.DECK;
+		
+		frontImg = loadImage("../assets/card-sm.jpg");
+		backImg = loadImage("../assets/backImg2-sm.jpg");
+		
 		addMouseListener(this);
 		addMouseMotionListener(this); 
 	}
@@ -42,7 +48,6 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 	
 	public boolean isVirado() {
 		return virado;
@@ -60,18 +65,25 @@ public abstract class Carta extends JPanel implements MouseListener, MouseMotion
 		this.local = local;
 	}
 
+	protected synchronized ImageIcon loadImage(String path) {
+		Image image = null;
+		try {
+			reader = getClass().getResourceAsStream(path);
+			BufferedInputStream bis = new BufferedInputStream(reader);
+			byte[] bytes = new byte[bis.available()];
+			int byteRead = bis.read(bytes,0,bis.available());
+			image = Toolkit.getDefaultToolkit().createImage(bytes,0,byteRead);
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new ImageIcon(image);
+	}
+	
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		Image imagem = null;
-		int width = 100, height = 141;
-		
-		imagem = new ImageIcon(virado?backImg:frontImg).getImage();
-		
-		g2d.drawImage(imagem, 0, 0, width, height, this);
-		
-		g2d.dispose();
+		setIcon(virado?backImg:frontImg);
 	}
 	
 }
