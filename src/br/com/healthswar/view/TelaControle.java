@@ -97,7 +97,7 @@ public class TelaControle extends JFrame {
 						if(txtPorta.isFilled()) {
 							int val = txtPorta.getValue();
 							if(val >= 2000) {
-								server = Server.ligar(val);
+								server = Server.on(val);
 								log.setText(log.getText() + "\nServidor aguardando na porta " + val);
 								aguardarPlayers().start();
 								btnStart.setText("Stop");
@@ -111,7 +111,7 @@ public class TelaControle extends JFrame {
 						}
 						
 					} else {
-						Server.desligar();
+						Server.off();
 						server = null;
 						btnStart.setText("Start");
 						log.setText("Inicie o servidor e veja o status aqui no Log!");
@@ -133,7 +133,7 @@ public class TelaControle extends JFrame {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				while(Server.ligado) {
+				while(Server.active) {
 					try {
 						server.awaitConnetion();
 					} catch (ClassNotFoundException | IOException e) {

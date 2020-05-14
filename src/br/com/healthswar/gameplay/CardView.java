@@ -26,11 +26,11 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 
 	private transient InputStream frontImg;
 	
-	private Carta card;
+	private Card card;
 	
 	private Label lblFundo;
 	
-	public CardView(Carta card) {
+	public CardView(Card card) {
 		super();
 		
 		setCard(card);
@@ -40,7 +40,7 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		addMouseListener(this);
 	}
 
-	public void setCard(Carta card) {
+	public void setCard(Card card) {
 		this.card = card;
 		
 		if(lblFundo != null) {
@@ -51,20 +51,20 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		lblFundo.setOpaque(true);
 		this.add(lblFundo);
 		if(card instanceof Fighter) {
-			this.frontImg = Carta.class.getResourceAsStream("../assets/card-md.jpg");
+			this.frontImg = Card.class.getResourceAsStream("../assets/card-md.jpg");
 			lblFundo.setText("Enviar");
 		}
 		if(card instanceof Energy) {
-			this.frontImg = Carta.class.getResourceAsStream("../assets/energy-md.jpg");
+			this.frontImg = Card.class.getResourceAsStream("../assets/energy-md.jpg");
 			lblFundo.setText("Colocar");
 		}
 		if(card instanceof Item) {
-			this.frontImg = Carta.class.getResourceAsStream("../assets/item-md.png");
+			this.frontImg = Card.class.getResourceAsStream("../assets/item-md.png");
 			lblFundo.setText("Usar");
 		}
 	}
 	
-	public Carta getCard() {
+	public Card getCard() {
 		return this.card;
 	}
 	

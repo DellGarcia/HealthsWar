@@ -14,7 +14,7 @@ public class Game {
 
 	private int turno;
 	private Phases phase;
-	private boolean ativo;
+	private boolean active;
 	private boolean summonAvalible;
 	
 	private Player[] players;
@@ -28,7 +28,7 @@ public class Game {
 		this.players = players;
 		this.turno = 1;
 		this.phase = Phases.DRAW_PHASE;
-		this.ativo = true;
+		this.active = true;
 		this.summonAvalible = true;
 		Collections.shuffle(decks);
 	}
@@ -70,9 +70,9 @@ public class Game {
 		
 		public MatchResponse enviarCombatente(Field field, Fighter fighter) {
 			if(phase == Phases.MAIN_PHASE && summonAvalible) {
-				for(int i = 0; i < field.getCombatentes().length; i++) {
-					if(field.getCombatentes()[i] == null) {
-						field.getCombatentes()[i] = fighter;
+				for(int i = 0; i < field.getFighter().length; i++) {
+					if(field.getFighter()[i] == null) {
+						field.getFighter()[i] = fighter;
 						field.getHand().remove(fighter);
 						this.summonAvalible = false;
 						return MatchResponse.FIGHTER_READY;
@@ -93,10 +93,11 @@ public class Game {
 		
 		public MatchResponse colocarEnergia(Field field, Energy energy, Fighter fighter) {
 			if(phase == Phases.MAIN_PHASE) {
-				for(Fighter lutador: field.getCombatentes()) {
+				for(Fighter lutador: field.getFighter()) {
 					if(lutador.id == fighter.id) {
 						field.getHand().remove(energy);
 						lutador.getEnergies().add(energy);
+						fighter = lutador;
 						return MatchResponse.ENERGY_READY;
 					}
 				}
@@ -129,11 +130,11 @@ public class Game {
 		}
 
 		public boolean isAtivo() {
-			return ativo;
+			return active;
 		}
 
 		public void setAtivo(boolean ativo) {
-			this.ativo = ativo;
+			this.active = ativo;
 		}
 
 		public Player[] getPlayers() {

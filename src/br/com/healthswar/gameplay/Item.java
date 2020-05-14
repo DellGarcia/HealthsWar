@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import br.com.healthswar.player.view.MainView;
 
-public class Item extends Carta  {
+public class Item extends Card  {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class Item extends Carta  {
 				break;
 	
 			case HAND:
-				if(!virado) 
+				if(!turned) 
 					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
@@ -67,7 +67,7 @@ public class Item extends Carta  {
 				break;
 	
 			case HAND:
-				if(!virado)
+				if(!turned)
 					setLocation(getX(), getY() - 20);
 				break;
 				
@@ -96,7 +96,7 @@ public class Item extends Carta  {
 				break;
 	
 			case HAND:
-				if(!virado)
+				if(!turned)
 					setLocation(getX(), getY() + 20);
 				break;
 				

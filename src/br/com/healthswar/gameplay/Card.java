@@ -12,7 +12,7 @@ import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public abstract class Carta extends JLabel implements MouseListener, MouseMotionListener {
+public abstract class Card extends JLabel implements MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -21,7 +21,7 @@ public abstract class Carta extends JLabel implements MouseListener, MouseMotion
 	public int id;
 	protected String description;
 	
-	protected boolean virado;
+	protected boolean turned;
 	protected CardLocal local;
 	
 	protected ImageIcon frontImg;
@@ -29,9 +29,9 @@ public abstract class Carta extends JLabel implements MouseListener, MouseMotion
 	
 	private transient InputStream reader;
 
-	public Carta(int id) {
+	public Card(int id) {
 		this.id = id;
-		this.virado = true;
+		this.turned = true;
 		this.local = CardLocal.DECK;
 		
 		frontImg = loadImage("../assets/card-sm.jpg");
@@ -49,12 +49,12 @@ public abstract class Carta extends JLabel implements MouseListener, MouseMotion
 		this.description = description;
 	}
 	
-	public boolean isVirado() {
-		return virado;
+	public boolean isTurned() {
+		return turned;
 	}
 
-	public void setVirado(boolean virado) {
-		this.virado = virado;
+	public void setTurned(boolean virado) {
+		this.turned = virado;
 	}
 
 	public CardLocal getLocal() {
@@ -83,7 +83,7 @@ public abstract class Carta extends JLabel implements MouseListener, MouseMotion
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		setIcon(virado?backImg:frontImg);
+		setIcon(turned?backImg:frontImg);
 	}
 	
 }

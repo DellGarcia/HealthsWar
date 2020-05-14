@@ -13,7 +13,7 @@ public class Server extends ServerSocket {
 	
 	private static Server server;
 	
-	public static boolean ligado;
+	public static boolean active;
 	
 	private Partida solo;
 	private Partida duo;
@@ -27,17 +27,17 @@ public class Server extends ServerSocket {
 		ConnectionFactory.openConnection();
 	}
 
-	public static Server ligar(int port) throws IOException {
+	public static Server on(int port) throws IOException {
 		if(server == null) {
 			server = new Server(port);
-			ligado = true;
+			active = true;
 		}
 		return server;
 	}
 	
-	public static void desligar() throws IOException {
+	public static void off() throws IOException {
 		server.close();
-		ligado = false;
+		active = false;
 		server = null;
 	}
 	

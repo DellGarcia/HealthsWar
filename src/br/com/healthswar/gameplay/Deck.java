@@ -12,7 +12,7 @@ public class Deck implements Serializable{
 	 */
 	private static final long serialVersionUID = -2304845787652432479L;
 	
-	private ArrayList<Carta> cartas = new ArrayList<Carta>();
+	private ArrayList<Card> cards = new ArrayList<Card>();
 	private DeckTheme deckTheme;
 	
 	public Deck(DeckTheme deckTheme) {
@@ -22,9 +22,9 @@ public class Deck implements Serializable{
 			case IMMUNE_SYSTEM:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cartas.add(new Fighter(id++));
-						cartas.add(new Energy(id++));
-						cartas.add(new Item(id++));
+						cards.add(new Fighter(id++));
+						cards.add(new Energy(id++));
+						cards.add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
@@ -34,29 +34,29 @@ public class Deck implements Serializable{
 			case FOREIGN_BODIES:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cartas.add(new Fighter(id++));
-						cartas.add(new Energy(id++));
-						cartas.add(new Item(id++));
+						cards.add(new Fighter(id++));
+						cards.add(new Energy(id++));
+						cards.add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
 				}
 				break;
 		}
-		Collections.shuffle(cartas);
+		Collections.shuffle(cards);
 	}
 
-	public ArrayList<Carta> getCartas() {
-		return cartas;
+	public ArrayList<Card> getCartas() {
+		return cards;
 	}
 
-	public void setCartas(ArrayList<Carta> cartas) {
-		this.cartas = cartas;
+	public void setCartas(ArrayList<Card> cards) {
+		this.cards = cards;
 	}
 
 	@Override
 	public String toString() {
-		return "Deck [cartas=" + cartas + ", deckTheme=" + deckTheme + "]";
+		return "Deck [cartas=" + cards + ", deckTheme=" + deckTheme + "]";
 	}
 	
 }

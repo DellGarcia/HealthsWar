@@ -20,14 +20,14 @@ public class Partida extends Thread {
 
 	private Player[] players;
 	private int playersConneted;
-	private boolean completo;
+	private boolean complete;
 
 	private Game game;
 
 	public Partida(Request MATCH_TYPE) {
 		this.MATCH_TYPE = MATCH_TYPE;
 		this.playersConneted = 0;
-		this.completo = false;
+		this.complete = false;
 
 		switch (this.MATCH_TYPE) {
 			case PLAY_A_SOLO_MATCH:
@@ -51,17 +51,17 @@ public class Partida extends Thread {
 	 * Adiona players enquanto tiver espaco na partida
 	 */
 	public void addPlayer(Player player) {
-		if (!completo) {
+		if (!complete) {
 			this.players[playersConneted] = player;
 			this.playersConneted++;
 			if (playersConneted == players.length) {
-				completo = true;
+				complete = true;
 			}
 		}
 	}
 
 	public boolean getCompleto() {
-		return this.completo;
+		return this.complete;
 	}
 	
 	@Override
@@ -134,6 +134,8 @@ public class Partida extends Thread {
 						player.out.writeObject(response);
 						p2.out.writeObject(response);
 						if(response == MatchResponse.ENERGY_READY) {
+							fighter.getEnergies().add(energy);
+							
 							player.out.writeObject(fighter);
 							player.out.writeObject(energy);
 							
@@ -174,7 +176,7 @@ public class Partida extends Thread {
 	@Override
 	public String toString() {
 		return "Partida [MATCH_TYPE=" + MATCH_TYPE + ", players=" + Arrays.toString(players) + ", playersConneted="
-				+ playersConneted + ", completo=" + completo + ", game=" + game + "]";
+				+ playersConneted + ", completo=" + complete + ", game=" + game + "]";
 	}
 
 }

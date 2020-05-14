@@ -11,15 +11,15 @@ public class Field implements Serializable{
 
 	private int healthsPoint;
 	private Fighter[] fighters;
-	private ArrayList<Fighter> memoria;
-	private ArrayList<Carta> descarte;
+	private ArrayList<Fighter> memory;
+	private ArrayList<Card> discard;
 	private Deck deck;
 	private Hand hand;
 	
 	public Field(Deck deck) {
 		this.fighters = new Fighter[5];
-		this.memoria = new ArrayList<Fighter>();
-		this.descarte = new ArrayList<Carta>();
+		this.memory = new ArrayList<Fighter>();
+		this.discard = new ArrayList<Card>();
 		this.healthsPoint = 8000;
 		this.deck = deck;
 		this.hand = new Hand(deck.getCartas());
@@ -37,28 +37,28 @@ public class Field implements Serializable{
 		this.healthsPoint = healthsPoint;
 	}
 
-	public Fighter[] getCombatentes() {
+	public Fighter[] getFighter() {
 		return fighters;
 	}
 
-	public void setCombatentes(Fighter[] combatentes) {
-		this.fighters = combatentes;
+	public void setFighter(Fighter[] fighter) {
+		this.fighters = fighter;
 	}
 
-	public ArrayList<Fighter> getMemoria() {
-		return memoria;
+	public ArrayList<Fighter> getMemory() {
+		return memory;
 	}
 
-	public void setMemoria(ArrayList<Fighter> memoria) {
-		this.memoria = memoria;
+	public void setMemory(ArrayList<Fighter> memory) {
+		this.memory = memory;
 	}
 
-	public ArrayList<Carta> getDescarte() {
-		return descarte;
+	public ArrayList<Card> getDescarte() {
+		return discard;
 	}
 
-	public void setDescarte(ArrayList<Carta> descarte) {
-		this.descarte = descarte;
+	public void setDiscard(ArrayList<Card> discard) {
+		this.discard = discard;
 	}
 	
 	public Deck getDeck() {

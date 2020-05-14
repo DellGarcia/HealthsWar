@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import br.com.healthswar.player.view.MainView;
 
-public class Fighter extends Carta implements Serializable {	
+public class Fighter extends Card implements Serializable {	
 	/**
 	 * 
 	 */
@@ -53,7 +53,7 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				if(!virado) 
+				if(!turned) 
 					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
@@ -88,7 +88,7 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				if(!virado)
+				if(!turned)
 					setLocation(getX(), getY() - 20);
 				break;
 				
@@ -122,7 +122,7 @@ public class Fighter extends Carta implements Serializable {
 				break;
 	
 			case HAND:
-				if(!virado)
+				if(!turned)
 					setLocation(getX(), getY() + 20); 
 				break;
 				

@@ -10,32 +10,32 @@ public class Hand implements Serializable {
 	 */
 	private static final long serialVersionUID = 5695250996709090460L;
 	
-	private ArrayList<Carta> cartas = new ArrayList<Carta>();
+	private ArrayList<Card> cards = new ArrayList<Card>();
 	
-	public Hand(ArrayList<Carta> deck) {
+	public Hand(ArrayList<Card> deck) {
 		for(int i = 0; i < 5; i++) {
-			Carta card = deck.get(i);
-			card.virado = false;
+			Card card = deck.get(i);
+			card.turned = false;
 			card.local = CardLocal.HAND;
-			cartas.add(card);
+			cards.add(card);
 		}
-		deck.removeAll(cartas);
+		deck.removeAll(cards);
 	}
 	
-	public ArrayList<Carta> getCartas() {
-		return cartas;
+	public ArrayList<Card> getCartas() {
+		return cards;
 	}
 	
-	public void setCartas(ArrayList<Carta> cartas) {
-		this.cartas = cartas;
+	public void setCartas(ArrayList<Card> cards) {
+		this.cards = cards;
 	}
 	
-	public Carta remove(Carta card) {
-		for(int i = 0; i < cartas.size(); i++) {
-			if(cartas.get(i).id == card.id) {
-				Carta c = cartas.get(i);
-				cartas.remove(i);
-				return c;
+	public Card remove(Card card) {
+		for(int i = 0; i < cards.size(); i++) {
+			if(cards.get(i).id == card.id) {
+				Card cardCopy = cards.get(i);
+				cards.remove(i);
+				return cardCopy;
 			}	
 		}
 		return null;
@@ -43,7 +43,7 @@ public class Hand implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Hand [cartas " + cartas + "]";
+		return "Hand [cartas " + cards + "]";
 	}
 	
 }

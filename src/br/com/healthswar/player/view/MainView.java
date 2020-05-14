@@ -19,7 +19,7 @@ import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.CardView;
-import br.com.healthswar.gameplay.Carta;
+import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.Energy;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
@@ -107,8 +107,8 @@ public class MainView extends JFrame {
 		colocarDeck();
 		colocarMao();
 		colocarFighters();
-		colocarMemoria(player.getField().getMemoria(), container.getHeight() - 400);
-		colocarMemoria(opponent.getField().getMemoria(), 280);
+		colocarMemoria(player.getField().getMemory(), container.getHeight() - 400);
+		colocarMemoria(opponent.getField().getMemory(), 280);
 		colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
 		colocarDescarte(player.getField().getDescarte(), 280);
 		colocarBattle();
@@ -133,8 +133,8 @@ public class MainView extends JFrame {
 	}
 	
 	private void colocarDeck() {
-		ArrayList<Carta> myDeck = player.getField().getDeck().getCartas();
-		ArrayList<Carta> opDeck = opponent.getField().getDeck().getCartas();
+		ArrayList<Card> myDeck = player.getField().getDeck().getCartas();
+		ArrayList<Card> opDeck = opponent.getField().getDeck().getCartas();
 		
 		int x = 1920 - 200, y = container.getHeight() - 200;
 		for(int i = 0; i < myDeck.size(); i++) {
@@ -160,11 +160,11 @@ public class MainView extends JFrame {
 	}
 	
 	private void colocarMao() {
-		ArrayList<Carta> myHand = player.getField().getHand().getCartas();
-		ArrayList<Carta> opHand = opponent.getField().getHand().getCartas();
+		ArrayList<Card> myHand = player.getField().getHand().getCartas();
+		ArrayList<Card> opHand = opponent.getField().getHand().getCartas();
 		
 		int x = container.getWidth() /2 - (myHand.size()*110 - 10)/2;
-		for(Carta card: myHand) {
+		for(Card card: myHand) {
 			card.setSize(100, 141);
 			card.setLocation(x, container.getHeight() - 200);
 			card.setVisible(true);
@@ -173,10 +173,10 @@ public class MainView extends JFrame {
 		}
 		
 		x = container.getWidth() /2 - (opHand.size()*110 - 10)/2;
-		for(Carta card: opHand) {
+		for(Card card: opHand) {
 			card.setSize(100, 141);
 			card.setLocation(x, 80);
-			card.setVirado(true);
+			card.setTurned(true);
 			card.setVisible(true);
 			container.add(card);
 			x+=110;
@@ -226,6 +226,8 @@ public class MainView extends JFrame {
 		for(int i = 0; i < myFighters.length; i++) {
 			myFighters[i].setLocation(x, container.getHeight() - 400);
 			myFighters[i].energyCounter.setLocation(x, container.getHeight() - 250);
+			if(myFighters[i].getFighter() != null) 
+				myFighters[i].energyCounter.setText(Integer.toString(myFighters[i].getFighter().getEnergies().size()));
 			container.add(myFighters[i]);
 			container.add(myFighters[i].energyCounter);
 			x += 120;
@@ -235,6 +237,8 @@ public class MainView extends JFrame {
 		for(int i = 0; i < opFighters.length; i++) {
 			opFighters[i].setLocation(x, 280);
 			opFighters[i].energyCounter.setLocation(x, 220);
+			if(opFighters[i].getFighter() != null)
+				opFighters[i].energyCounter.setText(Integer.toString(opFighters[i].getFighter().getEnergies().size()));
 			container.add(opFighters[i]);
 			container.add(opFighters[i].energyCounter);
 			x += 120;
@@ -254,7 +258,7 @@ public class MainView extends JFrame {
 		}
 	}
 	
-	private void colocarDescarte(ArrayList<Carta> descarte, int height) {
+	private void colocarDescarte(ArrayList<Card> descarte, int height) {
 		int x = container.getWidth()/2 + (6*120)/2, y = height;
 		for(int i = 0; i < descarte.size(); i++) {
 			descarte.get(i).setSize(100, 141);
@@ -342,8 +346,8 @@ public class MainView extends JFrame {
 		
 		switch (res) {
 			case AVALIBLE_CARD:
-				Carta card = opponent.getField().getDeck().getCartas().get(0);
-				card.setVirado(false);
+				Card card = opponent.getField().getDeck().getCartas().get(0);
+				card.setTurned(false);
 				card.setLocal(CardLocal.HAND);
 				opponent.getField().getHand().getCartas().add(card);
 				opponent.getField().getDeck().getCartas().remove(0);
@@ -356,8 +360,8 @@ public class MainView extends JFrame {
 				for(int i = 0; i < opFighters.length; i++) {
 					if(opFighters[i].getFighter() == null) {
 						opFighters[i].setFighter(fighter);
-						opponent.getField().getCombatentes()[i] = fighter;
-						Carta c = opponent.getField().getHand().remove(fighter);
+						opponent.getField().getFighter()[i] = fighter;
+						Card c = opponent.getField().getHand().remove(fighter);
 						container.remove(c);
 						colocarMao();
 						break;
@@ -377,10 +381,17 @@ public class MainView extends JFrame {
 				fighter = (Fighter) player.in.readObject();
 				energy = (Energy) player.in.readObject();
 				
-				for(Fighter lutador: opponent.getField().getCombatentes()) {
+				for(Fighter lutador: opponent.getField().getFighter()) {
 					if(lutador.id == fighter.id) {
 						container.remove(opponent.getField().getHand().remove(energy));
 						lutador = fighter;
+						break;
+					}
+				}
+				
+				for(FighterField fi: myFighters) {
+					if(fi.getFighter() == fighter) {
+						fi.setFighter(fighter);
 						break;
 					}
 				}
@@ -410,8 +421,8 @@ public class MainView extends JFrame {
 			player.out.writeObject(MatchRequest.DRAW_A_CARD);
 			MatchResponse res = (MatchResponse) player.in.readObject();
 			if(res == MatchResponse.AVALIBLE_CARD) {
-				Carta card = player.getField().getDeck().getCartas().get(0);
-				card.setVirado(false);
+				Card card = player.getField().getDeck().getCartas().get(0);
+				card.setTurned(false);
 				card.setLocal(CardLocal.HAND);
 				player.getField().getHand().getCartas().add(card);
 				player.getField().getDeck().getCartas().remove(0);
@@ -438,8 +449,8 @@ public class MainView extends JFrame {
 					for(int i = 0; i < myFighters.length; i++) {
 						if(myFighters[i].getFighter() == null) {
 							myFighters[i].setFighter(fighter);
-							player.getField().getCombatentes()[i] = fighter;
-							Carta c = player.getField().getHand().remove(fighter);
+							player.getField().getFighter()[i] = fighter;
+							Card c = player.getField().getHand().remove(fighter);
 							container.remove(c);
 							colocarMao();
 							break;
@@ -459,10 +470,18 @@ public class MainView extends JFrame {
 					fighter = (Fighter) player.in.readObject();
 					energy = (Energy) player.in.readObject();
 					
-					for(Fighter lutador: player.getField().getCombatentes()) {
+					for(Fighter lutador: player.getField().getFighter()) {
 						if(lutador.id == fighter.id) {
 							container.remove(player.getField().getHand().remove(energy));
 							lutador = fighter;
+							break;
+						}
+					}
+					
+					System.out.println(fighter.getEnergies().size());
+					for(FighterField fi: myFighters) {
+						if(fi.getFighter() == fighter) {
+							fi.setFighter(fighter);
 							break;
 						}
 					}
@@ -570,7 +589,7 @@ public class MainView extends JFrame {
 	}
 	
 	// display methods
-	public void mostarCardView(Carta card) {
+	public void mostarCardView(Card card) {
 		cardView.setCard(null);
 		cardView.setCard(card);
 		cardView.setVisible(true);
