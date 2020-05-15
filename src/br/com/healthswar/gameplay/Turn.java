@@ -1,5 +1,8 @@
 package br.com.healthswar.gameplay;
 
+import java.util.Arrays;
+
+import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 
 public class Turn {
@@ -26,19 +29,67 @@ public class Turn {
 	}
 	
 	public void phaseResolve() {
+		active.write(MatchResponse.YOUR_TURN);
 		active.write(phase);
+		opponent.write(MatchResponse.OPPONENT_TURN);
 		opponent.write(phase);
-		System.out.println("escrevi");
+	}
+	
+	public MatchResponse summon(Fighter fighter) {
+		if(phase != Phases.MAIN_PHASE || !summonAvalible)
+			return MatchResponse.NO_FIGHTER;
+		
+		Field field = active.getField();
+		Fighter[] fighters = field.getFighters();
+		
+		for(int i = 0; i < fighters.length; i++) {
+			if(fighters[i] == null) {
+				field.getHand().remove(fighter);
+				fighter.setLocal(CardLocal.FIELD);
+				fighters[i] = fighter;
+				this.summonAvalible = false;
+				return MatchResponse.FIGHTER_READY;
+			}
+		}
+		return MatchResponse.NO_FIGHTER;
+	}
+	
+	public MatchResponse useItem(Item item) {
+		if(phase != Phases.MAIN_PHASE)
+			return MatchResponse.IMPOSSIBLE_TO_USE;
+		
+		active.getField().getHand().remove(item);
+		active.getField().getDescarte().add(item);
+		
+		item.local = CardLocal.DESCARTE;
+		
+		return MatchResponse.ITEM_USED;
+	}
+	
+	public MatchResponse putEnergy(Fighter fighter, Energy energy) {
+		if(phase != Phases.MAIN_PHASE)
+			return MatchResponse.IMPOSSIBLE_TO_USE;
+		
+		Field field = active.getField();
+		Fighter fighters[] = field.getFighters();
+		
+		System.out.println(Arrays.toString(fighters));
+		
+		for(Fighter lutador: fighters) {
+			if(lutador.id == fighter.id) {
+				field.getHand().remove(energy);
+				lutador.getEnergies().add(energy);
+				fighter = lutador;
+				return MatchResponse.ENERGY_READY;
+			}
+		}
+		return MatchResponse.IMPOSSIBLE_TO_USE;
 	}
 	
 	public void endTurn() {
 		init(players);
 	}
 	
-	public void write(Object object) {
-		active.write(object);
-	}
-
 	/** Getter e Setters */
 		public static int getTurn() {
 			return turn;

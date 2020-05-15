@@ -38,17 +38,19 @@ public class Game {
 	}
 	
 	public void init() {
-		state.write(Response.MATCH_READY);
-		state.write(state.getActive().getField());
-		state.write(state.getOpponent().getField());
-		state.write(MatchResponse.YOUR_TURN);
+		state.getActive().write(Response.MATCH_READY);
+		state.getActive().write(state.getActive().getField());
+		state.getActive().write(state.getOpponent().getField());
 		
 		state.getOpponent().write(Response.MATCH_READY);
 		state.getOpponent().write(state.getOpponent().getField());
 		state.getOpponent().write(state.getActive().getField());
-		state.getOpponent().write(MatchResponse.OPPONENT_TURN);
 	}
-	 
+	
+	public void resolve() {
+		state.phaseResolve();
+	}
+	
 	/** Player actions */
 		public void drawCard() {
 			Field field = state.getActive().getField();
@@ -64,45 +66,88 @@ public class Game {
 			state.getOpponent().write(res);
 		}
 		
-		public MatchResponse sendFighter(Field field, Fighter fighter) {
-			if(state.getPhase() == Phases.MAIN_PHASE && state.isSummonAvalible()) {
-				for(int i = 0; i < field.getFighter().length; i++) {
-					if(field.getFighter()[i] == null) {
-						field.getFighter()[i] = fighter;
-						field.getHand().remove(fighter);
-//						this.summonAvalible = false;
-						return MatchResponse.FIGHTER_READY;
-					}
-				}
+		public void sendFighter() {
+			Player player = state.getActive();
+			Player oppnent = state.getOpponent();
+			Fighter fighter = (Fighter) player.read();
+			
+			MatchResponse response = state.summon(fighter);
+			
+			switch (response) {
+				case FIGHTER_READY:
+					player.write(response);
+					player.write(fighter);
+					oppnent.write(response);
+					oppnent.write(fighter);
+					break;
+				case NO_FIGHTER:
+					player.write(response);
+					oppnent.write(response);
+					break;
+				default:
+					break;
 			}
-			return MatchResponse.NO_FIGHTER;
 		}
 		
-		public MatchResponse useItem(Field field, Item item) {
-			if(state.getPhase() == Phases.MAIN_PHASE) {
-				field.getHand().remove(item);
-				field.getDescarte().add(item);
-				return MatchResponse.ITEM_USED;
+		public void useItem() {
+			Player player = state.getActive();
+			Player oppnent = state.getOpponent();
+			Item item = (Item) player.read();
+			
+			MatchResponse res = state.useItem(item);
+			
+			switch (res) {
+				case ITEM_USED:
+					player.write(res);
+					player.write(item);
+					oppnent.write(res);
+					oppnent.write(item);
+					break;
+	
+				case IMPOSSIBLE_TO_USE:
+					player.write(res);
+					oppnent.write(res);
+					break;
+					
+				default:
+					break;
 			}
-			return MatchResponse.IMPOSSIBLE_TO_USE;
+			
 		}
 		
-		public MatchResponse putEnergy(Field field, Energy energy, Fighter fighter) {
-			if(state.getPhase() == Phases.MAIN_PHASE) {
-				for(Fighter lutador: field.getFighter()) {
-					if(lutador.id == fighter.id) {
-						field.getHand().remove(energy);
-						lutador.getEnergies().add(energy);
-						fighter = lutador;
-						return MatchResponse.ENERGY_READY;
-					}
-				}
+		public void putEnergy() {
+			Player player = state.getActive();
+			Player opponent = state.getOpponent();
+			Fighter fighter = (Fighter) player.read();
+			Energy energy = (Energy) player.read();
+			
+			MatchResponse response = state.putEnergy(fighter, energy);
+			
+			switch (response) {
+				case ENERGY_READY:
+					player.write(response);
+					player.write(fighter);
+					player.write(energy);
+					
+					opponent.write(response);
+					opponent.write(fighter);
+					opponent.write(energy);
+					break;
+	
+				case IMPOSSIBLE_TO_USE:
+					player.write(response);
+					opponent.write(response);
+					break;
+					
+				default:
+					break;
 			}
-			return MatchResponse.IMPOSSIBLE_TO_USE;
 		}
 		
 		public void startBattle() {
 			state.setPhase(Phases.BATTLE_PHASE);
+			state.getActive().write(MatchResponse.BATTLE_STARTED);
+			state.getOpponent().write(MatchResponse.BATTLE_STARTED);
 		}
 		
 		public void atack(Fighter escolhido, Fighter alvo) {
@@ -112,8 +157,12 @@ public class Game {
 		}
 		
 		public void endTurn() {
-			state.write(MatchResponse.YOUR_TURN);
-			state.getOpponent().write(MatchResponse.OPPONENT_TURN);
+			if(state.getPhase() == Phases.MAIN_PHASE)
+				state.getActive().write(MatchResponse.OPPONENT_TURN);
+
+			state.getOpponent().write(MatchResponse.YOUR_TURN);
+			state.setPhase(Phases.DRAW_PHASE);
+			state.endTurn();
 		}
 		
 	/** Getter e Setters */

@@ -348,7 +348,7 @@ public class MainView extends JFrame {
 				for(int i = 0; i < opFighters.length; i++) {
 					if(opFighters[i].getFighter() == null) {
 						opFighters[i].setFighter(fighter);
-						opponent.getField().getFighter()[i] = fighter;
+						opponent.getField().getFighters()[i] = fighter;
 						Card c = opponent.getField().getHand().remove(fighter);
 						container.remove(c);
 						colocarMao();
@@ -369,7 +369,7 @@ public class MainView extends JFrame {
 				fighter = (Fighter) player.read();
 				energy = (Energy) player.read();
 				
-				for(Fighter lutador: opponent.getField().getFighter()) {
+				for(Fighter lutador: opponent.getField().getFighters()) {
 					if(lutador.id == fighter.id) {
 						container.remove(opponent.getField().getHand().remove(energy));
 						lutador = fighter;
@@ -432,7 +432,7 @@ public class MainView extends JFrame {
 				for(int i = 0; i < myFighters.length; i++) {
 					if(myFighters[i].getFighter() == null) {
 						myFighters[i].setFighter(fighter);
-						player.getField().getFighter()[i] = fighter;
+						player.getField().getFighters()[i] = fighter;
 						Card c = player.getField().getHand().remove(fighter);
 						container.remove(c);
 						colocarMao();
@@ -453,7 +453,7 @@ public class MainView extends JFrame {
 				fighter = (Fighter) player.read();
 				energy = (Energy) player.read();
 				
-				for(Fighter lutador: player.getField().getFighter()) {
+				for(Fighter lutador: player.getField().getFighters()) {
 					if(lutador.id == fighter.id) {
 						container.remove(player.getField().getHand().remove(energy));
 						lutador = fighter;
@@ -461,7 +461,6 @@ public class MainView extends JFrame {
 					}
 				}
 				
-				System.out.println(fighter.getEnergies().size());
 				for(FighterField fi: myFighters) {
 					if(fi.getFighter() == fighter) {
 						fi.setFighter(fighter);
@@ -531,36 +530,36 @@ public class MainView extends JFrame {
 	}
 	
 	/** Singleton methods */
-	public static MainView getInstance(Player player) {
-		if(INSTANCE == null) {
-			INSTANCE = new MainView(player);
+		public static MainView getInstance(Player player) {
+			if(INSTANCE == null) {
+				INSTANCE = new MainView(player);
+			}
+			return INSTANCE;
 		}
-		return INSTANCE;
-	}
-	
-	public static void destroy() {
-		INSTANCE.dispose();
-		INSTANCE = null;
-	}
+		
+		public static void destroy() {
+			INSTANCE.dispose();
+			INSTANCE = null;
+		}
 	
 	/** Display methods */
-	public void mostarCardView(Card card) {
-		cardView.setCard(null);
-		cardView.setCard(card);
-		cardView.setVisible(true);
-		cardView.repaint();
-	}
-	
-	public CardView getCardView() {
-		return this.cardView;
-	}
-	
-	public void showSelector() {
-		if(myTurn)
-			fighterSelector.setSelector(myFighters);
-	}
-	
-	public void hideSelector() {
-		this.fighterSelector.setVisible(false);
-	}
+		public void mostarCardView(Card card) {
+			cardView.setCard(null);
+			cardView.setCard(card);
+			cardView.setVisible(true);
+			cardView.repaint();
+		}
+		
+		public CardView getCardView() {
+			return this.cardView;
+		}
+		
+		public void showSelector() {
+			if(myTurn)
+				fighterSelector.setSelector(myFighters);
+		}
+		
+		public void hideSelector() {
+			this.fighterSelector.setVisible(false);
+		}
 }

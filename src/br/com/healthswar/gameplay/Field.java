@@ -37,7 +37,7 @@ public class Field implements Serializable{
 		this.healthsPoint = healthsPoint;
 	}
 
-	public Fighter[] getFighter() {
+	public Fighter[] getFighters() {
 		return fighters;
 	}
 
