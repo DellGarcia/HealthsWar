@@ -5,14 +5,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck implements Serializable{
-	
-	/**
-	 * 
-	 */
+public class Deck extends ArrayList<Card> implements Serializable {
+
 	private static final long serialVersionUID = -2304845787652432479L;
 	
-	private ArrayList<Card> cards = new ArrayList<Card>();
+	@SuppressWarnings("unused")
 	private DeckTheme deckTheme;
 	
 	public Deck(DeckTheme deckTheme) {
@@ -22,9 +19,9 @@ public class Deck implements Serializable{
 			case IMMUNE_SYSTEM:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cards.add(new Fighter(id++));
-						cards.add(new Energy(id++));
-						cards.add(new Item(id++));
+						add(new Fighter(id++));
+						add(new Energy(id++));
+						add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
@@ -34,29 +31,22 @@ public class Deck implements Serializable{
 			case FOREIGN_BODIES:
 				for(int i = 0; i < 20; i++) {
 					try {
-						cards.add(new Fighter(id++));
-						cards.add(new Energy(id++));
-						cards.add(new Item(id++));
+						add(new Fighter(id++));
+						add(new Energy(id++));
+						add(new Item(id++));
 					} catch (URISyntaxException e) {
 						e.printStackTrace();
 					}
 				}
 				break;
 		}
-		Collections.shuffle(cards);
+		Collections.shuffle(this);
 	}
-
-	public ArrayList<Card> getCartas() {
-		return cards;
-	}
-
-	public void setCartas(ArrayList<Card> cards) {
-		this.cards = cards;
-	}
-
-	@Override
-	public String toString() {
-		return "Deck [cartas=" + cards + ", deckTheme=" + deckTheme + "]";
+	
+	public Card removeFirst() {
+		Card first = get(0);
+		remove(0);
+		return first;
 	}
 	
 }

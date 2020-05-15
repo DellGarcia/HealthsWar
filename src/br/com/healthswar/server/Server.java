@@ -50,8 +50,8 @@ public class Server extends ServerSocket {
 		
 		Player player = new Player(accept());
 		
-		Request request = (Request) player.in.readObject();
-		player.out.writeObject(Response.MATCH_FOUND);
+		Request request = (Request) player.read();
+		player.write(Response.MATCH_FOUND);
 		
 		switch(request) {
 			case PLAY_A_SOLO_MATCH:

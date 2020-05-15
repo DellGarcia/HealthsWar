@@ -22,7 +22,7 @@ public class Field implements Serializable{
 		this.discard = new ArrayList<Card>();
 		this.healthsPoint = 8000;
 		this.deck = deck;
-		this.hand = new Hand(deck.getCartas());
+		this.hand = new Hand(deck);
 		
 		for(int i = 0; i < fighters.length; i++) {
 			fighters[i] = null;

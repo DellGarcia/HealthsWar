@@ -1,6 +1,5 @@
 package br.com.healthswar.gameplay;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,28 +11,22 @@ import br.com.healthswar.comunication.Response;
 
 public class Game {
 
-	private int turno;
-	private Phases phase;
 	private boolean active;
-	private boolean summonAvalible;
-	
-	private Player[] players;
-	
+	private Turn state;
+
 	private Deck array[] = {
 			new Deck(DeckTheme.IMMUNE_SYSTEM), new Deck(DeckTheme.FOREIGN_BODIES)
 	};
 	private List<Deck> decks = new ArrayList<Deck>(Arrays.asList(array));
 	
 	public Game(Player[] players) {
-		this.players = players;
-		this.turno = 1;
-		this.phase = Phases.DRAW_PHASE;
-		this.active = true;
-		this.summonAvalible = true;
+		sortDeck(players);
+		active = true;
+		state = new Turn(players);
 		Collections.shuffle(decks);
 	}
 	
-	public Player[] sortDeck() {
+	public void sortDeck(Player[] players) {
 		int i = 0;
 		for(Player player: players) {
 			player.setField(new Field(decks.get(i)));
@@ -42,39 +35,42 @@ public class Game {
 				i = 0;
 		}
 		Collections.shuffle(Arrays.asList(players));
-		return players;
 	}
 	
-	public void init(Player[] players) throws IOException {
-		players[0].out.writeObject(Response.MATCH_READY);
-		players[0].out.writeObject(players[0].getField());
-		players[0].out.writeObject(players[1].getField());
+	public void init() {
+		state.write(Response.MATCH_READY);
+		state.write(state.getActive().getField());
+		state.write(state.getOpponent().getField());
+		state.write(MatchResponse.YOUR_TURN);
 		
-		players[1].out.writeObject(Response.MATCH_READY);
-		players[1].out.writeObject(players[1].getField());
-		players[1].out.writeObject(players[0].getField());
+		state.getOpponent().write(Response.MATCH_READY);
+		state.getOpponent().write(state.getOpponent().getField());
+		state.getOpponent().write(state.getActive().getField());
+		state.getOpponent().write(MatchResponse.OPPONENT_TURN);
 	}
 	 
-	// Açoes do player
-		public MatchResponse comprarCarta(Field field) throws IOException {
-			if(field.getDeck().getCartas().size() > 0 && field.getHand().getCartas().size() < 7) {
-				field.getHand().getCartas().add(field.getDeck().getCartas().get(0));
-				field.getDeck().getCartas().remove(0);
-				this.phase = Phases.MAIN_PHASE;
-				return MatchResponse.AVALIBLE_CARD;
+	/** Player actions */
+		public void drawCard() {
+			Field field = state.getActive().getField();
+			MatchResponse res = null;
+			if(!field.getDeck().isEmpty() && field.getHand().size() < 7) {
+				field.getHand().add(field.getDeck().removeFirst());
+				res = MatchResponse.AVALIBLE_CARD;
 			} else {
-				this.phase = Phases.MAIN_PHASE;
-				return MatchResponse.NO_CARDS;
+				res = MatchResponse.NO_CARDS;
 			}
+			state.setPhase(Phases.MAIN_PHASE);
+			state.getActive().write(res);
+			state.getOpponent().write(res);
 		}
 		
-		public MatchResponse enviarCombatente(Field field, Fighter fighter) {
-			if(phase == Phases.MAIN_PHASE && summonAvalible) {
+		public MatchResponse sendFighter(Field field, Fighter fighter) {
+			if(state.getPhase() == Phases.MAIN_PHASE && state.isSummonAvalible()) {
 				for(int i = 0; i < field.getFighter().length; i++) {
 					if(field.getFighter()[i] == null) {
 						field.getFighter()[i] = fighter;
 						field.getHand().remove(fighter);
-						this.summonAvalible = false;
+//						this.summonAvalible = false;
 						return MatchResponse.FIGHTER_READY;
 					}
 				}
@@ -82,8 +78,8 @@ public class Game {
 			return MatchResponse.NO_FIGHTER;
 		}
 		
-		public MatchResponse usarItem(Field field, Item item) {
-			if(phase == Phases.MAIN_PHASE) {
+		public MatchResponse useItem(Field field, Item item) {
+			if(state.getPhase() == Phases.MAIN_PHASE) {
 				field.getHand().remove(item);
 				field.getDescarte().add(item);
 				return MatchResponse.ITEM_USED;
@@ -91,8 +87,8 @@ public class Game {
 			return MatchResponse.IMPOSSIBLE_TO_USE;
 		}
 		
-		public MatchResponse colocarEnergia(Field field, Energy energy, Fighter fighter) {
-			if(phase == Phases.MAIN_PHASE) {
+		public MatchResponse putEnergy(Field field, Energy energy, Fighter fighter) {
+			if(state.getPhase() == Phases.MAIN_PHASE) {
 				for(Fighter lutador: field.getFighter()) {
 					if(lutador.id == fighter.id) {
 						field.getHand().remove(energy);
@@ -105,30 +101,22 @@ public class Game {
 			return MatchResponse.IMPOSSIBLE_TO_USE;
 		}
 		
-		public void comecarbatalha() {
-			this.phase = Phases.BATTLE_PHASE;
+		public void startBattle() {
+			state.setPhase(Phases.BATTLE_PHASE);
 		}
 		
-		public void atacar(Fighter escolhido, Fighter alvo) {
-			if(phase == Phases.BATTLE_PHASE) {
+		public void atack(Fighter escolhido, Fighter alvo) {
+			if(state.getPhase() == Phases.BATTLE_PHASE) {
 				
 			}
 		}
 		
-		public void encerrarTurno() {
-			this.turno++;
-			this.summonAvalible = true;
+		public void endTurn() {
+			state.write(MatchResponse.YOUR_TURN);
+			state.getOpponent().write(MatchResponse.OPPONENT_TURN);
 		}
 		
-	// Getters e Setters
-		public int getTurno() {
-			return turno;
-		}
-
-		public void setTurno(int turno) {
-			this.turno = turno;
-		}
-
+	/** Getter e Setters */
 		public boolean isAtivo() {
 			return active;
 		}
@@ -137,20 +125,7 @@ public class Game {
 			this.active = ativo;
 		}
 
-		public Player[] getPlayers() {
-			return players;
+		public Turn getState() {
+			return state;
 		}
-
-		public void setPlayers(Player[] players) {
-			this.players = players;
-		}
-
-		public Phases getPhase() {
-			return phase;
-		}
-
-		public void setPhase(Phases phase) {
-			this.phase = phase;
-		}
-		
 }

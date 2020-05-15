@@ -7,16 +7,12 @@ import java.net.Socket;
 
 public class Player {
 	
-	// Configuracao pro server
-	public Socket socket;
-	public ObjectOutputStream out;
-	public ObjectInputStream in;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
 	
-	// Configuracao da partida
 	private Field field;
 	
 	public Player(Socket socket) throws IOException {
-		this.socket = socket;
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in 	= new ObjectInputStream(socket.getInputStream());
 	}
@@ -33,9 +29,23 @@ public class Player {
 		this.field = field;
 	}
 
-	@Override
-	public String toString() {
-		return "Player [socket=" + socket + ", out=" + out + ", in=" + in + "]";
+	public void write(Object object) {
+		try {
+			out.writeObject(object);
+		} catch (IOException e) {
+			System.out.println("Erro ao tentar escrever o objeto [ " + object.getClass() + " ]");
+			e.printStackTrace();
+		}
+	}
+	
+	public Object read() {
+		try {
+			return in.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			System.out.println("Erro ao tentar ler o objeto");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

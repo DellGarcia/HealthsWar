@@ -3,7 +3,6 @@ package br.com.healthswar.player.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -54,15 +53,10 @@ public class AwaitView extends JFrame {
 	private Thread aguardarPartida() {
 		return new Thread(new Runnable() {
 			public void run() {
-				try {
-					Response response = (Response) player.in.readObject();
-					if(response == Response.MATCH_READY) {
-						MainView.getInstance(player);
-						dispose();
-					}
-					
-				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
+				Response response = (Response) player.read();
+				if(response == Response.MATCH_READY) {
+					MainView.getInstance(player);
+					dispose();
 				}
 			}
 		});

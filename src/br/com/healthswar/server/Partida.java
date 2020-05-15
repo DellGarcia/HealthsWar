@@ -1,8 +1,5 @@
 package br.com.healthswar.server;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
@@ -13,6 +10,7 @@ import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Item;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.gameplay.Turn;
 
 public class Partida extends Thread {
 
@@ -67,116 +65,91 @@ public class Partida extends Thread {
 	@Override
 	public void run() {
 		game = new Game(players);
-		players = game.sortDeck();
-		
-		try {
-			game.init(players);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		game.init();
 
 		while (game.isAtivo()) {
-			int vez = game.getTurno() % 2 == 0 ? 0 : 1;
-			int outro = game.getTurno() % 2 != 0 ? 0 : 1;
-			Player player = players[vez];
-			Player p2 = players[outro];
+			Turn state = game.getState();
+			Player player = state.getActive();
+			Player opponent = state.getOpponent();
 			
-			try {
-				player.out.writeObject(MatchResponse.YOUR_TURN);
-				player.out.writeObject(game.getPhase());
-				p2.out.writeObject(MatchResponse.OPPONENT_TURN);
-				p2.out.writeObject(game.getPhase());
-				
-				MatchRequest request = (MatchRequest) player.in.readObject();
-				MatchResponse response;
-				
-				Fighter fighter;
-				Energy energy;
-				Item item;
-				
-				switch (request) {
-					case DRAW_A_CARD:
-						response = game.comprarCarta(player.getField());
-						player.out.writeObject(response);
-						p2.out.writeObject(response);
-						break;
+			System.out.println("Mandei");
+			state.phaseResolve();
+			
+			MatchRequest request = (MatchRequest) player.read();
+			MatchResponse response;
+			
+			Fighter fighter;
+			Energy energy;
+			Item item;
+			
+			switch (request) {
+				case DRAW_A_CARD:
+					game.drawCard();
+					break;
 
-					case SEND_A_FIGHTER:
-						fighter = (Fighter) player.in.readObject();
-						response = game.enviarCombatente(player.getField(), fighter);
-						player.out.writeObject(response);
-						p2.out.writeObject(response);
-						if(response == MatchResponse.FIGHTER_READY) {
-							fighter.setLocal(CardLocal.FIELD);
-							player.out.writeObject(fighter);
-							p2.out.writeObject(fighter);
-						}
-						break;
-						
-					case USE_AN_ITEM:
-						item = (Item) player.in.readObject();
-						response = game.usarItem(player.getField(), item);
-						player.out.writeObject(response);
-						p2.out.writeObject(response);
-						if(response == MatchResponse.ITEM_USED) {
-							item.setLocal(CardLocal.DESCARTE);
-							player.out.writeObject(item);
-							p2.out.writeObject(item);
-						}
-						break;
-						
-					case PUT_ENERGY:
-						fighter = (Fighter) player.in.readObject();
-						energy = (Energy) player.in.readObject();
-						response = game.colocarEnergia(player.getField(), energy, fighter);
-						
-						player.out.writeObject(response);
-						p2.out.writeObject(response);
-						if(response == MatchResponse.ENERGY_READY) {
-							fighter.getEnergies().add(energy);
-							
-							player.out.writeObject(fighter);
-							player.out.writeObject(energy);
-							
-							p2.out.writeObject(fighter);
-							p2.out.writeObject(energy);
-						}
-						break;
-						
-					case START_BATTLE:
-						game.comecarbatalha();
-						player.out.writeObject(MatchResponse.BATTLE_STARTED);
-						p2.out.writeObject(MatchResponse.BATTLE_STARTED);
-						break;
-						
-					case ATACK_THE_OPONENT:
-//						game.atacar(new Fighter(), new Fighter());
-						break;
+				case SEND_A_FIGHTER:
+					fighter = (Fighter) player.read();
+					response = game.sendFighter(player.getField(), fighter);
+					player.write(response);
+					opponent.write(response);
+					if(response == MatchResponse.FIGHTER_READY) {
+						fighter.setLocal(CardLocal.FIELD);
+						player.write(fighter);
+						opponent.write(fighter);
+					}
+					break;
 					
-					case END_THE_TURN:
-						game.encerrarTurno();
-						if(game.getPhase() == Phases.MAIN_PHASE) {
-							player.out.writeObject(MatchResponse.OPPONENT_TURN);
-						}
-						game.setPhase(Phases.DRAW_PHASE);
-						p2.out.writeObject(MatchResponse.YOUR_TURN);
-						break;
+				case USE_AN_ITEM:
+					item = (Item) player.read();
+					response = game.useItem(player.getField(), item);
+					player.write(response);
+					opponent.write(response);
+					if(response == MatchResponse.ITEM_USED) {
+						item.setLocal(CardLocal.DESCARTE);
+						player.write(item);
+						opponent.write(item);
+					}
+					break;
+					
+				case PUT_ENERGY:
+					fighter = (Fighter) player.read();;
+					energy = (Energy) player.read();;
+					response = game.putEnergy(player.getField(), energy, fighter);
+					
+					player.write(response);
+					opponent.write(response);
+					if(response == MatchResponse.ENERGY_READY) {
+						fighter.getEnergies().add(energy);
+						
+						player.write(fighter);
+						player.write(energy);
+						
+						opponent.write(fighter);
+						opponent.write(energy);
+					}
+					break;
+					
+				case START_BATTLE:
+					game.startBattle();
+					player.write(MatchResponse.BATTLE_STARTED);
+					opponent.write(MatchResponse.BATTLE_STARTED);
+					break;
+					
+				case ATACK_THE_OPONENT:
+//						game.atacar(new Fighter(), new Fighter());
+					break;
+				
+				case END_THE_TURN:
+					game.endTurn();
+					if(state.getPhase() == Phases.MAIN_PHASE) {
+						player.write(MatchResponse.OPPONENT_TURN);
+					}
+					state.setPhase(Phases.DRAW_PHASE);
+					opponent.write(MatchResponse.YOUR_TURN);
+					break;
 
-				}
-
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
 			}
-
 		}
-
-	}
-
-	@Override
-	public String toString() {
-		return "Partida [MATCH_TYPE=" + MATCH_TYPE + ", players=" + Arrays.toString(players) + ", playersConneted="
-				+ playersConneted + ", completo=" + complete + ", game=" + game + "]";
 	}
 
 }

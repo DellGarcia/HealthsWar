@@ -110,17 +110,17 @@ public class InitView extends JFrame {
 				try {
 					Player player = new Player(new Socket(JOptionPane.showInputDialog("Qual o ip do servidor?", "localhost"), 2222));
 					
-					player.out.writeObject(request);
+					player.write(request);
 					
-					Response response = (Response) player.in.readObject();
+					Response response = (Response) player.read();
 					if(response == Response.MATCH_FOUND) {
 						new AwaitView(player);
 						dispose();
 					}
 					
-				} catch (IOException | ClassNotFoundException e2) {
+				} catch (IOException e2) {
 					JOptionPane.showMessageDialog(null, "Problemas ao tentar conectar ao servidor");
-					//e2.printStackTrace();
+					e2.printStackTrace();
 				}
 				
 			}
