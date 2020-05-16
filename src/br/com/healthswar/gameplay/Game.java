@@ -12,7 +12,7 @@ import br.com.healthswar.comunication.Response;
 public class Game {
 
 	private boolean active;
-	private Turn state;
+	private State state;
 
 	private Deck array[] = {
 			new Deck(DeckTheme.IMMUNE_SYSTEM), new Deck(DeckTheme.FOREIGN_BODIES)
@@ -22,7 +22,7 @@ public class Game {
 	public Game(Player[] players) {
 		sortDeck(players);
 		active = true;
-		state = new Turn(players);
+		state = new State(players);
 		Collections.shuffle(decks);
 	}
 	
@@ -125,6 +125,8 @@ public class Game {
 			
 			switch (response) {
 				case ENERGY_READY:
+					fighter.getEnergies().add(energy);
+					
 					player.write(response);
 					player.write(fighter);
 					player.write(energy);
@@ -150,10 +152,13 @@ public class Game {
 			state.getOpponent().write(MatchResponse.BATTLE_STARTED);
 		}
 		
-		public void atack(Fighter escolhido, Fighter alvo) {
-			if(state.getPhase() == Phases.BATTLE_PHASE) {
-				
-			}
+		public void atack() {
+			Player player = state.getActive();
+			Player opponent = state.getOpponent();
+			Fighter attacker = (Fighter) player.read();
+			Fighter target = (Fighter) player.read();
+			
+			state.atack();
 		}
 		
 		public void endTurn() {
@@ -174,7 +179,7 @@ public class Game {
 			this.active = ativo;
 		}
 
-		public Turn getState() {
+		public State getState() {
 			return state;
 		}
 }

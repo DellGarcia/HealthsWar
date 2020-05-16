@@ -20,7 +20,7 @@ public class Field implements Serializable{
 		this.fighters = new Fighter[5];
 		this.memory = new ArrayList<Fighter>();
 		this.discard = new ArrayList<Card>();
-		this.healthsPoint = 8000;
+		this.healthsPoint = 2000;
 		this.deck = deck;
 		this.hand = new Hand(deck);
 		

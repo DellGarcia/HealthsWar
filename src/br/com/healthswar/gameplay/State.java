@@ -1,11 +1,9 @@
 package br.com.healthswar.gameplay;
 
-import java.util.Arrays;
-
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 
-public class Turn {
+public class State {
 	
 	private static int turn = 0;
 	private static Player[] players;
@@ -14,17 +12,19 @@ public class Turn {
 	private Phases phase;
 	private boolean summonAvalible;
 	private boolean atackAvalible;
+	private boolean energyAvalible;
 	
-	public Turn(Player[] players) {
+	public State(Player[] players) {
 		init(players);
 	}
 
 	public void init(Player[] players) {
 		turn++;
-		Turn.players = players;
+		State.players = players;
 		this.phase = Phases.DRAW_PHASE;
 		this.summonAvalible = true;
 		this.atackAvalible = true;
+		this.energyAvalible = true;
 		this.setActive();
 	}
 	
@@ -67,23 +67,29 @@ public class Turn {
 	}
 	
 	public MatchResponse putEnergy(Fighter fighter, Energy energy) {
-		if(phase != Phases.MAIN_PHASE)
-			return MatchResponse.IMPOSSIBLE_TO_USE;
-		
-		Field field = active.getField();
-		Fighter fighters[] = field.getFighters();
-		
-		System.out.println(Arrays.toString(fighters));
-		
-		for(Fighter lutador: fighters) {
-			if(lutador.id == fighter.id) {
-				field.getHand().remove(energy);
-				lutador.getEnergies().add(energy);
-				fighter = lutador;
-				return MatchResponse.ENERGY_READY;
+		if(phase == Phases.MAIN_PHASE && energyAvalible) {
+			Field field = active.getField();
+			Fighter fighters[] = field.getFighters();
+			
+			for(Fighter lutador: fighters) {
+				if(lutador.id == fighter.id) {
+					energy.local = CardLocal.DESCARTE;
+					field.getHand().remove(energy);
+					field.getDescarte().add(energy);
+					lutador.getEnergies().add(energy);
+					fighter = lutador;
+					this.energyAvalible = false;
+					return MatchResponse.ENERGY_READY;
+				}
 			}
 		}
 		return MatchResponse.IMPOSSIBLE_TO_USE;
+	}
+	
+	public void atack() {
+		if(atackAvalible) {
+			
+		}
 	}
 	
 	public void endTurn() {
@@ -114,14 +120,6 @@ public class Turn {
 	
 		public void setPhase(Phases phase) {
 			this.phase = phase;
-		}
-	
-		public boolean isSummonAvalible() {
-			return summonAvalible;
-		}
-	
-		public boolean isAtackAvalible() {
-			return atackAvalible;
 		}
 	
 }

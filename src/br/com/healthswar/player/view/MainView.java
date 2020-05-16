@@ -102,10 +102,8 @@ public class MainView extends JFrame {
 		colocarDeck();
 		colocarMao();
 		colocarFighters();
-		colocarMemoria(player.getField().getMemory(), container.getHeight() - 400);
-		colocarMemoria(opponent.getField().getMemory(), 280);
-		colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
-		colocarDescarte(player.getField().getDescarte(), 280);
+		colocarMemoria();
+		colocarDescarte();
 		colocarBattle();
 		colocarEndTurn();
 	}
@@ -118,11 +116,11 @@ public class MainView extends JFrame {
 	 * Construction methods
 	 * */
 	private void colocarHealthPoint() {
-		myHP = new Label(200, 40, player.getField().getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		myHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		myHP.setLocation(0, 0);
 		container.add(myHP);
 		
-		opHP = new Label(200, 40, player.getField().getHealthsPoint()+"", Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		opHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		opHP.setLocation(container.getWidth() - opHP.getWidth(), 0);
 		container.add(opHP);
 	}
@@ -221,8 +219,9 @@ public class MainView extends JFrame {
 		for(int i = 0; i < myFighters.length; i++) {
 			myFighters[i].setLocation(x, container.getHeight() - 400);
 			myFighters[i].energyCounter.setLocation(x, container.getHeight() - 250);
-			if(myFighters[i].getFighter() != null) 
+			if(myFighters[i].getFighter() != null) {
 				myFighters[i].energyCounter.setText(Integer.toString(myFighters[i].getFighter().getEnergies().size()));
+			}
 			container.add(myFighters[i]);
 			container.add(myFighters[i].energyCounter);
 			x += 120;
@@ -232,37 +231,67 @@ public class MainView extends JFrame {
 		for(int i = 0; i < opFighters.length; i++) {
 			opFighters[i].setLocation(x, 280);
 			opFighters[i].energyCounter.setLocation(x, 220);
-			if(opFighters[i].getFighter() != null)
+			if(opFighters[i].getFighter() != null) {
 				opFighters[i].energyCounter.setText(Integer.toString(opFighters[i].getFighter().getEnergies().size()));
+			}	
 			container.add(opFighters[i]);
 			container.add(opFighters[i].energyCounter);
 			x += 120;
 		}
+		
 	}
 	
-	private void colocarMemoria(ArrayList<Fighter> memory, int height) {
-		int x = container.getWidth()/2 - (6*120-20)/2, y = height;
-		for(int i = 0; i < memory.size(); i++) {
-			memory.get(i).setSize(100, 141);
-			memory.get(i).setLocation(x, y);
+	private void colocarMemoria() {
+		ArrayList<Fighter> myMemory = player.getField().getMemory();
+		ArrayList<Fighter> opMemory = opponent.getField().getMemory();
+		
+		int x = container.getWidth()/2 - (6*120-20)/2, y = container.getHeight() - 400;
+		for(int i = 0; i < myMemory.size(); i++) {
+			myMemory.get(i).setSize(100, 141);
+			myMemory.get(i).setLocation(x, y);
 			if((i+1) % 5 == 0) {
 				x++;
 				y++;
 			}
-			container.add(memory.get(i));
+			container.add(myMemory.get(i));
+		}
+		
+		y = 280;
+		for(int i = 0; i < opMemory.size(); i++) {
+			opMemory.get(i).setSize(100, 141);
+			opMemory.get(i).setLocation(x, y);
+			if((i+1) % 5 == 0) {
+				x++;
+				y++;
+			}
+			container.add(opMemory.get(i));
 		}
 	}
 	
-	private void colocarDescarte(ArrayList<Card> descarte, int height) {
-		int x = container.getWidth()/2 + (6*120)/2, y = height;
-		for(int i = 0; i < descarte.size(); i++) {
-			descarte.get(i).setSize(100, 141);
-			descarte.get(i).setLocation(x, y);
+	private void colocarDescarte() {
+		ArrayList<Card> myDiscard = player.getField().getDescarte();
+		ArrayList<Card> opDiscard = opponent.getField().getDescarte();
+		
+		int x = container.getWidth()/2 + (6*120)/2, y = container.getHeight() - 400;
+		for(int i = myDiscard.size() - 1; i >= 0 ; i--) {
+			myDiscard.get(i).setSize(100, 141);
+			myDiscard.get(i).setLocation(x, y);
 			if((i+1) % 3 == 0) {
 				x+=2;
 				y+=2;
 			}
-			container.add(descarte.get(i));
+			container.add(myDiscard.get(i));
+		}
+		
+		y = 280;
+		for(int i = opDiscard.size() - 1; i >= 0; i--) {
+			opDiscard.get(i).setSize(100, 141);
+			opDiscard.get(i).setLocation(x, y);
+			if((i+1) % 3 == 0) {
+				x+=2;
+				y+=2;
+			}
+			container.add(opDiscard.get(i));
 		}
 	}
 	
@@ -305,6 +334,66 @@ public class MainView extends JFrame {
 				awaitTurn().start();
 			}
 		});
+	}
+	
+	private void awaitMainAction() {
+		MatchResponse response = (MatchResponse) player.read();
+		
+		Fighter fighter;
+		Energy energy;
+		Item item;
+		
+		switch (response) {
+			case FIGHTER_READY:
+				fighter = (Fighter) player.read();
+				for(int i = 0; i < myFighters.length; i++) {
+					if(myFighters[i].getFighter() == null) {
+						myFighters[i].setFighter(fighter);
+						player.getField().getFighters()[i] = fighter;
+						Card c = player.getField().getHand().remove(fighter);
+						container.remove(c);
+						colocarMao();
+						break;
+					}
+				}
+				break;
+
+			case ITEM_USED:
+				item = (Item) player.read();
+				player.getField().getDescarte().add(item);
+				container.remove(player.getField().getHand().remove(item));
+				colocarDescarte();
+				colocarMao();
+				break;
+				
+			case ENERGY_READY:
+				fighter = (Fighter) player.read();
+				energy = (Energy) player.read();
+				
+				for(Fighter lutador: player.getField().getFighters()) {
+					if(lutador.id == fighter.id) {
+						container.remove(player.getField().getHand().remove(energy));
+						player.getField().getDescarte().add(energy);
+						lutador = fighter;
+						break;
+					}
+				}
+				
+				for(FighterField fi: myFighters) {
+					if(fi.getFighter().id == fighter.id) {
+						fi.setFighter(fighter);
+						break;
+					}
+				}
+				
+				colocarFighters();
+				colocarMao();
+				colocarDescarte();
+				break;
+				
+			default:
+				break;
+		}
 	}
 	
 	public void awaitOpponentAction() {
@@ -352,6 +441,7 @@ public class MainView extends JFrame {
 						Card c = opponent.getField().getHand().remove(fighter);
 						container.remove(c);
 						colocarMao();
+						colocarFighters();
 						break;
 					}
 				}
@@ -361,7 +451,7 @@ public class MainView extends JFrame {
 				item = (Item) player.read();
 				opponent.getField().getDescarte().add(item);
 				container.remove(opponent.getField().getHand().remove(item));
-				colocarDescarte(opponent.getField().getDescarte(), 280);
+				colocarDescarte();
 				colocarMao();
 				break;
 			
@@ -372,13 +462,14 @@ public class MainView extends JFrame {
 				for(Fighter lutador: opponent.getField().getFighters()) {
 					if(lutador.id == fighter.id) {
 						container.remove(opponent.getField().getHand().remove(energy));
+						opponent.getField().getDescarte().add(energy);
 						lutador = fighter;
 						break;
 					}
 				}
 				
-				for(FighterField fi: myFighters) {
-					if(fi.getFighter() == fighter) {
+				for(FighterField fi: opFighters) {
+					if(fi.getFighter().id == fighter.id) {
 						fi.setFighter(fighter);
 						break;
 					}
@@ -386,6 +477,7 @@ public class MainView extends JFrame {
 				
 				colocarFighters();
 				colocarMao();
+				colocarDescarte();
 				break;
 				
 			case SUCCESSFUL_ATACK:
@@ -403,131 +495,74 @@ public class MainView extends JFrame {
 		}
 
 	}
-		
-	public void drawCard() {
-		player.write(MatchRequest.DRAW_A_CARD);
-		MatchResponse res = (MatchResponse) player.read();
-		if(res == MatchResponse.AVALIBLE_CARD) {
-			Card card = player.getField().getDeck().get(0);
-			card.setTurned(false);
-			card.setLocal(CardLocal.HAND);
-			player.getField().getHand().add(card);
-			player.getField().getDeck().remove(0);
-			container.remove(card);
-			colocarDeck();
-			colocarMao();
-		}
-	}	
 	
-	private void awaitMainAction() {
-		MatchResponse response = (MatchResponse) player.read();
-		
-		Fighter fighter;
-		Energy energy;
-		Item item;
-		
-		switch (response) {
-			case FIGHTER_READY:
-				fighter = (Fighter) player.read();
-				for(int i = 0; i < myFighters.length; i++) {
-					if(myFighters[i].getFighter() == null) {
-						myFighters[i].setFighter(fighter);
-						player.getField().getFighters()[i] = fighter;
-						Card c = player.getField().getHand().remove(fighter);
-						container.remove(c);
-						colocarMao();
-						break;
-					}
-				}
-				break;
-
-			case ITEM_USED:
-				item = (Item) player.read();
-				player.getField().getDescarte().add(item);
-				container.remove(player.getField().getHand().remove(item));
-				colocarDescarte(player.getField().getDescarte(), container.getHeight() - 400);
+	/** Fire Player Actions */ 
+		public void drawCard() {
+			player.write(MatchRequest.DRAW_A_CARD);
+			MatchResponse res = (MatchResponse) player.read();
+			if(res == MatchResponse.AVALIBLE_CARD) {
+				Card card = player.getField().getDeck().get(0);
+				card.setTurned(false);
+				card.setLocal(CardLocal.HAND);
+				player.getField().getHand().add(card);
+				player.getField().getDeck().remove(0);
+				container.remove(card);
+				colocarDeck();
 				colocarMao();
-				break;
+			}
+		}	
+		
+		public boolean sendFighter(Fighter fighter) {
+			if(myTurn) {
+				player.write(MatchRequest.SEND_A_FIGHTER);
+				player.write(fighter);
+				return true;
+			}
+			return false;
+		}
+		
+		public void useItem(Item item) {
+			if(myTurn) {
+				player.write(MatchRequest.USE_AN_ITEM);
+				player.write(item);
+			}
+		}
+		
+		public void putEnergy(Fighter fighter) {
+			if(myTurn) {
+				Energy energy = (Energy)cardView.getCard();
+				player.write(MatchRequest.PUT_ENERGY);
+				player.write(fighter);
+				player.write(energy);
+			}
+		}
+		
+		private ActionListener startBattle() {
+			return new ActionListener() {
 				
-			case ENERGY_READY:
-				fighter = (Fighter) player.read();
-				energy = (Energy) player.read();
-				
-				for(Fighter lutador: player.getField().getFighters()) {
-					if(lutador.id == fighter.id) {
-						container.remove(player.getField().getHand().remove(energy));
-						lutador = fighter;
-						break;
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(myTurn) {
+						player.write(MatchRequest.START_BATTLE);
+						btnBattle.setVisible(false);
 					}
 				}
+			};
+		}
+		
+		private ActionListener endTurn() {
+			return new ActionListener() {
 				
-				for(FighterField fi: myFighters) {
-					if(fi.getFighter() == fighter) {
-						fi.setFighter(fighter);
-						break;
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(myTurn) {
+						player.write(MatchRequest.END_THE_TURN);
+						btnEndTurn.setVisible(false);
+						btnBattle.setVisible(false);
 					}
 				}
-				
-				colocarFighters();
-				colocarMao();
-				break;
-				
-			default:
-				break;
+			};
 		}
-	}
-	
-	public boolean sendFighter(Fighter fighter) {
-		if(myTurn) {
-			player.write(MatchRequest.SEND_A_FIGHTER);
-			player.write(fighter);
-			return true;
-		}
-		return false;
-	}
-	
-	public void useItem(Item item) {
-		if(myTurn) {
-			player.write(MatchRequest.USE_AN_ITEM);
-			player.write(item);
-		}
-	}
-	
-	public void putEnergy(Fighter fighter) {
-		if(myTurn) {
-			Energy energy = (Energy)cardView.getCard();
-			player.write(MatchRequest.PUT_ENERGY);
-			player.write(fighter);
-			player.write(energy);
-		}
-	}
-	
-	private ActionListener startBattle() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(myTurn) {
-					player.write(MatchRequest.START_BATTLE);
-					btnBattle.setVisible(false);
-				}
-			}
-		};
-	}
-	
-	private ActionListener endTurn() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(myTurn) {
-					player.write(MatchRequest.END_THE_TURN);
-					btnEndTurn.setVisible(false);
-					btnBattle.setVisible(false);
-				}
-			}
-		};
-	}
 	
 	/** Singleton methods */
 		public static MainView getInstance(Player player) {

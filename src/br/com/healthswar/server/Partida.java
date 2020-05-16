@@ -87,7 +87,7 @@ public class Partida extends Thread {
 					break;
 					
 				case ATACK_THE_OPONENT:
-//						game.atacar(new Fighter(), new Fighter());
+					game.atack();
 					break;
 				
 				case END_THE_TURN:
