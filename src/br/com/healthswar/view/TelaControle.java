@@ -124,9 +124,6 @@ public class TelaControle extends JFrame {
 		};
 	}
 	
-	/**
-	 * Enquanto o servidor estiver ligado fica aguardando novos players
-	 * */
 	private Thread aguardarPlayers() {
 		return new Thread(new Runnable() {
 			
@@ -146,7 +143,6 @@ public class TelaControle extends JFrame {
 	
 	public static void atualizarLog(String msg) {
 		log.setText(log.getText() + "\n" + msg);
-		System.out.println(msg);
 	}
 	
 }

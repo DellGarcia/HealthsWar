@@ -2,6 +2,7 @@ package br.com.healthswar.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
@@ -15,15 +16,15 @@ public class Server extends ServerSocket {
 	
 	public static boolean active;
 	
-	private Partida solo;
-	private Partida duo;
-	private Partida squad;
+	private ArrayList<Partida> solo;
+	private ArrayList<Partida> duo;
 	
 	private Server(int port) throws IOException {
 		super(port);
-		solo = new Partida(Request.PLAY_A_SOLO_MATCH);
-		duo = new Partida(Request.PLAY_A_DUO_MATCH);
-		squad = new Partida(Request.PLAY_A_SQUAD_MATCH);
+		solo = new ArrayList<Partida>();
+		duo = new ArrayList<Partida>();
+		solo.add(new Partida(Request.PLAY_A_SOLO_MATCH));
+		duo.add(new Partida(Request.PLAY_A_DUO_MATCH));
 		ConnectionFactory.openConnection();
 	}
 
@@ -41,10 +42,6 @@ public class Server extends ServerSocket {
 		server = null;
 	}
 	
-	/**
-	 * Fica aguardando o player se conectar
-	 * e vê o que ele quer fazer
-	 * */
 	public void awaitConnetion() throws IOException, ClassNotFoundException {
 		TelaControle.atualizarLog("Aguardando conexao");
 		
@@ -55,32 +52,37 @@ public class Server extends ServerSocket {
 		
 		switch(request) {
 			case PLAY_A_SOLO_MATCH:
-				solo.addPlayer(player);
-				verificarPartida(solo, Request.PLAY_A_SOLO_MATCH);
+				solo.get(solo.size()-1).addPlayer(player);
+				verificarPartida(solo.get(solo.size()-1), Request.PLAY_A_SOLO_MATCH);
 				break;
 				
 			case PLAY_A_DUO_MATCH:
-				duo.addPlayer(player);
-				verificarPartida(duo, Request.PLAY_A_DUO_MATCH);
+				duo.get(duo.size()-1).addPlayer(player);
+				verificarPartida(duo.get(duo.size()-1), Request.PLAY_A_DUO_MATCH);
 				break;
 				
 			case PLAY_A_SQUAD_MATCH:
-				squad.addPlayer(player);
-				verificarPartida(squad, Request.PLAY_A_SQUAD_MATCH);
 				break;
 		}
 		
 		TelaControle.atualizarLog("Player conectado");
 	}
 	
-	/**
-	 * Verifica se a partida está completa
-	 * Se estiver inicia a partida em questao
-	 * e comeca a preencher outra partida
-	 * */
 	private void verificarPartida(Partida match, Request request) {
 		if(match.getCompleto()) {
 			match.start();
+			switch(request) {
+				case PLAY_A_SOLO_MATCH:
+					solo.add(new Partida(request));
+					break;
+					
+				case PLAY_A_DUO_MATCH:
+					duo.add(new Partida(request));
+					break;
+					
+				case PLAY_A_SQUAD_MATCH:
+					break;
+			}
 			TelaControle.atualizarLog("Partida completa e inicida");
 			match = new Partida(request);
 		}

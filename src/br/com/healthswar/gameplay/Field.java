@@ -33,8 +33,8 @@ public class Field implements Serializable{
 		return healthsPoint;
 	}
 
-	public void setHealthsPoint(int healthsPoint) {
-		this.healthsPoint = healthsPoint;
+	public void setDamage(int damage) {
+		this.healthsPoint -= damage;
 	}
 
 	public Fighter[] getFighters() {

@@ -158,7 +158,19 @@ public class Game {
 			Fighter attacker = (Fighter) player.read();
 			Fighter target = (Fighter) player.read();
 			
-			state.atack();
+			MatchResponse response = state.atack(attacker, target);
+			
+			switch (response) {
+				case SUCCESSFUL_ATACK:
+					
+					break;
+
+				case ATACK_FAILED:	
+					
+					break;
+				default:
+					break;
+			}
 		}
 		
 		public void endTurn() {

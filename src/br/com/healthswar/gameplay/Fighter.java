@@ -4,6 +4,9 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import br.com.healthswar.player.view.MainView;
 
@@ -20,6 +23,9 @@ public class Fighter extends Card implements Serializable {
 	
 	public Fighter(int id) throws URISyntaxException {
 		super(id);
+		Random r = new Random();
+		healthPoints = r.nextInt(100) + 50;
+		atkPower = r.nextInt(30) + 20;
 		frontImg = loadImage("../assets/card-sm.jpg");
 		this.energies = new ArrayList<Energy>();
 		super.repaint();
@@ -58,7 +64,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 				
 			case FIELD:
-				
+				JOptionPane.showMessageDialog(null, "Atack");
 				break;
 				
 			case MEMORY:

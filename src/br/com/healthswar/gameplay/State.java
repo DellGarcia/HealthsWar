@@ -86,10 +86,17 @@ public class State {
 		return MatchResponse.IMPOSSIBLE_TO_USE;
 	}
 	
-	public void atack() {
+	public MatchResponse atack(Fighter attacker, Fighter target) {
 		if(atackAvalible) {
+			target.healthPoints -= attacker.atkPower;
+			attacker.getEnergies().remove(0);
+			if(target.healthPoints <= 0) {
+				opponent.getField().setDamage(target.healthPoints);
+			}
 			
+			return MatchResponse.SUCCESSFUL_ATACK;
 		}
+		return MatchResponse.ATACK_FAILED;
 	}
 	
 	public void endTurn() {
