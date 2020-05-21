@@ -8,9 +8,9 @@ public class ConnectionFactory {
 
 	private static Connection connection;
 	
-	private static String bdName	= "jdbc:mysql://localhost/bdHealthsWar";
-	private static String user		= "root";
-	private static String password	= "123456";
+	private static final String bdName	= "jdbc:mysql://localhost/bdHealthsWar";
+	private static final String user		= "root";
+	private static final String password	= "123456";
 
 	public static void openConnection() {
 		try {

@@ -35,6 +35,17 @@ public class State {
 		opponent.write(phase);
 	}
 	
+	public MatchResponse drawCard() {
+		Field field = active.getField();
+		phase = Phases.MAIN_PHASE;
+		if(!field.getDeck().isEmpty() && field.getHand().size() < 7) {
+			field.getHand().add(field.getDeck().removeFirst());
+			return MatchResponse.AVALIBLE_CARD;
+		} else {
+			return MatchResponse.NO_CARDS;
+		}
+	}
+	
 	public MatchResponse summon(Fighter fighter) {
 		if(phase != Phases.MAIN_PHASE || !summonAvalible)
 			return MatchResponse.NO_FIGHTER;
@@ -87,7 +98,7 @@ public class State {
 	}
 	
 	public MatchResponse atack(Fighter attacker, Fighter target) {
-		if(atackAvalible) {
+		if(atackAvalible && !attacker.getEnergies().isEmpty()) {
 			target.healthPoints -= attacker.atkPower;
 			attacker.getEnergies().remove(0);
 			if(target.healthPoints <= 0) {

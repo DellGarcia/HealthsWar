@@ -29,18 +29,12 @@ public class Partida extends Thread {
 				this.players = new Player[2];
 				break;
 				
-			case PLAY_A_SQUAD_MATCH:
-				break;
-				
 			default:
 				break;
 	
 		}
 	}
 
-	/**
-	 * Adiona players enquanto tiver espaco na partida
-	 */
 	public void addPlayer(Player player) {
 		if (!complete) {
 			this.players[playersConneted] = player;
@@ -58,7 +52,6 @@ public class Partida extends Thread {
 	@Override
 	public void run() {
 		game = new Game(players);
-		game.init();
 
 		while (game.isAtivo()) {
 			game.resolve();

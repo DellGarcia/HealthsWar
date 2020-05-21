@@ -24,6 +24,7 @@ public class Game {
 		active = true;
 		state = new State(players);
 		Collections.shuffle(decks);
+		init();
 	}
 	
 	public void sortDeck(Player[] players) {
@@ -53,17 +54,13 @@ public class Game {
 	
 	/** Player actions */
 		public void drawCard() {
-			Field field = state.getActive().getField();
-			MatchResponse res = null;
-			if(!field.getDeck().isEmpty() && field.getHand().size() < 7) {
-				field.getHand().add(field.getDeck().removeFirst());
-				res = MatchResponse.AVALIBLE_CARD;
-			} else {
-				res = MatchResponse.NO_CARDS;
-			}
-			state.setPhase(Phases.MAIN_PHASE);
-			state.getActive().write(res);
-			state.getOpponent().write(res);
+			Player player = state.getActive();
+			Player oppnent = state.getOpponent();
+			
+			MatchResponse res = state.drawCard();
+			
+			player.write(res);
+			oppnent.write(res);
 		}
 		
 		public void sendFighter() {
@@ -162,21 +159,28 @@ public class Game {
 			
 			switch (response) {
 				case SUCCESSFUL_ATACK:
+					player.write(response);
+					player.write(attacker);
+					player.write(target);
 					
+					opponent.write(response);
+					opponent.write(attacker);
+					opponent.write(target);
 					break;
 
 				case ATACK_FAILED:	
-					
+					player.write(response);
+					opponent.write(response);
 					break;
+					
 				default:
 					break;
 			}
 		}
 		
 		public void endTurn() {
-			if(state.getPhase() == Phases.MAIN_PHASE)
-				state.getActive().write(MatchResponse.OPPONENT_TURN);
-
+			
+			state.getActive().write(MatchResponse.OPPONENT_TURN);
 			state.getOpponent().write(MatchResponse.YOUR_TURN);
 			state.setPhase(Phases.DRAW_PHASE);
 			state.endTurn();

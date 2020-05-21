@@ -6,40 +6,48 @@ import java.awt.Graphics2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
 
-import br.com.dellgarcia.frontend.Label;
 import br.com.dellgarcia.frontend.Panel;
 import br.com.healthswar.view.Fonts;
 
 public class FighterField extends Panel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -149395871309683109L;
 
 	private Fighter fighter;
 	private ImageIcon image;
-	public Label energyCounter;
+	public JTextArea energyCounter;
 
 	public FighterField() {
 		super();
 		setBackground(null);
 		setSize(100, 141);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		energyCounter = new Label(100, 40, "", Fonts.NORMAL, Color.WHITE, null, SwingConstants.CENTER,
-				SwingConstants.CENTER);
+		init();
+	}
+
+	private void init() {
+		energyCounter = new JTextArea("");
+		energyCounter.setSize(100, 60);
+		energyCounter.setFont(Fonts.NORMAL);
+		energyCounter.setOpaque(false);
+		energyCounter.setBackground(null);
+		energyCounter.setForeground(Color.WHITE);
+		energyCounter.setEditable(false);
 		energyCounter.setVisible(false);
 		fighter = null;
 	}
-
+	
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
 		addMouseListener(fighter);
 		this.image = this.fighter.frontImg;
 		this.energyCounter.setText(Integer.toString(fighter.getEnergies().size()));
 		this.energyCounter.setVisible(true);
+		energyCounter.setText("HP: " + fighter.getHealthPoints()
+							+"\nATK: " + fighter.getAtkPower()
+							+"\nEnergies: " + fighter.getEnergies().size());
 		repaint();
 	}
 

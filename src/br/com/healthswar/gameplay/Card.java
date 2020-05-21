@@ -14,9 +14,6 @@ import javax.swing.JLabel;
 
 public abstract class Card extends JLabel implements MouseListener, MouseMotionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7106990056333713852L;
 	public int id;
 	protected String description;
@@ -26,7 +23,7 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 	
 	protected ImageIcon frontImg;
 	protected ImageIcon backImg;
-	
+	volatile
 	private transient InputStream reader;
 
 	public Card(int id) {

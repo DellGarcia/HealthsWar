@@ -6,8 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 import br.com.healthswar.player.view.MainView;
 
 public class Fighter extends Card implements Serializable {	
@@ -38,6 +36,22 @@ public class Fighter extends Card implements Serializable {
 	public void setEnergies(ArrayList<Energy> energies) {
 		this.energies = energies;
 	}
+	
+	public int getHealthPoints() {
+		return healthPoints;
+	}
+
+	public void setHealthPoints(int healthPoints) {
+		this.healthPoints = healthPoints;
+	}
+
+	public int getAtkPower() {
+		return atkPower;
+	}
+
+	public void setAtkPower(int atkPower) {
+		this.atkPower = atkPower;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -64,7 +78,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 				
 			case FIELD:
-				JOptionPane.showMessageDialog(null, "Atack");
+				MainView.INSTANCE.showEnemySelector(this);
 				break;
 				
 			case MEMORY:
@@ -74,7 +88,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 				
 			case SELECTOR:
-				MainView.INSTANCE.putEnergy(this);
+				MainView.INSTANCE.handleSelect(this);
 				MainView.INSTANCE.hideSelector();
 				this.local = CardLocal.FIELD;
 				break;
