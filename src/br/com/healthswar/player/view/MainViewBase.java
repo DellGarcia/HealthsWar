@@ -17,7 +17,6 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.CardView;
-import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.FighterSelector;
@@ -30,8 +29,8 @@ public class MainViewBase extends JFrame {
 	
 	protected final Toolkit tk = Toolkit.getDefaultToolkit();
 	
-	public Player player;
-	public Player opponent;
+	protected Player player;
+	protected Player opponent;
 	
 	protected Panel container;
 
@@ -51,7 +50,7 @@ public class MainViewBase extends JFrame {
 	
 	protected Button btnEndTurn, btnBattle;
 	
-	public MainViewBase() {
+	protected MainViewBase() {
 		setTitle("Health's War");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(tk.getScreenSize());
@@ -82,9 +81,6 @@ public class MainViewBase extends JFrame {
 	}
 	
 	protected void initializeComponents() {
-		player.setField((Field) player.read());
-		opponent = new Player((Field) player.read());
-		
 		colocarPhase();
 		colocarHealthPoint();
 		colocarDeck();
@@ -273,37 +269,32 @@ public class MainViewBase extends JFrame {
 		}
 	}
 	
-	protected void refreshHealtPoints() {
-		myHP.setText(Integer.toString(player.getField().getHealthsPoint()));
-		opHP.setText(Integer.toString(opponent.getField().getHealthsPoint()));
-	}
-	
-	/** Actions */
-	private ActionListener startBattle() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(myTurn) {
-					player.write(MatchRequest.START_BATTLE);
-					btnBattle.setVisible(false);
+	/** Actions Listeners */
+		private ActionListener startBattle() {
+			return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(myTurn) {
+						player.write(MatchRequest.START_BATTLE);
+						btnBattle.setVisible(false);
+					}
 				}
-			}
-		};
-	}
-	
-	private ActionListener endTurn() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(myTurn) {
-					player.write(MatchRequest.END_THE_TURN);
-					btnEndTurn.setVisible(false);
-					btnBattle.setVisible(false);
+			};
+		}
+		
+		private ActionListener endTurn() {
+			return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(myTurn) {
+						player.write(MatchRequest.END_THE_TURN);
+						btnEndTurn.setVisible(false);
+						btnBattle.setVisible(false);
+					}
 				}
-			}
-		};
-	}
-	
+			};
+		}
+		
 }

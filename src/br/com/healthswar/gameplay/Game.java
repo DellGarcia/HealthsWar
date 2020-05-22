@@ -179,7 +179,6 @@ public class Game {
 		}
 		
 		public void endTurn() {
-			
 			state.getActive().write(MatchResponse.OPPONENT_TURN);
 			state.getOpponent().write(MatchResponse.YOUR_TURN);
 			state.setPhase(Phases.DRAW_PHASE);

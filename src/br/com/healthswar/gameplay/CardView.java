@@ -99,12 +99,12 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(card instanceof Fighter) {
-			MainView.INSTANCE.sendFighter((Fighter) card);
+			MainView.INSTANCE.requestSendFighter((Fighter) card);
 			setVisible(false);
 		}
 		
 		if(card instanceof Item) {
-			MainView.INSTANCE.useItem((Item) card);
+			MainView.INSTANCE.requestUseItem((Item) card);
 			setVisible(false);
 		}
 		
