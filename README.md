@@ -4,7 +4,7 @@ This is a card game based on the immune system, you can face your friends on the
 
 ### Rotinas de Gameplay
 
-- [ ] Criar uma partida single player
+- [ ] **Criar uma partida single player**
 - [x] Criar servidor local
 - [x] Entrar em um servidor
 - [x] Conectar dois jogadores em uma partida
@@ -14,11 +14,11 @@ This is a card game based on the immune system, you can face your friends on the
 - [x] Usar itens na Main phase
 - [x] Energizar combatente na Main Phase
 - [x] Entrar na Battle Phase
-- [ ] Atacar combatente inimigo
+- [ ] **Atacar combatente inimigo**
 - [x] Finalizar Turno
 
 ### Rotinas cadastro/login
 
 - [x] Criar banco de dados
-- [x] Criar classes de comunicação com BD
-- [ ] Fazer CRUD das tabelas
+- [x] Criar classes de comunicaÃ§Ã£o com BD
+- [ ] **Fazer CRUD das tabelas**
