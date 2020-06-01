@@ -91,8 +91,7 @@ public class MainViewStructure extends MainViewBase {
 			Fighter fighterTarget = (Fighter) player.read();
 			Player target = myTurn?player:opponent;
 			
-			fighterTarget.setHealthPoints(
-					fighterTarget.getHealthPoints() - attacker.getAtkPower());
+			fighterTarget.setHealthPoints(fighterTarget.getHealthPoints() - attacker.getAtkPower());
 			
 			if(fighterTarget.getHealthPoints() <= 0) {
 				target.getField().setDamage(fighterTarget.getHealthPoints());

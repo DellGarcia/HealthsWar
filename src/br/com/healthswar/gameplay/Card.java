@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -23,8 +22,8 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 	
 	protected ImageIcon frontImg;
 	protected ImageIcon backImg;
-	volatile
-	private transient InputStream reader;
+	
+//	private transient InputStream reader;
 
 	public Card(int id) {
 		this.id = id;
@@ -62,15 +61,13 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 		this.local = local;
 	}
 
-	protected synchronized ImageIcon loadImage(String path) {
+	protected ImageIcon loadImage(String path) {
 		Image image = null;
 		try {
-			reader = getClass().getResourceAsStream(path);
-			BufferedInputStream bis = new BufferedInputStream(reader);
+			BufferedInputStream bis = new BufferedInputStream(getClass().getResourceAsStream(path));
 			byte[] bytes = new byte[bis.available()];
 			int byteRead = bis.read(bytes,0,bis.available());
 			image = Toolkit.getDefaultToolkit().createImage(bytes,0,byteRead);
-			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

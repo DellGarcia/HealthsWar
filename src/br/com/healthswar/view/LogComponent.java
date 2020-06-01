@@ -10,18 +10,18 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class LogComponent extends JScrollPane {
 	
-	private JTextArea texto;
+	private JTextArea text;
 	
 	public LogComponent(Dimension size, Point p) {
-		texto = new JTextArea();
-		texto.setBackground(Color.LIGHT_GRAY);
-		texto.setSize(size);
-		texto.setLocation(p);
-		texto.setText("Inicie o servidor e veja o status aqui no Log!");
+		text = new JTextArea();
+		text.setBackground(Color.LIGHT_GRAY);
+		text.setSize(size);
+		text.setLocation(p);
+		text.setText("Inicie o servidor e veja o status aqui no Log!");
 	}
 	
-	public void atualizarLog(String msg) {
-		texto.setText(msg+"\n");
+	public void refreshLog(String msg) {
+		text.setText(msg+"\n");
 	}
 
 }

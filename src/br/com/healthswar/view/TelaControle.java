@@ -92,7 +92,6 @@ public class TelaControle extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// Se estiver desligado ele liga
 					if(server == null) {
 						if(txtPorta.isFilled()) {
 							int val = txtPorta.getValue();
@@ -129,7 +128,6 @@ public class TelaControle extends JFrame {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				while(Server.active) {
 					try {
 						server.awaitConnetion();

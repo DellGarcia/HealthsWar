@@ -41,6 +41,7 @@ public class FighterField extends Panel {
 	
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
+		this.fighter.local = CardLocal.FIELD;
 		addMouseListener(fighter);
 		this.image = this.fighter.frontImg;
 		this.energyCounter.setText(Integer.toString(fighter.getEnergies().size()));

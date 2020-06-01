@@ -5,10 +5,10 @@ import br.com.healthswar.comunication.Phases;
 
 public class State {
 	
-	private static int turn = 0;
-	private static Player[] players;
-	private static Player active;
-	private static Player opponent;
+	private int turn = 0;
+	private Player[] players;
+	private Player active;
+	private Player opponent;
 	private Phases phase;
 	private boolean summonAvalible;
 	private boolean atackAvalible;
@@ -20,7 +20,7 @@ public class State {
 
 	public void init(Player[] players) {
 		turn++;
-		State.players = players;
+		this.players = players;
 		this.phase = Phases.DRAW_PHASE;
 		this.summonAvalible = true;
 		this.atackAvalible = true;
@@ -115,7 +115,7 @@ public class State {
 	}
 	
 	/** Getter e Setters */
-		public static int getTurn() {
+		public int getTurn() {
 			return turn;
 		}
 	

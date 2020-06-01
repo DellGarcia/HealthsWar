@@ -7,7 +7,7 @@ public class Main {
 		return new Thread(new Runnable() {
 			
 			@Override
-			public void run() {
+			public void run() {                      
 				new TelaControle();
 			}
 		});

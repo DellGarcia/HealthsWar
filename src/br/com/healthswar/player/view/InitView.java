@@ -90,17 +90,13 @@ public class InitView extends JFrame {
 	private ActionListener openHostPage() {
 		return new ActionListener() {
 			
-			@Override
+			@Override                     
 			public void actionPerformed(ActionEvent e) {
 				Main.init().start();
 			}
 		};
 	}
 	
-	
-	/**
-	 * Vê qual partida o player escolheu
-	 * */
 	private ActionListener matchAction(Request request) {
 		return new ActionListener() {
 			

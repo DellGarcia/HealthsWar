@@ -19,7 +19,7 @@ public class ConnectionFactory {
 	                    bdName, user, password);
 			}
 		} catch(SQLException e) {
-			System.out.println("Não foi possivel criar a conexao");
+			System.out.println("Não foi possivel criar a conexao com o banco de dados");
 		}
 	}
 	
