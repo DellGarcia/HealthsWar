@@ -4,15 +4,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 
-public class PasswordField extends JPasswordField implements FocusListener {
+public class PasswordField extends JPasswordField implements FocusListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private String placeHolder;
+	
+	private boolean filled;
 	
 	private Color onFocusBorderColor;
 	private Color onFocusTextColor;
@@ -43,6 +47,14 @@ public class PasswordField extends JPasswordField implements FocusListener {
 		this.onFocusTextColor = onFocusTextColor;
 	}
 	
+	public boolean isFilled() {
+		return filled;
+	}
+	
+	public String getPlaceHolder() {
+		return placeHolder;
+	}
+	
 	@Override
 	public void focusGained(FocusEvent e) {
 		setBorder(BorderFactory.createLineBorder(onFocusBorderColor));
@@ -56,8 +68,20 @@ public class PasswordField extends JPasswordField implements FocusListener {
 			setText(placeHolder);
 			setForeground(Color.LIGHT_GRAY);
 			setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+			filled = true;
 		} else {
 			setBorder(null);
 		}
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		filled = new String(this.getPassword()).length() > 0 ? true : false;
 	}
 }

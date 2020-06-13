@@ -1,13 +1,19 @@
 package br.com.healthswar.player.view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.anonymous.frontend.PasswordField;
 import br.com.anonymous.frontend.TextField;
+import br.com.healthswar.contoller.PersonDao;
+import br.com.healthswar.player.model.Person;
 import br.com.healthswar.view.Fonts;
 
 public class RegisterView extends View {
@@ -26,6 +32,9 @@ public class RegisterView extends View {
 	private TextField txtEmail;
 	private PasswordField txtSenha;
 	private PasswordField txtConfirmaSenha;
+	
+	private Button btnConfirmar;
+	private Button btnVoltar;
 	
 	public RegisterView() {
 		setTitle("HealthsWar - Cadastro");
@@ -81,7 +90,64 @@ public class RegisterView extends View {
 		txtConfirmaSenha.setLocation(0, 320);
 		formulario.add(txtConfirmaSenha);
 		
+		btnConfirmar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE, Fonts.DESTAQUE, "Confirmar", null, 0, Color.DARK_GRAY, Color.WHITE);
+		btnConfirmar.setLocation(formulario.getWidth() - 100, 380);
+		btnConfirmar.addActionListener(registerAction());
+		formulario.add(btnConfirmar);
+		
+		btnVoltar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE, Fonts.DESTAQUE, "Voltar", null, 0, Color.DARK_GRAY, Color.WHITE);
+		btnVoltar.setLocation(0, 380);
+		btnVoltar.addActionListener(backAction());
+		formulario.add(btnVoltar);
+		
 		container.add(formulario);
+	}
+	
+	private ActionListener backAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
+	}
+	
+	private ActionListener registerAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nome = txtNome.getText();
+				String email = txtEmail.getText();
+				String senha = new String(txtSenha.getPassword());
+				String confirmaSenha = new String(txtConfirmaSenha.getPassword());
+				
+				if(!nome.isEmpty() && !email.isEmpty() && !senha.isEmpty() && !confirmaSenha.isEmpty() &&
+					!nome.equals(txtNome.getPlaceHolder()) && !email.equals(txtEmail.getPlaceHolder())) {
+					if(senha.equals(confirmaSenha)) {
+						
+						Person person = new Person();
+						
+						person.setName(nome);
+						person.setEmail(email);
+						person.setPassword(senha);
+						person.setDerrotas(0);
+						person.setVitorias(0);
+						
+						PersonDao dao = new PersonDao();
+						dao.insert(person);
+						
+						JOptionPane.showMessageDialog(null, "Cadastro efeutado com sucesso");
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "As senhas não coincidem");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios");
+				}
+			}
+		};
 	}
 	
 }
