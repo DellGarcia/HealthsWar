@@ -21,4 +21,13 @@ This is a card game based on the immune system, you can face your friends on the
 
 - [x] Criar banco de dados
 - [x] Criar classes de comunicação com BD
-- [ ] **Fazer CRUD das tabelas**
+- [x] Fazer CRUD das tabelas
+- [ ] **Criar interface de cadastro**
+
+### Outras Tarefas
+
+- [ ] **Deixar as telas mais bonitas**
+- [ ] **Criar sistema de ranking**
+- [ ] **Criar tela do Ranking**
+
+
