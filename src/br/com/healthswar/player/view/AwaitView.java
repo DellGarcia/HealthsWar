@@ -44,6 +44,7 @@ public class AwaitView extends JFrame {
 		animacao("Aguardando segundo jogador").start();
 	
 		aguardarPartida().start();
+		
 	}
 
 	private Thread aguardarPartida() {

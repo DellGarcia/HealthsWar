@@ -12,7 +12,7 @@ public class ConnectionFactory {
 	private static final String user		= "root";
 	private static final String password	= "123456";
 
-	public static void openConnection() {
+	private static void openConnection() {
 		try {
 			if(connection == null) {
 				connection = DriverManager.getConnection(
@@ -23,15 +23,9 @@ public class ConnectionFactory {
 		}
 	}
 	
-	public static void closeConnection() {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static Connection getConnetion() {
+		if(connection == null)
+			openConnection();
 		return connection;
 	}
 }
