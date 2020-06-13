@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import br.com.healthswar.player.view.MainView;
+import br.com.healthswar.player.view.main.MainView;
 
 public class Fighter extends Card implements Serializable {	
 	/**

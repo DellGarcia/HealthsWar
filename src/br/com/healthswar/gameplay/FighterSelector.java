@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay;
 
 import java.awt.Color;
 
-import br.com.dellgarcia.frontend.Panel;
+import br.com.anonymous.frontend.Panel;
 
 public class FighterSelector extends Panel {
 

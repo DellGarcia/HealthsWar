@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
-import br.com.dellgarcia.frontend.Panel;
+import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.view.Fonts;
 
 public class FighterField extends Panel {

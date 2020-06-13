@@ -3,7 +3,7 @@ package br.com.healthswar.gameplay;
 import java.awt.event.MouseEvent;
 import java.net.URISyntaxException;
 
-import br.com.healthswar.player.view.MainView;
+import br.com.healthswar.player.view.main.MainView;
 
 public class Item extends Card  {
 

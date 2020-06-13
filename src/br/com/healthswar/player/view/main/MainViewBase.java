@@ -1,4 +1,4 @@
-package br.com.healthswar.player.view;
+package br.com.healthswar.player.view.main;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
-import br.com.dellgarcia.frontend.Button;
-import br.com.dellgarcia.frontend.Label;
-import br.com.dellgarcia.frontend.Panel;
+import br.com.anonymous.frontend.Button;
+import br.com.anonymous.frontend.Label;
+import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Card;
@@ -170,12 +170,12 @@ public class MainViewBase extends JFrame {
 	
 	protected void colocarBattle() {
 		btnBattle = new Button(
-				container.getWidth() - 170, container.getHeight()/2 - 50/2 - 50,
 				150, 50,
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.NORMAL, "Battle",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
+		btnBattle.setLocation(container.getWidth() - 170, container.getHeight()/2 - 50/2 - 50);
 		btnBattle.setVisible(false);
 		btnBattle.addActionListener(startBattle());
 		container.add(btnBattle);
@@ -183,12 +183,12 @@ public class MainViewBase extends JFrame {
 	
 	protected void colocarEndTurn() {
 		btnEndTurn = new Button(
-				container.getWidth() - 170, container.getHeight()/2 - 50/2 + 50,
 				150, 50,
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.NORMAL, "End Turn",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
+		btnEndTurn.setLocation(container.getWidth() - 170, container.getHeight()/2 - 50/2 + 50);
 		btnEndTurn.setVisible(false);
 		btnEndTurn.addActionListener(endTurn());
 		container.add(btnEndTurn);

@@ -13,9 +13,9 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.SwingConstants;
 
-import br.com.dellgarcia.frontend.Label;
-import br.com.dellgarcia.frontend.Panel;
-import br.com.healthswar.player.view.MainView;
+import br.com.anonymous.frontend.Label;
+import br.com.anonymous.frontend.Panel;
+import br.com.healthswar.player.view.main.MainView;
 import br.com.healthswar.view.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {

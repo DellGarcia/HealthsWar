@@ -1,4 +1,4 @@
-package br.com.healthswar.player.view;
+package br.com.healthswar.player.view.main;
 
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;

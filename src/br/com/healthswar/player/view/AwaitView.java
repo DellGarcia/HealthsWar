@@ -6,10 +6,11 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import br.com.dellgarcia.frontend.Label;
-import br.com.dellgarcia.frontend.Panel;
+import br.com.anonymous.frontend.Label;
+import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.player.view.main.MainView;
 
 @SuppressWarnings("serial")
 public class AwaitView extends JFrame {

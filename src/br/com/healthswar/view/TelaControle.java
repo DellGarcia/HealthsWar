@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import br.com.dellgarcia.frontend.Button;
-import br.com.dellgarcia.frontend.Label;
+import br.com.anonymous.frontend.Button;
+import br.com.anonymous.frontend.Label;
 import br.com.healthswar.server.Server;
 
 @SuppressWarnings("serial")
@@ -51,13 +51,13 @@ public class TelaControle extends JFrame {
 
 		// Botao iniciar
 			btnStart = new Button(
-					container.getWidth()/2 - 50, (int)(container.getHeight() / (1.5)),
 					100, 40,
 					Color.WHITE, Color.BLACK,
 					Fonts.DESTAQUE, "Start",
 					Color.BLACK, 1,
 					new Color(65,105,225), Color.white
 					);
+			btnStart.setLocation(container.getWidth()/2 - 50, (int)(container.getHeight() / (1.5)));
 			container.add(btnStart);
 			btnStart.addActionListener(swicthAction());
 			
