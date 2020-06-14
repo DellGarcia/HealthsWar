@@ -3,6 +3,8 @@ package br.com.healthswar.player.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -12,7 +14,9 @@ import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.anonymous.frontend.PasswordField;
 import br.com.anonymous.frontend.TextField;
-import br.com.healthswar.contoller.PersonDao;
+import br.com.healthswar.comunication.Request;
+import br.com.healthswar.comunication.Response;
+import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.model.Person;
 import br.com.healthswar.view.Fonts;
 
@@ -39,6 +43,7 @@ public class RegisterView extends View {
 	public RegisterView() {
 		setTitle("HealthsWar - Cadastro");
 		setSize(1080, 720);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
@@ -135,10 +140,25 @@ public class RegisterView extends View {
 						person.setDerrotas(0);
 						person.setVitorias(0);
 						
-						PersonDao dao = new PersonDao();
-						dao.insert(person);
+						try {
+							Player player = new Player(new Socket("localhost", 2222));
+							
+							Request request = Request.REGISTER_PLAYER;
+							player.write(request);
+							player.write(person);
+							
+							Response response = (Response) player.read();
+							
+							if(response == Response.SUCCESSFULLY_REGISTERED) {
+								JOptionPane.showMessageDialog(null, "Cadastro efeutado com sucesso");
+							} else {
+								JOptionPane.showMessageDialog(null, "Não foi possivel realizar o cadastro");
+							}
+									
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 						
-						JOptionPane.showMessageDialog(null, "Cadastro efeutado com sucesso");
 						dispose();
 					} else {
 						JOptionPane.showMessageDialog(null, "As senhas não coincidem");

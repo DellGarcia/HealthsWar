@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
+import br.com.healthswar.contoller.PersonDao;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.player.model.Person;
 import br.com.healthswar.view.TelaControle;
 
 public class Server extends ServerSocket {
@@ -45,25 +47,49 @@ public class Server extends ServerSocket {
 		
 		Player player = new Player(accept());
 		
+		TelaControle.atualizarLog("Conexão estabelecida");
+		
 		Request request = (Request) player.read();
-		player.write(Response.MATCH_FOUND);
 		
 		switch(request) {
 			case PLAY_A_SOLO_MATCH:
 				solo.get(solo.size()-1).addPlayer(player);
 				verificarPartida(solo.get(solo.size()-1), Request.PLAY_A_SOLO_MATCH);
+				player.write(Response.MATCH_FOUND);
 				break;
 				
 			case PLAY_A_DUO_MATCH:
 				duo.get(duo.size()-1).addPlayer(player);
 				verificarPartida(duo.get(duo.size()-1), Request.PLAY_A_DUO_MATCH);
+				player.write(Response.MATCH_FOUND);
 				break;
 				
-			case PLAY_A_SQUAD_MATCH:
+			case DELETE_PLAYER:
 				break;
+				
+			case REGISTER_PLAYER:
+				Person person = (Person) player.read();
+				
+				PersonDao dao = new PersonDao();
+				dao.insert(person);
+				
+				Response response = Response.SUCCESSFULLY_REGISTERED;
+				player.write(response);
+				break;
+				
+			case SELECT_ALL_PLAYERS:
+				break;
+				
+			case SELECT_PLAYER:
+				break;
+				
+			case UPDATE_PLAYER:
+				break;
+				
+			default:
+				break;
+				
 		}
-		
-		TelaControle.atualizarLog("Player conectado");
 	}
 	
 	private void verificarPartida(Partida match, Request request) {
@@ -77,9 +103,10 @@ public class Server extends ServerSocket {
 				case PLAY_A_DUO_MATCH:
 					duo.add(new Partida(request));
 					break;
-					
-				case PLAY_A_SQUAD_MATCH:
+				
+				default:
 					break;
+				
 			}
 			TelaControle.atualizarLog("Partida completa e inicida");
 			match = new Partida(request);

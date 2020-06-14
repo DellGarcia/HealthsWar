@@ -11,14 +11,12 @@ import java.io.Serializable;
  */
 public enum Request implements Serializable {
 	
-	PLAY_A_SOLO_MATCH(0),
-	PLAY_A_DUO_MATCH(1),
-	PLAY_A_SQUAD_MATCH(2);
-	
-	public int requestCode;
-	
-	Request(int requestCode) {
-		this.requestCode = requestCode;
-	}
-	
+	REGISTER_PLAYER,
+	UPDATE_PLAYER,
+	DELETE_PLAYER,
+	SELECT_PLAYER,
+	SELECT_ALL_PLAYERS,
+	PLAY_A_SOLO_MATCH,
+	PLAY_A_DUO_MATCH
+
 }

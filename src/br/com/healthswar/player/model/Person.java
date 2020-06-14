@@ -1,7 +1,11 @@
 package br.com.healthswar.player.model;
 
-public class Person {
+import java.io.Serializable;
 
+public class Person implements Serializable {
+
+	private static final long serialVersionUID = -2583885168862452678L;
+	
 	private int id;
 	private String name;
 	private String email;

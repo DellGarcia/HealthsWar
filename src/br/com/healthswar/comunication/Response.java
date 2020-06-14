@@ -11,18 +11,11 @@ import java.io.Serializable;
  */
 public enum Response implements Serializable {
 	
-	MATCH_FOUND(0),
-	MATCH_NOT_FOUND(1),
-	MATCH_READY(2);
-	
-	private int responseCode;
-	
-	Response(int responseCode) {
-		this.responseCode = responseCode;
-	}
-	
-	public int getResponseCode() {
-		return responseCode;
-	}
+	MATCH_FOUND,
+	MATCH_NOT_FOUND,
+	MATCH_READY,
+	SUCCESSFULLY_REGISTERED,
+	SUCCESSFULLY_UPDATED,
+	SUCCESSFULLY_DELETED
 	
 }
