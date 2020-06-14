@@ -55,17 +55,17 @@ public class Game {
 	/** Player actions */
 		public void drawCard() {
 			Player player = state.getActive();
-			Player oppnent = state.getOpponent();
+			Player opponent = state.getOpponent();
 			
 			MatchResponse res = state.drawCard();
 			
 			player.write(res);
-			oppnent.write(res);
+			opponent.write(res);
 		}
 		
 		public void sendFighter() {
 			Player player = state.getActive();
-			Player oppnent = state.getOpponent();
+			Player opponent = state.getOpponent();
 			Fighter fighter = (Fighter) player.read();
 			
 			MatchResponse response = state.summon(fighter);
@@ -74,12 +74,12 @@ public class Game {
 				case FIGHTER_READY:
 					player.write(response);
 					player.write(fighter);
-					oppnent.write(response);
-					oppnent.write(fighter);
+					opponent.write(response);
+					opponent.write(fighter);
 					break;
 				case NO_FIGHTER:
 					player.write(response);
-					oppnent.write(response);
+					opponent.write(response);
 					break;
 				default:
 					break;
@@ -88,7 +88,7 @@ public class Game {
 		
 		public void useItem() {
 			Player player = state.getActive();
-			Player oppnent = state.getOpponent();
+			Player opponent = state.getOpponent();
 			Item item = (Item) player.read();
 			
 			MatchResponse res = state.useItem(item);
@@ -97,13 +97,13 @@ public class Game {
 				case ITEM_USED:
 					player.write(res);
 					player.write(item);
-					oppnent.write(res);
-					oppnent.write(item);
+					opponent.write(res);
+					opponent.write(item);
 					break;
 	
 				case IMPOSSIBLE_TO_USE:
 					player.write(res);
-					oppnent.write(res);
+					opponent.write(res);
 					break;
 					
 				default:
@@ -155,7 +155,11 @@ public class Game {
 			Fighter attacker = (Fighter) player.read();
 			Fighter target = (Fighter) player.read();
 			
+			System.out.println(target.healthPoints);
+			
 			MatchResponse response = state.atack(attacker, target);
+			
+			System.out.println(target.healthPoints);
 			
 			switch (response) {
 				case SUCCESSFUL_ATACK:

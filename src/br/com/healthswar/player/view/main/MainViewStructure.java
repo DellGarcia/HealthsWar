@@ -91,13 +91,11 @@ public class MainViewStructure extends MainViewBase {
 			Fighter fighterTarget = (Fighter) player.read();
 			Player target = myTurn?player:opponent;
 			
-			fighterTarget.setHealthPoints(fighterTarget.getHealthPoints() - attacker.getAtkPower());
-			
-			if(fighterTarget.getHealthPoints() <= 0) {
+			if(fighterTarget.getHealthPoints() <= 0 && !myTurn) {
 				target.getField().setDamage(fighterTarget.getHealthPoints());
 			}
 			
-			for(FighterField fi: opFighters) {
+			for(FighterField fi: myTurn?myFighters:opFighters) {
 				if(fi.getFighter() != null) {
 					if(fi.getFighter().id == attacker.id) {
 						fi.setFighter(attacker);
@@ -106,7 +104,7 @@ public class MainViewStructure extends MainViewBase {
 				}
 			}
 			
-			for(FighterField fi: myFighters) {
+			for(FighterField fi: !myTurn?myFighters:opFighters) {
 				if(fi.getFighter() != null) {
 					if(fi.getFighter().id == fighterTarget.id) {
 						fi.setFighter(fighterTarget);
@@ -196,15 +194,17 @@ public class MainViewStructure extends MainViewBase {
 			String titleMsg = (myTurn?"Your Turn: ":"Opponent Turn: ") + phase;
 			lblPhase.setText(titleMsg.replace("_", " "));
 			
-			switch (phase) {
-				case DRAW_PHASE:
-					resquestDrawCard();
-					break;
-				case BATTLE_PHASE:
-					btnBattle.setVisible(false);
-					break;
-				default:
-					break;
+			if(myTurn) {
+				switch (phase) {
+					case DRAW_PHASE:
+						resquestDrawCard();
+						break;
+					case BATTLE_PHASE:
+						btnBattle.setVisible(false);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		
