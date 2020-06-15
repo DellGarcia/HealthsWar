@@ -11,11 +11,12 @@ import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.view.main.MainView;
+import br.com.healthswar.view.Fonts;
 
 @SuppressWarnings("serial")
 public class AwaitView extends JFrame {
 
-	private Toolkit tk;	
+	private Toolkit tk;
 	
 	private Player player;
 	
@@ -34,10 +35,11 @@ public class AwaitView extends JFrame {
 		setLayout(null);
 		
 		container = new Panel();
-		container.setBackground(new Color(65,105,225));
+		container.setBackground(Color.WHITE);
 		setContentPane(container);
 		
-		lblMsg = new Label(350, 50, "Aguardando os outros jogadores...", new Font("Verdana", Font.PLAIN, 20), Color.BLACK);
+		lblMsg = new Label(350, 50, "Aguardando os outros jogadores...",
+				Fonts.TITLE_2, new Color(154, 26, 26));
 		lblMsg.setLocation(this.getWidth()/2 - lblMsg.getWidth()/2, this.getHeight()/2 - lblMsg.getHeight()/2);
 		container.add(lblMsg);
 		
@@ -45,38 +47,29 @@ public class AwaitView extends JFrame {
 		animacao("Aguardando segundo jogador").start();
 	
 		aguardarPartida().start();
-		
 	}
 
 	private Thread aguardarPartida() {
-		return new Thread(new Runnable() {
-			public void run() {
-				Response response = (Response) player.read();
-				if(response == Response.MATCH_READY) {
-					MainView.getInstance(player);
-					dispose();
-				}
+		return new Thread(() -> {
+			Response response = (Response) player.read();
+			if(response == Response.MATCH_READY) {
+				MainView.getInstance(player);
+				dispose();
 			}
 		});
 	}
 	
-	private Thread animacao(String msg) {
-		return new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						lblMsg.setText(msg);
+	private Thread animacao(String message) {
+		return new Thread(() -> {
+			while(true) {
+				try {
+					lblMsg.setText(message);
+					Thread.sleep(500);
+					for(int i = 0; i < 3; i++) {
+						lblMsg.setText(lblMsg.getText() + ".");
 						Thread.sleep(500);
-						for(int i = 0; i < 3; i++) {
-							lblMsg.setText(lblMsg.getText() + ".");
-							Thread.sleep(500);
-						}
-					} catch(Exception e) {
-						
 					}
-				}
+				} catch(Exception ignored) { }
 			}
 		});
 		
