@@ -89,10 +89,25 @@ public class MainViewStructure extends MainViewBase {
 		protected void atack() {
 			Fighter attacker = (Fighter) player.read();
 			Fighter fighterTarget = (Fighter) player.read();
-			Player target = myTurn?player:opponent;
 			
-			if(fighterTarget.getHealthPoints() <= 0 && !myTurn) {
-				target.getField().setDamage(fighterTarget.getHealthPoints());
+			if(fighterTarget.getHealthPoints() < 0) {
+				(!myTurn?player:opponent)
+					.getField().setDamage(fighterTarget.getHealthPoints());
+				
+				FighterField[] targetField = (!myTurn?myFighters:opFighters);
+				for(int i = 0; i < targetField.length; i++) {
+					if(targetField[i].getFighter() != null) {
+						if(targetField[i].getFighter().id == fighterTarget.id) {
+							targetField[i].setFighter(null);
+						}
+					}
+				}
+				
+				fighterTarget.setLocal(CardLocal.MEMORY);
+				(myTurn?player:opponent).getField().getMemory().add(fighterTarget);
+				(!myTurn?player:opponent).getField().removeFighter(fighterTarget);
+				
+				colocarMemoria();
 			}
 			
 			for(FighterField fi: myTurn?myFighters:opFighters) {

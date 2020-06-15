@@ -15,6 +15,7 @@ public enum MatchResponse implements Serializable {
 	SUCCESSFUL_ATACK,
 	ATACK_FAILED,
 	YOUR_TURN,
-	OPPONENT_TURN;
+	OPPONENT_TURN,
+	END_GAME;
 	
 }

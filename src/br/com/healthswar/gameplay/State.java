@@ -103,6 +103,9 @@ public class State {
 			attacker.getEnergies().remove(0);
 			if(target.healthPoints <= 0) {
 				opponent.getField().setDamage(target.healthPoints);
+				target.local = CardLocal.MEMORY;
+				active.getField().getMemory().add(target);
+				opponent.getField().removeFighter(target);
 			}
 			
 			return MatchResponse.SUCCESSFUL_ATACK;

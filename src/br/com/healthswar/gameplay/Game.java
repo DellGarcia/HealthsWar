@@ -155,11 +155,9 @@ public class Game {
 			Fighter attacker = (Fighter) player.read();
 			Fighter target = (Fighter) player.read();
 			
-			System.out.println(target.healthPoints);
-			
 			MatchResponse response = state.atack(attacker, target);
 			
-			System.out.println(target.healthPoints);
+			active = opponent.getField().getHealthsPoint() <= 0 ? false:true;
 			
 			switch (response) {
 				case SUCCESSFUL_ATACK:
@@ -187,6 +185,15 @@ public class Game {
 			state.getOpponent().write(MatchResponse.YOUR_TURN);
 			state.setPhase(Phases.DRAW_PHASE);
 			state.endTurn();
+		}
+		
+		public void endGame() {
+			Player player = state.getActive();
+			Player opponent = state.getOpponent();
+			MatchResponse response = MatchResponse.END_GAME;
+			
+			player.write(response);
+			opponent.write(response);
 		}
 		
 	/** Getter e Setters */

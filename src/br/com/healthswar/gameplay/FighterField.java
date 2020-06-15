@@ -41,14 +41,19 @@ public class FighterField extends Panel {
 	
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
-		this.fighter.local = CardLocal.FIELD;
-		addMouseListener(fighter);
-		this.image = this.fighter.frontImg;
-		this.energyCounter.setText(Integer.toString(fighter.getEnergies().size()));
-		this.energyCounter.setVisible(true);
-		energyCounter.setText("HP: " + fighter.getHealthPoints()
-							+"\nATK: " + fighter.getAtkPower()
-							+"\nEnergies: " + fighter.getEnergies().size());
+		
+		if(this.fighter != null) {
+			this.fighter.local = CardLocal.FIELD;
+			addMouseListener(fighter);
+			this.image = this.fighter.frontImg;
+			this.energyCounter.setText(Integer.toString(fighter.getEnergies().size()));
+			this.energyCounter.setVisible(true);
+			energyCounter.setText("HP: " + fighter.getHealthPoints()
+								+"\nATK: " + fighter.getAtkPower()
+								+"\nEnergies: " + fighter.getEnergies().size());
+		} else {
+			this.energyCounter.setVisible(false);
+		}
 		repaint();
 	}
 

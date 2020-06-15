@@ -20,7 +20,7 @@ public class Field implements Serializable{
 		this.fighters = new Fighter[5];
 		this.memory = new ArrayList<Fighter>();
 		this.discard = new ArrayList<Card>();
-		this.healthsPoint = 2000;
+		this.healthsPoint = 10;
 		this.deck = deck;
 		this.hand = new Hand(deck);
 		
@@ -45,6 +45,17 @@ public class Field implements Serializable{
 		this.fighters = fighter;
 	}
 
+	public void removeFighter(Fighter fighter) {
+		for(int i = 0; i < fighters.length; i++) {
+			if(fighters[i] != null) {
+				if(fighters[i].id == fighter.id) {
+					fighters[i] = null;
+					break;
+				}
+			}
+		}
+	}
+	
 	public ArrayList<Fighter> getMemory() {
 		return memory;
 	}
@@ -76,4 +87,5 @@ public class Field implements Serializable{
 	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
+	
 }

@@ -88,6 +88,8 @@ public class Partida extends Thread {
 					break;
 			}
 		}
+		
+		game.endGame();
 	}
 
 }

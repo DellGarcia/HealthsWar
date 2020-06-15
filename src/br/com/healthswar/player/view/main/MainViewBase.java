@@ -219,7 +219,7 @@ public class MainViewBase extends JFrame {
 		ArrayList<Fighter> myMemory = player.getField().getMemory();
 		ArrayList<Fighter> opMemory = opponent.getField().getMemory();
 		
-		int x = container.getWidth()/2 - (6*120-20)/2, y = container.getHeight() - 400;
+		int x = container.getWidth()/2 - (7*120-20)/2, y = container.getHeight() - 400;
 		for(int i = 0; i < myMemory.size(); i++) {
 			myMemory.get(i).setSize(100, 141);
 			myMemory.get(i).setLocation(x, y);
@@ -240,6 +240,7 @@ public class MainViewBase extends JFrame {
 			}
 			container.add(opMemory.get(i));
 		}
+		
 	}
 	
 	protected void colocarDescarte() {

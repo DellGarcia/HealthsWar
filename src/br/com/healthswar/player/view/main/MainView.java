@@ -30,6 +30,9 @@ public final class MainView extends MainViewStructure {
 			public void run() {
 				MatchResponse turn = (MatchResponse) player.read();
 				
+				if(turn == MatchResponse.END_GAME)
+					System.out.println("O jogo acabou");
+				
 				refreshHealthPoints();
 				
 				setTurn(turn);
