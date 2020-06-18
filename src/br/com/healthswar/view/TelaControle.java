@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.Label;
 import br.com.healthswar.server.Server;
+import br.com.healthswar.statics.Fonts;
 
 @SuppressWarnings("serial")
 public class TelaControle extends JFrame {
@@ -64,6 +65,7 @@ public class TelaControle extends JFrame {
 		// Label Porta
 			lblPorta = new Label(500, 40, "Informe uma porta para ligar o servidor (2000 a 9999)", Fonts.TITLE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
 			lblPorta.setLocation(container.getWidth()/2 - lblPorta.getWidth()/2, container.getHeight()/2 - lblPorta.getHeight()/2);
+			lblPorta.setHorizontalAlignment(SwingConstants.CENTER);
 			container.add(lblPorta);
 			
 		// Campo Porta

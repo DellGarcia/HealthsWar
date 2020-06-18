@@ -1,7 +1,6 @@
 package br.com.healthswar.player.view;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -11,7 +10,7 @@ import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.view.main.MainView;
-import br.com.healthswar.view.Fonts;
+import br.com.healthswar.statics.Fonts;
 
 @SuppressWarnings("serial")
 public class AwaitView extends JFrame {

@@ -16,7 +16,7 @@ import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.model.Person;
-import br.com.healthswar.view.Fonts;
+import br.com.healthswar.statics.Fonts;
 
 public class RegisterView extends JDialog {
 

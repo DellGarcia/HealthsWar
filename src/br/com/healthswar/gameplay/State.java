@@ -31,8 +31,10 @@ public class State {
 	public void phaseResolve() {
 		active.write(MatchResponse.YOUR_TURN);
 		active.write(phase);
+		active.write(turn);
 		opponent.write(MatchResponse.OPPONENT_TURN);
 		opponent.write(phase);
+		opponent.write(turn);
 	}
 	
 	public MatchResponse drawCard() {

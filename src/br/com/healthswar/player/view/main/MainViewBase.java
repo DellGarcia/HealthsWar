@@ -1,7 +1,6 @@
 package br.com.healthswar.player.view.main;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,8 @@ import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.FighterSelector;
 import br.com.healthswar.gameplay.Player;
-import br.com.healthswar.view.Fonts;
+import br.com.healthswar.statics.Colors;
+import br.com.healthswar.statics.Fonts;
 
 public class MainViewBase extends JFrame {
 
@@ -40,6 +40,7 @@ public class MainViewBase extends JFrame {
 	protected Label lblPhase;
 	protected Label myHP;
 	protected Label opHP;
+	protected Label lblTurn;
 	
 	protected FighterField[] myFighters;
 	protected FighterField[] opFighters;
@@ -57,7 +58,7 @@ public class MainViewBase extends JFrame {
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		
-		container = new Panel(new Color(54,54,54));
+		container = new Panel(Colors.BACKGROUND_COLOR);
 		container.setSize(getSize());
 		setContentPane(container);
 		
@@ -82,6 +83,7 @@ public class MainViewBase extends JFrame {
 	
 	protected void initializeComponents() {
 		colocarPhase();
+		colocarTurn();
 		colocarHealthPoint();
 		colocarDeck();
 		colocarMao();
@@ -96,11 +98,11 @@ public class MainViewBase extends JFrame {
 	 * Construction methods
 	 * */
 	protected void colocarHealthPoint() {
-		myHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		myHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Colors.LETTERS_COLOR, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		myHP.setLocation(0, 0);
 		container.add(myHP);
 		
-		opHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Color.WHITE, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
+		opHP = new Label(200, 40, Integer.toString(player.getField().getHealthsPoint()), Fonts.DESTAQUE, Colors.LETTERS_COLOR, container.getBackground(), SwingConstants.CENTER, SwingConstants.CENTER);
 		opHP.setLocation(container.getWidth() - opHP.getWidth(), 0);
 		container.add(opHP);
 	}
@@ -157,25 +159,38 @@ public class MainViewBase extends JFrame {
 		container.repaint();
 	}
 	
+	protected void colocarTurn() {
+		lblTurn = new Label(
+				200, 40,
+				"", Fonts.TITLE,
+				Colors.LETTERS_COLOR, container.getBackground(),
+				SwingConstants.CENTER, SwingConstants.CENTER
+		);
+		lblTurn.setLocation(container.getWidth()/2 - lblTurn.getWidth()/2, 0);
+		container.add(lblTurn);
+	}
+	
 	protected void colocarPhase() {
 		lblPhase = new Label(
 				400, 40,
-				"", new Font("Verdana", Font.PLAIN, 20),
-				Color.WHITE, container.getBackground(),
+				"", Fonts.TITLE,
+				Colors.LETTERS_COLOR, container.getBackground(),
 				SwingConstants.CENTER, SwingConstants.CENTER
 		);
-		lblPhase.setLocation(container.getWidth()/2 - lblPhase.getWidth()/2, 20);
+		lblPhase.setLocation(container.getWidth()/2 - lblPhase.getWidth()/2, 30);
 		container.add(lblPhase);
 	}
 	
 	protected void colocarBattle() {
 		btnBattle = new Button(
-				150, 50,
-				Color.DARK_GRAY, Color.WHITE,
+				160, 50,
+				new Color(154, 26, 26), Color.WHITE,
 				Fonts.NORMAL, "Battle",
-				Color.BLACK, 1,
-				new Color(65,105,225), Color.WHITE);
-		btnBattle.setLocation(container.getWidth() - 170, container.getHeight()/2 - 50/2 - 50);
+				new Color(125, 15, 15), 3,
+				new Color(65, 10, 10),
+				Color.WHITE, 45);
+		btnBattle.setLocation(container.getWidth() - btnBattle.getWidth()-20,
+				container.getHeight()/2 - 50/2 - 50);
 		btnBattle.setVisible(false);
 		btnBattle.addActionListener(startBattle());
 		container.add(btnBattle);
@@ -183,12 +198,14 @@ public class MainViewBase extends JFrame {
 	
 	protected void colocarEndTurn() {
 		btnEndTurn = new Button(
-				150, 50,
-				Color.DARK_GRAY, Color.WHITE,
+				btnBattle.getWidth(), btnBattle.getHeight(),
+				new Color(154, 26, 26), Color.WHITE,
 				Fonts.NORMAL, "End Turn",
-				Color.BLACK, 1,
-				new Color(65,105,225), Color.WHITE);
-		btnEndTurn.setLocation(container.getWidth() - 170, container.getHeight()/2 - 50/2 + 50);
+				new Color(125, 15, 15), 3,
+				new Color(65,10,10),
+				Color.WHITE, 45);
+		btnEndTurn.setLocation(btnBattle.getX(),
+				container.getHeight()/2 - 50/2 + 50);
 		btnEndTurn.setVisible(false);
 		btnEndTurn.addActionListener(endTurn());
 		container.add(btnEndTurn);

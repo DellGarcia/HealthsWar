@@ -21,7 +21,7 @@ public class CampoPorta extends TextField implements KeyListener {
 	
 	private List<Integer> valores = Arrays.asList(array);
 	
-	private boolean filled;
+	private boolean preenchido;
 	private int length;
 	
 	public CampoPorta(int largura, int altura, String txt, Font font, Color background, Color foreground) {
@@ -29,6 +29,7 @@ public class CampoPorta extends TextField implements KeyListener {
 		setFocusable(true);
 		
 		addKeyListener(this);
+		removeFocusListener(this);
 	}
 
 	@Override
@@ -67,19 +68,19 @@ public class CampoPorta extends TextField implements KeyListener {
 		}
 		
 		if(length >= 3 ) {
-			filled = true;
+			preenchido = true;
 		} else {
-			filled = false;
+			preenchido = false;
 		}
 	}
 	
-	public boolean isFilled() {
+	public boolean ispreenchido() {
 		if(length >= 3 ) {
-			filled = true;
+			preenchido = true;
 		} else {
-			filled = false;
+			preenchido = false;
 		}
-		return this.filled;
+		return this.preenchido;
 	}
 	
 	public int getValue() {

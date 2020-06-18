@@ -23,8 +23,6 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 	protected ImageIcon frontImg;
 	protected ImageIcon backImg;
 	
-//	private transient InputStream reader;
-
 	public Card(int id) {
 		this.id = id;
 		this.turned = true;

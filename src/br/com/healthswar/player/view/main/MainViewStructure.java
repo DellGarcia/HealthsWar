@@ -206,7 +206,10 @@ public class MainViewStructure extends MainViewBase {
 		
 		protected void refreshPhase(Phases phase) {
 			this.phase = phase; 
+			int turn = (Integer) player.read();
 			String titleMsg = (myTurn?"Your Turn: ":"Opponent Turn: ") + phase;
+			
+			lblTurn.setText("Turno: " + turn);
 			lblPhase.setText(titleMsg.replace("_", " "));
 			
 			if(myTurn) {

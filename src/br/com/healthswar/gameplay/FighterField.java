@@ -9,7 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
 import br.com.anonymous.frontend.Panel;
-import br.com.healthswar.view.Fonts;
+import br.com.healthswar.statics.Colors;
+import br.com.healthswar.statics.Fonts;
 
 public class FighterField extends Panel {
 
@@ -33,7 +34,7 @@ public class FighterField extends Panel {
 		energyCounter.setFont(Fonts.NORMAL);
 		energyCounter.setOpaque(false);
 		energyCounter.setBackground(null);
-		energyCounter.setForeground(Color.WHITE);
+		energyCounter.setForeground(Colors.LETTERS_COLOR);
 		energyCounter.setEditable(false);
 		energyCounter.setVisible(false);
 		fighter = null;

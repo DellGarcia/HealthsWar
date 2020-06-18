@@ -1,8 +1,9 @@
 package br.com.healthswar.gameplay;
 
-import java.awt.Color;
-
+import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
+import br.com.healthswar.statics.Colors;
+import br.com.healthswar.statics.Fonts;
 
 public class FighterSelector extends Panel {
 
@@ -11,21 +12,27 @@ public class FighterSelector extends Panel {
 	 */
 	private static final long serialVersionUID = 8790766783548959664L;
 
+	private Label lblMensagem;
 	private Fighter[] fighters;
 	
 	public FighterSelector() {
-		super(Color.WHITE);
-		
 		fighters = new Fighter[5];
 		
-		setSize(700, 160);
+		setBackground(null);
+		setSize(700, 190);
 		setVisible(false);
+		
+		lblMensagem = new Label(200, 40,
+				"Escolha um combatente",
+				Fonts.NORMAL, Colors.LETTERS_COLOR);
+		lblMensagem.setLocation(this.getWidth() / 2 - lblMensagem.getWidth()/2, 0);
+		add(lblMensagem);
 	}
 	
 	public void setSelector(FighterField[] fighters) {
 		this.removeAll();
 
-		int x = 20, y = 10;
+		int x = 20, y = 40;
 		for(int i = 0; i < 5; i++) {
 			this.fighters[i] = fighters[i].getFighter();
 			if(this.fighters[i] != null) {
@@ -36,6 +43,7 @@ public class FighterSelector extends Panel {
 			x += 120;
 		}
 		
+		add(lblMensagem);
 		setVisible(true);
 	}
 }

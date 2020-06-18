@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.player.view.main.MainView;
-import br.com.healthswar.view.Fonts;
+import br.com.healthswar.statics.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {
 	/**
