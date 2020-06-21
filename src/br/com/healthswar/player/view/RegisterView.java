@@ -16,6 +16,7 @@ import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.model.Person;
+import br.com.healthswar.statics.Colors;
 import br.com.healthswar.statics.Fonts;
 
 public class RegisterView extends JDialog {
@@ -40,7 +41,7 @@ public class RegisterView extends JDialog {
 	
 	public RegisterView() {
 		setTitle("HealthsWar - Cadastro");
-		setSize(1080, 720);
+		setSize(600, 500);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -56,6 +57,8 @@ public class RegisterView extends JDialog {
 	}
 	
 	private void init() {
+		Color titleColor = Colors.LETTERS_COLOR;
+		
 		formulario = new Panel(container.getBackground());
 		formulario.setSize(300, 500);
 		formulario.setLocation(
@@ -63,7 +66,7 @@ public class RegisterView extends JDialog {
 				container.getHeight() / 2 - formulario.getHeight() / 2);
 		
 		lblNome = new Label(100, 40, "Nome:",
-				Fonts.TITLE, Color.BLACK, null, SwingConstants.LEFT, SwingConstants.CENTER);
+				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
 		lblNome.setLocation(0, 10);
 		formulario.add(lblNome);
 		
@@ -73,7 +76,7 @@ public class RegisterView extends JDialog {
 		formulario.add(txtNome);
 		
 		lblEmail = new Label(100, 40,
-				"Email:", Fonts.TITLE, Color.BLACK, null, SwingConstants.LEFT, SwingConstants.CENTER);
+				"Email:", Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
 		lblEmail.setLocation(0, 100);
 		formulario.add(lblEmail);
 		
@@ -83,7 +86,7 @@ public class RegisterView extends JDialog {
 		formulario.add(txtEmail);
 		
 		lblSenha = new Label(100, 40, "Senha:",
-				Fonts.TITLE, Color.BLACK, null, SwingConstants.LEFT, SwingConstants.CENTER);
+				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
 		lblSenha.setLocation(0, 190);
 		formulario.add(lblSenha);
 		
@@ -93,7 +96,7 @@ public class RegisterView extends JDialog {
 		formulario.add(txtSenha);
 		
 		lblConfirmaSenha = new Label(200, 40, "Confirme a Senha:",
-				Fonts.TITLE, Color.BLACK, null, SwingConstants.LEFT, SwingConstants.CENTER);
+				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
 		lblConfirmaSenha.setLocation(0, 280);
 		formulario.add(lblConfirmaSenha);
 		
@@ -103,13 +106,13 @@ public class RegisterView extends JDialog {
 		formulario.add(txtConfirmaSenha);
 		
 		btnConfirmar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE,
-				Fonts.DESTAQUE, "Confirmar", null, 0, Color.DARK_GRAY, Color.WHITE);
+				Fonts.DESTAQUE, "Confirmar", null, 0, new Color(154, 26, 26), Color.WHITE);
 		btnConfirmar.setLocation(formulario.getWidth() - 100, 380);
 		btnConfirmar.addActionListener(registerAction());
 		formulario.add(btnConfirmar);
 		
 		btnVoltar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE,
-				Fonts.DESTAQUE, "Voltar", null, 0, Color.DARK_GRAY, Color.WHITE);
+				Fonts.DESTAQUE, "Voltar", null, 0, new Color(154, 26, 26), Color.WHITE);
 		btnVoltar.setLocation(0, 380);
 		btnVoltar.addActionListener(backAction());
 		formulario.add(btnVoltar);

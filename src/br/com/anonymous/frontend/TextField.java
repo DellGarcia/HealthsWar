@@ -32,7 +32,7 @@ public class TextField extends JTextField implements FocusListener, KeyListener 
 		setText(placeHolder);
 		setForeground(Color.LIGHT_GRAY);
 		
-		this.onFocusBorderColor = Color.BLUE;
+		this.onFocusBorderColor = Color.RED;
 		this.filled = false;
 		this.onFocusTextColor = foreground;
 		this.placeHolder = placeHolder;

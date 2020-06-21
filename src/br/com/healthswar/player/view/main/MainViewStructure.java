@@ -1,5 +1,7 @@
 package br.com.healthswar.player.view.main;
 
+import javax.swing.JOptionPane;
+
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
@@ -10,12 +12,26 @@ import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.Item;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.player.view.InitView;
 
 public class MainViewStructure extends MainViewBase {
 
 	private static final long serialVersionUID = 1702140455193280420L;
-
+	
 	/** Match Actions */
+		protected void verifyMatchStatus(MatchResponse turnResponse) {
+			if(turnResponse == MatchResponse.END_GAME) {
+				if(JOptionPane.showConfirmDialog(null, "Deseja ter uma revanche?", "Revanche", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+					// Revanche em breve kkk
+					new InitView();
+					dispose();
+				} else {
+					new InitView();
+					dispose();
+				}
+			}
+		}
+	
 		protected void drawCard() {
 			Player target = myTurn?player:opponent;
 			

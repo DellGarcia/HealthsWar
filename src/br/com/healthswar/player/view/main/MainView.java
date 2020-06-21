@@ -1,7 +1,5 @@
 package br.com.healthswar.player.view.main;
 
-import javax.swing.JOptionPane;
-
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Field;
@@ -32,9 +30,7 @@ public final class MainView extends MainViewStructure {
 			public void run() {
 				MatchResponse turn = (MatchResponse) player.read();
 				
-				if(turn == MatchResponse.END_GAME) {
-					JOptionPane.showMessageDialog(null, "O Jogo acabou");
-				}
+				verifyMatchStatus(turn);
 				
 				refreshHealthPoints();
 				

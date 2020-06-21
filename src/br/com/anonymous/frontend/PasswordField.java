@@ -32,7 +32,7 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 		setText(placeHolder);
 		setForeground(Color.LIGHT_GRAY);
 		
-		this.onFocusBorderColor = Color.BLUE;
+		this.onFocusBorderColor = Color.RED;
 		this.onFocusTextColor = foreground;
 		this.placeHolder = placeHolder;
 		
