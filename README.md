@@ -12,21 +12,23 @@ This is a card game based on the immune system, you can face your friends on the
 - [x] Compra carta na Draw Phase
 - [x] Enviar lutador na Main Phase
 - [x] Usar itens na Main phase
+- [ ] **Aplicar efeito de items**
 - [x] Energizar combatente na Main Phase
 - [x] Entrar na Battle Phase
-- [ ] **Atacar combatente inimigo**
+- [x] Atacar combatente inimigo
 - [x] Finalizar Turno
+- [ ] **Fazer sistema de Remacth**
 
 ### Rotinas cadastro/login
 
 - [x] Criar banco de dados
 - [x] Criar classes de comunicação com BD
 - [x] Fazer CRUD das tabelas
-- [ ] **Criar interface de cadastro**
+- [x] Criar interface de cadastro
 
 ### Outras Tarefas
 
-- [ ] **Deixar as telas mais bonitas**
+- [x] Deixar as telas padronizadas
 - [ ] **Criar sistema de ranking**
 - [ ] **Criar tela do Ranking**
 
