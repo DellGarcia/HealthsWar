@@ -9,7 +9,7 @@ import br.com.healthswar.comunication.Response;
 import br.com.healthswar.contoller.PersonDao;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.model.Person;
-import br.com.healthswar.view.TelaControle;
+import br.com.healthswar.player.view.ControlView;
 
 public class Server extends ServerSocket {
 	
@@ -43,11 +43,11 @@ public class Server extends ServerSocket {
 	}
 	
 	public void awaitConnetion() throws IOException, ClassNotFoundException {
-		TelaControle.atualizarLog("Aguardando conexao");
+		ControlView.atualizarLog("Aguardando conexao");
 		
 		Player player = new Player(accept());
 		
-		TelaControle.atualizarLog("Conexão estabelecida");
+		ControlView.atualizarLog("Conexão estabelecida");
 		
 		Request request = (Request) player.read();
 		
@@ -108,7 +108,7 @@ public class Server extends ServerSocket {
 					break;
 				
 			}
-			TelaControle.atualizarLog("Partida completa e inicida");
+			ControlView.atualizarLog("Partida completa e inicida");
 			match = new Partida(request);
 		}
 	}

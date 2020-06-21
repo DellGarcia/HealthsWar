@@ -1,6 +1,6 @@
 package br.com.healthswar.server;
 
-import br.com.healthswar.view.TelaControle;
+import br.com.healthswar.player.view.ControlView;
 
 public class Main {
 	public final static Thread init() {
@@ -8,7 +8,7 @@ public class Main {
 			
 			@Override
 			public void run() {                      
-				new TelaControle();
+				new ControlView();
 			}
 		});
 	}
