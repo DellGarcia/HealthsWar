@@ -7,20 +7,15 @@ import br.com.healthswar.gameplay.Player;
 
 public class Partida extends Thread {
 
-	private final Request MATCH_TYPE;
-
 	private Player[] players;
 	private int playersConneted;
 	private boolean complete;
 
-	private Game game;
-
 	public Partida(Request MATCH_TYPE) {
-		this.MATCH_TYPE = MATCH_TYPE;
 		this.playersConneted = 0;
 		this.complete = false;
 
-		switch (this.MATCH_TYPE) {
+		switch (MATCH_TYPE) {
 			case PLAY_A_SOLO_MATCH:
 				this.players = new Player[1];
 				break;
@@ -51,7 +46,7 @@ public class Partida extends Thread {
 	
 	@Override
 	public void run() {
-		game = new Game(players);
+		Game game = new Game(players);
 
 		while (game.isAtivo()) {
 			game.resolve();
