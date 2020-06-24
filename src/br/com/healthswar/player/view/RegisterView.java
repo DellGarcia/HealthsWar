@@ -16,8 +16,8 @@ import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.model.Person;
-import br.com.healthswar.statics.Colors;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.ColorsUtil;
+import br.com.healthswar.utils.Fonts;
 
 public class RegisterView extends JDialog {
 
@@ -57,7 +57,7 @@ public class RegisterView extends JDialog {
 	}
 	
 	private void init() {
-		Color titleColor = Colors.LETTERS_COLOR;
+		Color titleColor = ColorsUtil.LETTERS_COLOR;
 		
 		formulario = new Panel(container.getBackground());
 		formulario.setSize(300, 500);

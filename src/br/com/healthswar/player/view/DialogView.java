@@ -9,8 +9,8 @@ import javax.swing.JDialog;
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
-import br.com.healthswar.statics.Colors;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.ColorsUtil;
+import br.com.healthswar.utils.Fonts;
 
 public class DialogView extends JDialog {
 
@@ -47,7 +47,7 @@ public class DialogView extends JDialog {
 						ActionListener calcelAction,
 						ActionListener confirmAction) {
 		
-		lblMessage = new Label(getWidth(), 40, message, Fonts.TITLE, Colors.LETTERS_COLOR, null);
+		lblMessage = new Label(getWidth(), 40, message, Fonts.TITLE, ColorsUtil.LETTERS_COLOR, null);
 		lblMessage.setLocation(getWidth() / 2 - lblMessage.getWidth()/2, 15);
 		container.add(lblMessage);
 		
@@ -55,7 +55,7 @@ public class DialogView extends JDialog {
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.DESTAQUE, "Calcel",
 				null, 0,
-				Colors.LETTERS_COLOR, Color.WHITE);
+				ColorsUtil.LETTERS_COLOR, Color.WHITE);
 		btnCalcel.setLocation(30, 130);
 		btnCalcel.addActionListener(calcelAction);
 		container.add(btnCalcel);
@@ -64,7 +64,7 @@ public class DialogView extends JDialog {
 				Color.DARK_GRAY, Color.WHITE,
 				Fonts.DESTAQUE, "Confirm",
 				null, 0,
-				Colors.LETTERS_COLOR, Color.WHITE);
+				ColorsUtil.LETTERS_COLOR, Color.WHITE);
 		btnConfirm.setLocation(getWidth() - (btnConfirm.getWidth() + 30), 130);
 		btnConfirm.addActionListener(confirmAction);
 		container.add(btnConfirm);

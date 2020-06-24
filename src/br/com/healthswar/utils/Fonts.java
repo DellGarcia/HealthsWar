@@ -1,4 +1,4 @@
-package br.com.healthswar.statics;
+package br.com.healthswar.utils;
 
 import br.com.anonymous.frontend.RegistrarFont;
 

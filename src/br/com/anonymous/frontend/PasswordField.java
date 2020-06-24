@@ -64,7 +64,7 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		if(new String(this.getPassword()).isEmpty()) {
+		if(!(this.getPassword().length > 0)) {
 			setText(placeHolder);
 			setForeground(Color.LIGHT_GRAY);
 			setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));

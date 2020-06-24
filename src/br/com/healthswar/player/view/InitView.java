@@ -18,7 +18,7 @@ import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.server.Main;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.Fonts;
 
 public class InitView extends JFrame {
 

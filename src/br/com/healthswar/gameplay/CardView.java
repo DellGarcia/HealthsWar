@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.player.view.main.MainView;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {
 	/**
@@ -73,7 +73,8 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
 		Image imagem = null;
-		int width = 300, height = 424;
+		int width = 300;
+		int height = 424;
 		
 		try {
 			imagem = ImageIO.read(frontImg);

@@ -18,8 +18,8 @@ import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.CampoPorta;
 import br.com.anonymous.frontend.Label;
 import br.com.healthswar.server.Server;
-import br.com.healthswar.statics.Colors;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.ColorsUtil;
+import br.com.healthswar.utils.Fonts;
 
 @SuppressWarnings("serial")
 public class ControlView extends JFrame {
@@ -62,10 +62,10 @@ public class ControlView extends JFrame {
 		container.add(btnStart);
 		btnStart.addActionListener(swicthAction());
 			
-		lblPorta = new Label(500, 40, "Informe uma porta para ligar o servidor (2000 a 9999)", Fonts.TITLE, Colors.LETTERS_COLOR, null, SwingConstants.CENTER, SwingConstants.CENTER);
+		lblPorta = new Label(500, 40, "Informe uma porta para ligar o servidor (2000 a 9999)", Fonts.TITLE, ColorsUtil.LETTERS_COLOR, null, SwingConstants.CENTER, SwingConstants.CENTER);
 		lblPorta.setLocation(container.getWidth()/2 - lblPorta.getWidth()/2, container.getHeight()/2 - lblPorta.getHeight()/2);
 		lblPorta.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPorta.setForeground(Colors.LETTERS_COLOR);
+		lblPorta.setForeground(ColorsUtil.LETTERS_COLOR);
 		container.add(lblPorta);
 		
 		txtPorta = new CampoPorta(150, 40, "2222", Fonts.DESTAQUE, Color.WHITE, Color.BLACK);

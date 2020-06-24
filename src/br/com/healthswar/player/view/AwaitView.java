@@ -10,7 +10,7 @@ import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.view.main.MainView;
-import br.com.healthswar.statics.Fonts;
+import br.com.healthswar.utils.Fonts;
 
 @SuppressWarnings("serial")
 public class AwaitView extends JFrame {
