@@ -18,31 +18,31 @@ public class Person implements Serializable {
 		return name;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public final void setId(int id) {
 		this.id = id;
 	}
 
-	public void setName(String name) {
+	public final void setName(String name) {
 		this.name = name;
 	}
 
-	public String getEmail() {
+	public final String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public final void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public final String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public final void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -50,7 +50,7 @@ public class Person implements Serializable {
 		return victories;
 	}
 
-	public void setVitorias(int vitorias) {
+	public final void setVitorias(int vitorias) {
 		this.victories = vitorias;
 	}
 

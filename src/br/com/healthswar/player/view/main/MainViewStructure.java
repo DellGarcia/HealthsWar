@@ -21,6 +21,13 @@ public class MainViewStructure extends MainViewBase {
 	/** Match Actions */
 		protected void verifyMatchStatus(MatchResponse turnResponse) {
 			if(turnResponse == MatchResponse.END_GAME) {
+				MatchResponse response = (MatchResponse) player.read();
+				if(response == MatchResponse.YOU_WIN) {
+					JOptionPane.showMessageDialog(null, "VOCÊ GANHOU");
+				} else if(response == MatchResponse.YOU_LOSE) {
+					JOptionPane.showMessageDialog(null, "VOCÊ PERDEU");
+				}
+				
 				if(JOptionPane.showConfirmDialog(null, "Deseja ter uma revanche?", "Revanche", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 					// Revanche em breve kkk
 					new InitView();

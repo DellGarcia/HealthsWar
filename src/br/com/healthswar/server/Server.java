@@ -17,15 +17,15 @@ public class Server extends ServerSocket {
 	
 	public static boolean active;
 	
-	private ArrayList<Partida> solo;
-	private ArrayList<Partida> duo;
+	private ArrayList<Match> solo;
+	private ArrayList<Match> duo;
 	
 	private Server(int port) throws IOException {
 		super(port);
-		solo = new ArrayList<Partida>();
-		duo = new ArrayList<Partida>();
-		solo.add(new Partida(Request.PLAY_A_SOLO_MATCH));
-		duo.add(new Partida(Request.PLAY_A_DUO_MATCH));
+		solo = new ArrayList<Match>();
+		duo = new ArrayList<Match>();
+		solo.add(new Match(Request.PLAY_A_SOLO_MATCH));
+		duo.add(new Match(Request.PLAY_A_DUO_MATCH));
 	}
 
 	public static Server on(int port) throws IOException {
@@ -92,16 +92,16 @@ public class Server extends ServerSocket {
 		}
 	}
 	
-	private void verificarPartida(Partida match, Request request) {
+	private void verificarPartida(Match match, Request request) {
 		if(match.getCompleto()) {
 			match.start();
 			switch(request) {
 				case PLAY_A_SOLO_MATCH:
-					solo.add(new Partida(request));
+					solo.add(new Match(request));
 					break;
 					
 				case PLAY_A_DUO_MATCH:
-					duo.add(new Partida(request));
+					duo.add(new Match(request));
 					break;
 				
 				default:
@@ -109,7 +109,7 @@ public class Server extends ServerSocket {
 				
 			}
 			ControlView.atualizarLog("Partida completa e inicida");
-			match = new Partida(request);
+			match = new Match(request);
 		}
 	}
 	

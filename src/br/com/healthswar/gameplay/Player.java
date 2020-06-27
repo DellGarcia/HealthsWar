@@ -5,7 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Player {
+import br.com.healthswar.player.model.Person;
+
+public class Player extends Person {
+	
+	private static final long serialVersionUID = -6102667841735506917L;
 	
 	private ObjectOutputStream out;
 	private ObjectInputStream in;

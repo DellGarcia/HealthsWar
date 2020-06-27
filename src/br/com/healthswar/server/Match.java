@@ -5,13 +5,13 @@ import br.com.healthswar.comunication.Request;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Player;
 
-public class Partida extends Thread {
+public class Match extends Thread {
 
 	private Player[] players;
 	private int playersConneted;
 	private boolean complete;
 
-	public Partida(Request MATCH_TYPE) {
+	public Match(Request MATCH_TYPE) {
 		this.playersConneted = 0;
 		this.complete = false;
 

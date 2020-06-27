@@ -15,7 +15,8 @@ public class Game {
 	private State state;
 
 	private Deck array[] = {
-			new Deck(DeckTheme.IMMUNE_SYSTEM), new Deck(DeckTheme.FOREIGN_BODIES)
+			new Deck(DeckTheme.IMMUNE_SYSTEM),
+			new Deck(DeckTheme.FOREIGN_BODIES)
 	};
 	private List<Deck> decks = new ArrayList<Deck>(Arrays.asList(array));
 	
@@ -193,7 +194,9 @@ public class Game {
 			MatchResponse response = MatchResponse.END_GAME;
 			
 			player.write(response);
+			player.write(MatchResponse.YOU_WIN);
 			opponent.write(response);
+			opponent.write(MatchResponse.YOU_LOSE);
 		}
 		
 	/** Getter e Setters */
