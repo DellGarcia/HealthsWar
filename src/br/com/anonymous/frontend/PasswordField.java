@@ -82,6 +82,6 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		filled = new String(this.getPassword()).length() > 0 ? true : false;
+		filled = !(this.getPassword().length > 0) ? true : false;
 	}
 }
