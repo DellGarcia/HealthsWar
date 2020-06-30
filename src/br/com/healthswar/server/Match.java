@@ -26,7 +26,6 @@ public class Match extends Thread {
 				
 			default:
 				break;
-	
 		}
 	}
 
@@ -34,9 +33,8 @@ public class Match extends Thread {
 		if (!complete) {
 			this.players[playersConneted] = player;
 			this.playersConneted++;
-			if (playersConneted == players.length) {
+			if (playersConneted == players.length)
 				complete = true;
-			}
 		}
 	}
 
@@ -46,7 +44,7 @@ public class Match extends Thread {
 	
 	@Override
 	public void run() {
-		Game game = new Game(players);
+		final Game game = new Game(players);
 
 		while (game.isAtivo()) {
 			game.resolve();
@@ -83,7 +81,6 @@ public class Match extends Thread {
 					break;
 			}
 		}
-		
 		game.endGame();
 	}
 

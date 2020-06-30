@@ -106,7 +106,6 @@ public class Server extends ServerSocket {
 				
 				default:
 					break;
-				
 			}
 			ControlView.atualizarLog("Partida completa e inicida");
 			match = new Match(request);

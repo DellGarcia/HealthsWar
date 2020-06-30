@@ -4,12 +4,6 @@ import br.com.healthswar.player.view.ControlView;
 
 public final class Main {
 	public final static Thread init() {
-		return new Thread(new Runnable() {
-			
-			@Override
-			public void run() {                      
-				new ControlView();
-			}
-		});
+		return new Thread(() -> new ControlView());
 	}
 }

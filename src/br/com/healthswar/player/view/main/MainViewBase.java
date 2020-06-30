@@ -2,7 +2,6 @@ package br.com.healthswar.player.view.main;
 
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -289,28 +288,20 @@ public class MainViewBase extends JFrame {
 	
 	/** Actions Listeners */
 		private ActionListener startBattle() {
-			return new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(myTurn) {
-						player.write(MatchRequest.START_BATTLE);
-						btnBattle.setVisible(false);
-					}
+			return ActionEvent -> {
+				if(myTurn) {
+					player.write(MatchRequest.START_BATTLE);
+					btnBattle.setVisible(false);
 				}
 			};
 		}
 		
 		private ActionListener endTurn() {
-			return new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(myTurn) {
-						player.write(MatchRequest.END_THE_TURN);
-						btnEndTurn.setVisible(false);
-						btnBattle.setVisible(false);
-					}
+			return ActionEvent -> {
+				if(myTurn) {
+					player.write(MatchRequest.END_THE_TURN);
+					btnEndTurn.setVisible(false);
+					btnBattle.setVisible(false);
 				}
 			};
 		}
