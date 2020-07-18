@@ -10,7 +10,7 @@ public class Hand extends ArrayList<Card> implements Serializable {
 	public Hand(Deck deck) {
 		for(int i = 0; i < 5; i++) {
 			Card card = deck.get(i);
-			card.turned = false;
+			card.setTurned(false);
 			card.local = CardLocal.HAND;
 			add(card);
 		}

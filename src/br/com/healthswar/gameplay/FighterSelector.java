@@ -2,6 +2,7 @@ package br.com.healthswar.gameplay;
 
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
+import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 

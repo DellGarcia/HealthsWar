@@ -3,6 +3,8 @@ package br.com.healthswar.gameplay;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import br.com.healthswar.gameplay.fighters.Fighter;
+
 public class Field implements Serializable{
 	/**
 	 * 

@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
 import br.com.anonymous.frontend.Panel;
+import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 

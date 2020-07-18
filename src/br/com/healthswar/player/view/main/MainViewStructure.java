@@ -7,11 +7,11 @@ import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.CardLocal;
-import br.com.healthswar.gameplay.Energy;
-import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
-import br.com.healthswar.gameplay.Item;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.gameplay.energy.Energy;
+import br.com.healthswar.gameplay.fighters.Fighter;
+import br.com.healthswar.gameplay.items.Item;
 import br.com.healthswar.player.view.InitView;
 
 public class MainViewStructure extends MainViewBase {

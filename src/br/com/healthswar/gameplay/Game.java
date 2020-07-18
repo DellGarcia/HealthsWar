@@ -8,6 +8,9 @@ import java.util.List;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.comunication.Response;
+import br.com.healthswar.gameplay.energy.Energy;
+import br.com.healthswar.gameplay.fighters.Fighter;
+import br.com.healthswar.gameplay.items.Item;
 
 public class Game {
 

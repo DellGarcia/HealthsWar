@@ -1,90 +1,74 @@
 package br.com.healthswar.gameplay;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
+import br.com.healthswar.gameplay.energy.Energy;
+import br.com.healthswar.gameplay.fighters.Fighter;
+import br.com.healthswar.gameplay.items.Item;
 import br.com.healthswar.player.view.main.MainView;
 import br.com.healthswar.utils.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 534020604704164574L;
 
-	private transient InputStream frontImg;
+	private ImageIcon frontImg;
 	
 	private Card card;
 	
+	private Label lblMessage;
 	private Label lblFundo;
 	
 	public CardView(Card card) {
 		super();
+		setSize(300, 424);
 		
+		init();
 		setCard(card);
 		
-		setSize(300, 424);
 		setVisible(false);
 		addMouseListener(this);
+	}
+	
+	private void init() {
+		lblMessage = new Label(getWidth(), getHeight(), "", Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
+		lblMessage.setVisible(false);
+		lblMessage.setOpaque(true);
+		this.add(lblMessage);
+		
+		lblFundo = new Label(getWidth(), getHeight(), "", Fonts.DESTAQUE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
+		this.add(lblFundo);
 	}
 
 	public void setCard(Card card) {
 		this.card = card;
 		
-		if(lblFundo != null) {
-			this.remove(lblFundo);
-		}
-		lblFundo = new Label(getWidth(), getHeight(), "Enviar", Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
-		lblFundo.setVisible(false);
-		lblFundo.setOpaque(true);
-		this.add(lblFundo);
-		if(card instanceof Fighter) {
-			this.frontImg = Card.class.getResourceAsStream("../assets/card-md.jpg");
-			lblFundo.setText("Enviar");
-		}
-		if(card instanceof Energy) {
-			this.frontImg = Card.class.getResourceAsStream("../assets/energy-md.jpg");
-			lblFundo.setText("Colocar");
-		}
-		if(card instanceof Item) {
-			this.frontImg = Card.class.getResourceAsStream("../assets/item-md.png");
-			lblFundo.setText("Usar");
+		if(card != null) {
+			if(card instanceof Fighter) {
+				lblMessage.setText("Enviar");
+			}
+			else if(card instanceof Energy) {
+				lblMessage.setText("Colocar");
+			}
+			else if(card instanceof Item) {
+				lblMessage.setText("Usar");
+			}
+			
+			this.frontImg = card.frontImg;
+			lblFundo.setIcon(frontImg);
 		}
 	}
 	
 	public Card getCard() {
 		return this.card;
-	}
-	
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		Image imagem = null;
-		int width = 300;
-		int height = 424;
-		
-		try {
-			imagem = ImageIO.read(frontImg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		g2d.drawImage(imagem, 0, 0, width, height, this);
-		
-		g2d.dispose();
 	}
 	
 	@Override
@@ -117,13 +101,12 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		lblFundo.setVisible(true);
-		repaint();
+		lblMessage.setVisible(true);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		lblFundo.setVisible(false);
+		lblMessage.setVisible(false);
 		setVisible(false);
 	}
 

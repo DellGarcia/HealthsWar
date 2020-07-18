@@ -1,21 +1,18 @@
-package br.com.healthswar.gameplay;
+package br.com.healthswar.gameplay.energy;
 
 import java.awt.event.MouseEvent;
-import java.net.URISyntaxException;
 
+import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.player.view.main.MainView;
 
-public class Item extends Card  {
+public class Energy extends Card  {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5422150266430590077L;
+	private static final long serialVersionUID = -1138132937122501319L;
 
-	public Item(int id) throws URISyntaxException {
-		super(id);
-		frontImg = loadImage("../assets/item-sm.png");
-		super.repaint();
+	public Energy() {
+		super();
+		frontImg = loadImage("../../assets/energy-md.jpg");
+		setImage();
 	}
 	
 	@Override
@@ -38,7 +35,7 @@ public class Item extends Card  {
 				break;
 	
 			case HAND:
-				if(!turned) 
+				if(!isTurned()) 
 					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
@@ -67,8 +64,8 @@ public class Item extends Card  {
 				break;
 	
 			case HAND:
-				if(!turned)
-					setLocation(getX(), getY() - 20);
+				if(!isTurned())
+					setLocation(getX(), getY() - 20); 
 				break;
 				
 			case FIELD:
@@ -96,7 +93,7 @@ public class Item extends Card  {
 				break;
 	
 			case HAND:
-				if(!turned)
+				if(!isTurned())
 					setLocation(getX(), getY() + 20);
 				break;
 				
@@ -119,14 +116,12 @@ public class Item extends Card  {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

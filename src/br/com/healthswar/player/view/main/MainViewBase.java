@@ -15,10 +15,10 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.CardView;
-import br.com.healthswar.gameplay.Fighter;
 import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.FighterSelector;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 

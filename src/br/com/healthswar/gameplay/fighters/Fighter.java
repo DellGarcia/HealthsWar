@@ -1,17 +1,16 @@
-package br.com.healthswar.gameplay;
+package br.com.healthswar.gameplay.fighters;
 
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Random;
 
+import br.com.healthswar.gameplay.Card;
+import br.com.healthswar.gameplay.CardLocal;
+import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.player.view.main.MainView;
 
 public class Fighter extends Card implements Serializable {	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -851267654637882260L;
 	
 	private ArrayList<Energy> energies;
@@ -19,14 +18,10 @@ public class Fighter extends Card implements Serializable {
 	protected int healthPoints;
 	protected int atkPower;
 	
-	public Fighter(int id) throws URISyntaxException {
-		super(id);
-		Random r = new Random();
-		healthPoints = r.nextInt(100) + 50;
-		atkPower = r.nextInt(30) + 20;
-		frontImg = loadImage("../assets/card-sm.jpg");
+	public Fighter() {
+		super();
 		this.energies = new ArrayList<Energy>();
-		super.repaint();
+		setImage();
 	}
 
 	public ArrayList<Energy> getEnergies() {
@@ -54,15 +49,11 @@ public class Fighter extends Card implements Serializable {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
+	public void mousePressed(MouseEvent e) {}
 
 
 	@Override
@@ -73,7 +64,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 	
 			case HAND:
-				if(!turned) 
+				if(!isTurned()) 
 					MainView.INSTANCE.mostarCardView(this);
 				break;
 				
@@ -108,7 +99,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 	
 			case HAND:
-				if(!turned)
+				if(!isTurned())
 					setLocation(getX(), getY() - 20);
 				break;
 				
@@ -142,7 +133,7 @@ public class Fighter extends Card implements Serializable {
 				break;
 	
 			case HAND:
-				if(!turned)
+				if(!isTurned())
 					setLocation(getX(), getY() + 20); 
 				break;
 				
@@ -169,16 +160,10 @@ public class Fighter extends Card implements Serializable {
 
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseMoved(MouseEvent e) {}
 	
 }

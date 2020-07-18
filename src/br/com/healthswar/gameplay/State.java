@@ -2,6 +2,9 @@ package br.com.healthswar.gameplay;
 
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
+import br.com.healthswar.gameplay.energy.Energy;
+import br.com.healthswar.gameplay.fighters.Fighter;
+import br.com.healthswar.gameplay.items.Item;
 
 public class State {
 	
@@ -101,10 +104,10 @@ public class State {
 	
 	public MatchResponse atack(Fighter attacker, Fighter target) {
 		if(atackAvalible && !attacker.getEnergies().isEmpty()) {
-			target.healthPoints -= attacker.atkPower;
+			target.setHealthPoints(target.getHealthPoints() - attacker.getAtkPower());
 			attacker.getEnergies().remove(0);
-			if(target.healthPoints <= 0) {
-				opponent.getField().setDamage(target.healthPoints);
+			if(target.getHealthPoints() <= 0) {
+				opponent.getField().setDamage(target.getHealthPoints());
 				target.local = CardLocal.MEMORY;
 				active.getField().getMemory().add(target);
 				opponent.getField().removeFighter(target);
