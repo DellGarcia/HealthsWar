@@ -9,7 +9,7 @@ import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.player.view.main.MainView;
 
-public class Fighter extends Card implements Serializable {	
+public abstract class Fighter extends Card implements Serializable {	
 
 	private static final long serialVersionUID = -851267654637882260L;
 	

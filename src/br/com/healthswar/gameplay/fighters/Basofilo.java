@@ -8,7 +8,7 @@ public class Basofilo extends Fighter {
 		super();
 		name = "Basófilo";
 		frontImg = loadImage("../../assets/card-md.jpg");
-		healthPoints = 40;
+		healthPoints = 50;
 		atkPower = 40;
 		description = "Outro leucócito granulócito, atuam liberando histamina e heparina,"
 				+ " substâncias que ajudam na dilatação dos vasos sanguíneos e na anticoagulação, respectivamente."

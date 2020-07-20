@@ -1,13 +1,18 @@
 package br.com.healthswar.gameplay.items;
 
-public class ImunidadeAlta extends Item {
+public class HighImmunity extends Item {
 
 	private static final long serialVersionUID = 1L;
 
-	public ImunidadeAlta() {
+	public HighImmunity() {
 		super();
 		name = "Imunidade Alta";
 		description = "Reduz o ataque dos virus em 10 por 3 turnos";
+	}
+
+	@Override
+	public void resolve() {
+		System.out.println("Ativou");
 	}
 	
 }

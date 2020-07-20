@@ -11,6 +11,7 @@ public class Energy extends Card  {
 
 	public Energy() {
 		super();
+		name = "ATP";
 		frontImg = loadImage("../../assets/energy-md.jpg");
 		setImage();
 	}

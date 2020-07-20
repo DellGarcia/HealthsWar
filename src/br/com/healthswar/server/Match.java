@@ -4,6 +4,7 @@ import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.gameplay.Game;
 import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.gameplay.effects.EffectMachine;
 
 public class Match extends Thread {
 
@@ -45,9 +46,11 @@ public class Match extends Thread {
 	@Override
 	public void run() {
 		final Game game = new Game(players);
+		final EffectMachine effectMachine = EffectMachine.getInstance(); 
 
 		while (game.isAtivo()) {
 			game.resolve();
+			effectMachine.resolveEffects();
 			
 			MatchRequest request = (MatchRequest) game.getState().getActive().read();
 			

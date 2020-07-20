@@ -1,13 +1,18 @@
 package br.com.healthswar.gameplay.items;
 
-public class AtividadeFisicaRegular extends Item {
+public class RegularPhysicalActivity extends Item {
 
 	private static final long serialVersionUID = 740730145844578941L;
 
-	public AtividadeFisicaRegular() {
+	public RegularPhysicalActivity() {
 		super();
 		name = "Ativiadade Física Regular";
 		description = "A prática de exercicios tornou o corpo mais forte, compre 2 cartas.";
+	}
+
+	@Override
+	public void resolve() {
+		System.out.println("Ativou");
 	}
 	
 }

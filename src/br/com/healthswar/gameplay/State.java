@@ -2,11 +2,12 @@ package br.com.healthswar.gameplay;
 
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
+import br.com.healthswar.gameplay.effects.EffectMachine;
 import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.gameplay.items.Item;
 
-public class State {
+public final class State {
 	
 	private int turn = 0;
 	private Player[] players;
@@ -17,11 +18,28 @@ public class State {
 	private boolean atackAvalible;
 	private boolean energyAvalible;
 	
-	public State(Player[] players) {
+	private static State INSTANCE;
+	
+	private State(Player[] players) {
 		init(players);
 	}
+	
+	public static State getState() {
+		return INSTANCE;
+	}
 
-	public void init(Player[] players) {
+	public static State create(Player[] players) {
+		if(INSTANCE == null)
+			INSTANCE = new State(players);
+		
+		return INSTANCE;
+	}
+	
+	public static void destroy() {
+		INSTANCE = null;
+	}
+	
+	private void init(Player[] players) {
 		turn++;
 		this.players = players;
 		this.phase = Phases.DRAW_PHASE;
@@ -76,6 +94,7 @@ public class State {
 		
 		active.getField().getHand().remove(item);
 		active.getField().getDescarte().add(item);
+		EffectMachine.getInstance().useItemEffect(item);
 		
 		item.local = CardLocal.DESCARTE;
 		
@@ -131,7 +150,7 @@ public class State {
 			return active;
 		}
 	
-		public void setActive() {
+		private void setActive() {
 			active = players[turn % 2 == 0 ? 0 : 1];
 			opponent = players[turn % 2 != 0 ? 0 : 1];
 		}

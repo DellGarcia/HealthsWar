@@ -59,7 +59,7 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 				lblMessage.setText("Colocar");
 			}
 			else if(card instanceof Item) {
-				lblMessage.setText("Usar");
+				lblMessage.setText(card.name);
 			}
 			
 			this.frontImg = card.frontImg;

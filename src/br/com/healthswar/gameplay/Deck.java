@@ -11,7 +11,10 @@ public class Deck extends ArrayList<Card> implements Serializable {
 
 	private static final long serialVersionUID = -2304845787652432479L;
 	
+	private DeckTheme deckTheme;
+	
 	public Deck(DeckTheme deckTheme) {
+		this.deckTheme = deckTheme;
 		switch (deckTheme) {
 			case IMMUNE_SYSTEM:
 				addAll(new ImmuneSystem());
@@ -28,6 +31,10 @@ public class Deck extends ArrayList<Card> implements Serializable {
 		Card first = get(0);
 		remove(0);
 		return first;
+	}
+	
+	public DeckTheme getDeckTheme() {
+		return deckTheme;
 	}
 	
 }

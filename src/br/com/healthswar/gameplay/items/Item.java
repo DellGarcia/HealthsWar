@@ -5,26 +5,26 @@ import java.awt.event.MouseEvent;
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.player.view.main.MainView;
 
-public class Item extends Card  {
+public abstract class Item extends Card  {
 
 	private static final long serialVersionUID = -5422150266430590077L;
 
+	private int duration;
+	
 	public Item() {
 		super();
 		frontImg = loadImage("../../assets/item-md.png");
 		setImage();
 	}
 	
+	public abstract void resolve();
+	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
+	public void mousePressed(MouseEvent e) {}
 
 
 	@Override
@@ -115,14 +115,18 @@ public class Item extends Card  {
 
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		
+	public void mouseMoved(MouseEvent e) {}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void reduceDuration() {
+		this.duration--;
 	}
 
 }

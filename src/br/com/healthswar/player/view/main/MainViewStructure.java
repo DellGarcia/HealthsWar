@@ -7,6 +7,7 @@ import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.CardLocal;
+import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.gameplay.energy.Energy;
@@ -31,10 +32,10 @@ public class MainViewStructure extends MainViewBase {
 				if(JOptionPane.showConfirmDialog(null, "Deseja ter uma revanche?", "Revanche", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 					// Revanche em breve kkk
 					new InitView();
-					dispose();
+					MainView.destroy();
 				} else {
 					new InitView();
-					dispose();
+					MainView.destroy();
 				}
 			}
 		}
@@ -73,9 +74,13 @@ public class MainViewStructure extends MainViewBase {
 		
 		protected void useItem() {
 			Item item = (Item) player.read();
+			Field field = (Field) player.read();
 			Player target = myTurn?player:opponent;
 			
-			target.getField().getDescarte().add(item);
+			target.setField(field);
+			
+			System.out.println(target.getField().getDescarte().size());
+			//target.getField().getDescarte().add(item);
 			container.remove(target.getField().getHand().remove(item));
 			
 			colocarDescarte();

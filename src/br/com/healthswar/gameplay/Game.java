@@ -12,7 +12,7 @@ import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.gameplay.items.Item;
 
-public class Game {
+public final class Game {
 
 	private boolean active;
 	private State state;
@@ -26,7 +26,7 @@ public class Game {
 	public Game(Player[] players) {
 		sortDeck(players);
 		active = true;
-		state = new State(players);
+		state = State.create(players);
 		Collections.shuffle(decks);
 		init();
 	}
@@ -95,14 +95,18 @@ public class Game {
 			Player opponent = state.getOpponent();
 			Item item = (Item) player.read();
 			
+			System.out.println(player.getField().getDescarte().size());
 			MatchResponse res = state.useItem(item);
+			System.out.println(player.getField().getDescarte().size());
 			
 			switch (res) {
 				case ITEM_USED:
 					player.write(res);
 					player.write(item);
+					player.write(player.getField());
 					opponent.write(res);
 					opponent.write(item);
+					opponent.write(player.getField());
 					break;
 	
 				case IMPOSSIBLE_TO_USE:

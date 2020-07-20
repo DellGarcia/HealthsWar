@@ -8,7 +8,7 @@ public class Eosinofilo extends Fighter {
 		super();
 		name = "Eosinófilo";
 		frontImg = loadImage("../../assets/sprites/anticorpos/eusinofilo.png");
-		healthPoints = 40;
+		healthPoints = 50;
 		atkPower = 40;
 		description = "São células que também possuem grânulos"
 				+ " e estão relacionadas com a fagocitose dos complexos antígeno-anticorpo."

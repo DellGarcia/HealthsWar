@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 import br.com.healthswar.gameplay.fighters.Fighter;
 
-public class Field implements Serializable{
-	/**
-	 * 
-	 */
+public class Field implements Serializable {
+
 	private static final long serialVersionUID = 6683097949155783980L;
 
 	private int healthsPoint;
