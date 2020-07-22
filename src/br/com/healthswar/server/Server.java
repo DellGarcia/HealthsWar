@@ -1,7 +1,9 @@
 package br.com.healthswar.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import br.com.healthswar.comunication.Request;
@@ -21,16 +23,32 @@ public class Server extends ServerSocket {
 	private ArrayList<Match> duo;
 	
 	private Server(int port) throws IOException {
-		super(port);
+		super(port, 50, InetAddress.getByName("26.93.175.222"));
 		solo = new ArrayList<Match>();
 		duo = new ArrayList<Match>();
 		solo.add(new Match(Request.PLAY_A_SOLO_MATCH));
 		duo.add(new Match(Request.PLAY_A_DUO_MATCH));
 	}
-
+	
+	private Server(int port, String ip) throws IOException {
+		super(port, 50, InetAddress.getByName(ip));
+		solo = new ArrayList<Match>();
+		duo = new ArrayList<Match>();
+		solo.add(new Match(Request.PLAY_A_SOLO_MATCH));
+		duo.add(new Match(Request.PLAY_A_DUO_MATCH));
+	}
+	
 	public static Server on(int port) throws IOException {
 		if(server == null) {
 			server = new Server(port);
+			active = true;
+		}
+		return server;
+	}
+	
+	public static Server on(int port, String ip) throws IOException {
+		if(server == null) {
+			server = new Server(port, ip);
 			active = true;
 		}
 		return server;

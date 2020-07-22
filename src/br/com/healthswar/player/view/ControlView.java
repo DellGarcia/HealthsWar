@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.CampoPorta;
 import br.com.anonymous.frontend.Label;
+import br.com.healthswar.server.Match;
 import br.com.healthswar.server.Server;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
@@ -96,7 +97,7 @@ public class ControlView extends JFrame {
 						if(txtPorta.ispreenchido()) {
 							int val = txtPorta.getValue();
 							if(val >= 2000) {
-								server = Server.on(val);
+								server = Server.on(val, "26.93.175.222");
 								log.setText(log.getText() + "\nServidor aguardando na porta " + val);
 								aguardarPlayers().start();
 								btnStart.setText("Stop");
