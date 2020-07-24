@@ -168,7 +168,7 @@ public final class Game {
 			active = opponent.getField().getHealthsPoint() <= 0 ? false:true;
 			
 			switch (response) {
-				case SUCCESSFUL_ATACK:
+				case SUCCESSFUL_ATTACK:
 					player.write(response);
 					player.write(attacker);
 					player.write(target);
@@ -178,7 +178,7 @@ public final class Game {
 					opponent.write(target);
 					break;
 
-				case ATACK_FAILED:	
+				case ATTACK_FAILED:
 					player.write(response);
 					opponent.write(response);
 					break;
