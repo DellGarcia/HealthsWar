@@ -1,15 +1,22 @@
 package br.com.healthswar.player.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.CampoPorta;
 import br.com.anonymous.frontend.Panel;
@@ -17,7 +24,6 @@ import br.com.anonymous.frontend.TextField;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
-import br.com.healthswar.player.view.main.MainView;
 import br.com.healthswar.server.Server;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
@@ -26,6 +32,8 @@ import br.com.healthswar.utils.StringUtil;
 
 public class ServerView extends View {
 
+	private static final long serialVersionUID = 1L;
+	
 	private static ServerView INSTANCE;
 	private static JTextArea log;
 	private final JPanel container;

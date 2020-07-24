@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.fighters;
 
 public class Monocito extends Fighter {
 
-	private static final long serialVersionUID = -4928865798689810520L;
+	private static final long serialVersionUID = 5435648852120770686L;
 
 	public Monocito() {
 		super();

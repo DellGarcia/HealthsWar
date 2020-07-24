@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.fighters;
 
 public class Basofilo extends Fighter {
 
-	private static final long serialVersionUID = -1903105171260901722L;
+	private static final long serialVersionUID = -1633347851339858892L;
 
 	public Basofilo() {
 		super();

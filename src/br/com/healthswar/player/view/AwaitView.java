@@ -8,9 +8,10 @@ import br.com.healthswar.player.view.main.MainView;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 
-@SuppressWarnings("BusyWait")
 public class AwaitView extends View {
 
+	private static final long serialVersionUID = 1L;
+	
 	private final Panel container;
 	private final Player player;
 	private Label lblMsg;

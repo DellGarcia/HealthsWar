@@ -2,8 +2,8 @@ package br.com.healthswar.gameplay.items;
 
 public class HealthyEating extends Item {
 
-	private static final long serialVersionUID = 3914956652985198514L;
-	
+	private static final long serialVersionUID = -8044341172692695936L;
+
 	public HealthyEating() {
 		super();
 		name = "Alimentação Saudável";

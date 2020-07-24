@@ -18,9 +18,9 @@ import br.com.healthswar.gameplay.items.Serum;
 import br.com.healthswar.gameplay.items.Vaccine;
 
 public final class ImmuneSystem extends ArrayList<Card> {
-
-	private static final long serialVersionUID = 7408717304009750403L;
 	
+	private static final long serialVersionUID = -2236176836566266161L;
+
 	public ImmuneSystem() {
 		AddCard(Neutrofilo.class, 5);
 		AddCard(Monocito.class, 2);

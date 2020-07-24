@@ -19,7 +19,7 @@ import br.com.healthswar.utils.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {
 
-	private static final long serialVersionUID = 534020604704164574L;
+	private static final long serialVersionUID = -2569106824177960140L;
 
 	private Card card;
 	private Label lblMessage;

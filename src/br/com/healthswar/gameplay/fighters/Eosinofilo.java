@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.fighters;
 
 public class Eosinofilo extends Fighter {
 
-	private static final long serialVersionUID = 641833719859387013L;
+	private static final long serialVersionUID = 661119302302221681L;
 
 	public Eosinofilo() {
 		super();

@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import br.com.anonymous.frontend.Button;
@@ -21,8 +24,8 @@ import br.com.healthswar.utils.Fonts;
 
 public class RegisterView extends View {
 
-	private static final long serialVersionUID = -5727293124800406361L;
-
+	private static final long serialVersionUID = 1L;
+	
 	private final Panel container;
 	private Panel form;
 

@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.fighters;
 
 public class Neutrofilo extends Fighter {
 
-	private static final long serialVersionUID = -9199416816382069453L;
+	private static final long serialVersionUID = -2755521347600345102L;
 
 	public Neutrofilo() {
 		super();

@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import br.com.healthswar.utils.CardIdentifier;
 
 public abstract class Card extends JLabel implements MouseListener, MouseMotionListener {
-	private static final long serialVersionUID = 7106990056333713852L;
+	
+	private static final long serialVersionUID = 4659374320325838131L;
 	
 	public int id;
 	protected String name;

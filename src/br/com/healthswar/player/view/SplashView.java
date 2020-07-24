@@ -11,7 +11,10 @@ import java.awt.*;
 
 public class SplashView extends View {
 
-    private Panel container;
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Panel container;
     private Thread time;
 
     public SplashView() {

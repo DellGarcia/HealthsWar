@@ -92,10 +92,11 @@ public final class State {
 	public MatchResponse useItem(Item item) {
 		if(phase != Phases.MAIN_PHASE)
 			return MatchResponse.IMPOSSIBLE_TO_USE;
-		
+			
 		active.getField().getHand().remove(item);
 		active.getField().getDescarte().add(item);
 		EffectMachine.getInstance().useItemEffect(item);
+		active.getField().setDamage(1);
 		
 		item.local = CardLocal.DESCARTE;
 		

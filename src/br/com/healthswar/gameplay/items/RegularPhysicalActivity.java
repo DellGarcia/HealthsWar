@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.items;
 
 public class RegularPhysicalActivity extends Item {
 
-	private static final long serialVersionUID = 740730145844578941L;
+	private static final long serialVersionUID = -4143773854696346233L;
 
 	public RegularPhysicalActivity() {
 		super();

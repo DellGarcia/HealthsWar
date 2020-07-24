@@ -16,8 +16,8 @@ import br.com.healthswar.utils.Fonts;
 
 public class FighterField extends Panel implements MouseListener {
 
-	private static final long serialVersionUID = -149395871309683109L;
-
+	private static final long serialVersionUID = 4058110155034721813L;
+	
 	private Fighter fighter;
 	private ImageIcon image;
 	private Label lblFundo;

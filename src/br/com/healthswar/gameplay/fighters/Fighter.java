@@ -10,8 +10,8 @@ import br.com.healthswar.player.view.main.MainView;
 
 public abstract class Fighter extends Card implements Serializable {	
 
-	private static final long serialVersionUID = -851267654637882260L;
-	
+	private static final long serialVersionUID = 5056666036252254468L;
+
 	private ArrayList<Energy> energies;
 	
 	protected int healthPoints;

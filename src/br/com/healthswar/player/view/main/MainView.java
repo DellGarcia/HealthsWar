@@ -5,7 +5,6 @@ import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.Player;
 
-@SuppressWarnings("UnusedReturnValue")
 public final class MainView extends MainViewStructure {
 
 	private static final long serialVersionUID = -6732925043777836792L;
@@ -66,6 +65,8 @@ public final class MainView extends MainViewStructure {
 				
 			case YOUR_TURN:
 				setTurn(res);
+				break;
+			default:
 				break;
 		}
 	}

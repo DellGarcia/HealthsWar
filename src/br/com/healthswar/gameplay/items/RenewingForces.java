@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.items;
 
 public class RenewingForces extends Item {
 
-	private static final long serialVersionUID = -4196064203202893895L;
+	private static final long serialVersionUID = -2936209461050110677L;
 
 	public RenewingForces() {
 		super();
