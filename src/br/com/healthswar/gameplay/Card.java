@@ -20,7 +20,7 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 	protected String description;
 	
 	private boolean turned;
-	protected CardLocal local;
+	public CardLocal local;
 	
 	protected ImageIcon frontImg;
 	protected ImageIcon backImg = loadImage("../../assets/backImg2-sm.jpg");

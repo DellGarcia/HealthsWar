@@ -27,4 +27,7 @@ public final class StringUtil {
     public static final String FIND_HOST = "Encontre uma partida";
     public static final String X = "X";
     public static final String GO = "GO";
+
+    /* [Fighter Dialog] */
+    public static final String CHOOSE_FIGHTER = "Escolha um combatente";
 }

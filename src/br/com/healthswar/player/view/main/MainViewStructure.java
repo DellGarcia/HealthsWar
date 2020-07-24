@@ -12,6 +12,7 @@ import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.gameplay.items.Item;
+import br.com.healthswar.player.view.FighterDialog;
 import br.com.healthswar.player.view.InitView;
 
 public class MainViewStructure extends MainViewBase {
@@ -190,7 +191,6 @@ public class MainViewStructure extends MainViewBase {
 			player.write(target);
 		}
 	}
-
 	
 	public void requestAttack(Fighter attacker, Fighter target) {
 		if(myTurn) {
@@ -221,7 +221,7 @@ public class MainViewStructure extends MainViewBase {
 	}
 
 	public void hideSelector() {
-		this.fighterSelector.setVisible(false);
+		fighterSelector.setVisible(false);
 	}
 
 	public void handleSelect(Card target) {

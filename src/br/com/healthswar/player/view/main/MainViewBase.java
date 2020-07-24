@@ -15,6 +15,7 @@ import br.com.healthswar.gameplay.FighterField;
 import br.com.healthswar.gameplay.FighterSelector;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.gameplay.fighters.Fighter;
+import br.com.healthswar.player.view.FighterDialog;
 import br.com.healthswar.player.view.View;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
@@ -30,6 +31,7 @@ public class MainViewBase extends View {
 
 	protected CardView cardView;
 	protected FighterSelector fighterSelector;
+	protected FighterDialog fighterDialog;
 	
 	protected Label lblPhase;
 	protected Label myHP;
@@ -181,18 +183,14 @@ public class MainViewBase extends View {
 		int x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField myFighter : myFighters) {
 			myFighter.setLocation(x, getHeight() - 360);
-			//myFighter.energyCounter.setLocation(x, getHeight() - 250);
 			container.add(myFighter);
-			//container.add(myFighter.energyCounter);
 			x += 120;
 		}
 
 		x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField opFighter : opFighters) {
 			opFighter.setLocation(x, 240);
-			//opFighter.energyCounter.setLocation(x, 200);
 			container.add(opFighter);
-			//container.add(opFighter.energyCounter);
 			x += 120;
 		}
 	}
@@ -233,11 +231,10 @@ public class MainViewBase extends View {
 	protected void Battle() {
 		btnBattle = new Button(
 				160, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				Fonts.NORMAL, "Battle",
-				new Color(125, 15, 15), 3,
-				new Color(65, 10, 10),
-				Color.WHITE, 45);
+				ColorsUtil.LETTERS_COLOR, ColorsUtil.BACKGROUND_COLOR,
+				Fonts.INPUT, "Battle",
+				null, 3,
+				ColorsUtil.BACKGROUND_COLOR, ColorsUtil.LETTERS_COLOR);
 		btnBattle.setLocation(getWidth() - btnBattle.getWidth() - 20,
 				getHeight() / 2 - 50 / 2 - 50);
 		btnBattle.setVisible(false);
@@ -247,12 +244,11 @@ public class MainViewBase extends View {
 	
 	protected void EndTurn() {
 		btnEndTurn = new Button(
-				btnBattle.getWidth(), btnBattle.getHeight(),
-				new Color(154, 26, 26), Color.WHITE,
-				Fonts.NORMAL, "End Turn",
-				new Color(125, 15, 15), 3,
-				new Color(65, 10, 10),
-				Color.WHITE, 45);
+				160, 50,
+				ColorsUtil.LETTERS_COLOR, ColorsUtil.BACKGROUND_COLOR,
+				Fonts.INPUT, "End Turn",
+				null, 3,
+				ColorsUtil.BACKGROUND_COLOR, ColorsUtil.LETTERS_COLOR);
 
 		btnEndTurn.setLocation(btnBattle.getX(),
 				getHeight() / 2 - 50 / 2 + 50);

@@ -6,8 +6,6 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.gameplay.fighters.Fighter;
