@@ -128,7 +128,7 @@ public class MainViewBase extends View {
 		ArrayList<Card> myDeck = player.getField().getDeck();
 		ArrayList<Card> opDeck = opponent.getField().getDeck();
 		
-		int x = 1920 - 200, y = getHeight() - 200;
+		int x = getWidth() - 200, y = getHeight() - 200;
 		for(int i = 0; i < myDeck.size(); i++) {
 			myDeck.get(i).setSize(100, 141);
 			myDeck.get(i).setLocation(x, y);
@@ -173,25 +173,26 @@ public class MainViewBase extends View {
 			container.add(card);
 			x += 110;
 		}
+
 		container.repaint();
 	}
 
 	protected void Fighters() {
 		int x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField myFighter : myFighters) {
-			myFighter.setLocation(x, getHeight() - 400);
-			myFighter.energyCounter.setLocation(x, getHeight() - 250);
+			myFighter.setLocation(x, getHeight() - 360);
+			//myFighter.energyCounter.setLocation(x, getHeight() - 250);
 			container.add(myFighter);
-			container.add(myFighter.energyCounter);
+			//container.add(myFighter.energyCounter);
 			x += 120;
 		}
 
 		x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField opFighter : opFighters) {
-			opFighter.setLocation(x, 280);
-			opFighter.energyCounter.setLocation(x, 220);
+			opFighter.setLocation(x, 240);
+			//opFighter.energyCounter.setLocation(x, 200);
 			container.add(opFighter);
-			container.add(opFighter.energyCounter);
+			//container.add(opFighter.energyCounter);
 			x += 120;
 		}
 	}
@@ -200,7 +201,9 @@ public class MainViewBase extends View {
 		ArrayList<Fighter> myMemory = player.getField().getMemory();
 		ArrayList<Fighter> opMemory = opponent.getField().getMemory();
 
-		int x = getWidth()/2 - (7 * 120 - 20) / 2, y = getHeight() - 400;
+		int x = getWidth() / 2 - (7 * 120 - 20) / 2;
+		int y = getHeight() - 400;
+
 		for(int i = 0; i < myMemory.size(); i++) {
 			myMemory.get(i).setSize(100, 141);
 			myMemory.get(i).setLocation(x, y);

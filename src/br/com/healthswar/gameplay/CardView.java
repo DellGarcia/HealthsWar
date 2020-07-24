@@ -14,16 +14,14 @@ import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.gameplay.items.Item;
 import br.com.healthswar.player.view.main.MainView;
+import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 
 public class CardView extends Panel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 534020604704164574L;
 
-	private ImageIcon frontImg;
-	
 	private Card card;
-	
 	private Label lblMessage;
 	private Label lblFundo;
 	
@@ -39,13 +37,17 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	}
 	
 	private void init() {
-		lblMessage = new Label(getWidth(), getHeight(), null, Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
+		lblMessage = new Label(getWidth(), getHeight(), null,
+				Fonts.DESTAQUE, Color.WHITE, ColorsUtil.BLACK_TRANSLUCIDE,
+				SwingConstants.CENTER, SwingConstants.CENTER);
 		lblMessage.setVisible(false);
 		lblMessage.setOpaque(true);
-		this.add(lblMessage);
+		add(lblMessage);
 		
-		lblFundo = new Label(getWidth(), getHeight(), null, Fonts.DESTAQUE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
-		this.add(lblFundo);
+		lblFundo = new Label(getWidth(), getHeight(), null,
+				Fonts.DESTAQUE, ColorsUtil.INVISIBLE,null,
+				SwingConstants.CENTER, SwingConstants.CENTER);
+		add(lblFundo);
 	}
 
 	public void setCard(Card card) {
@@ -54,15 +56,15 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 		if(card != null) {
 			if(card instanceof Fighter) {
 				lblMessage.setText("Enviar");
-			}
-			else if(card instanceof Energy) {
+
+			} else if(card instanceof Energy) {
 				lblMessage.setText("Colocar");
-			}
-			else if(card instanceof Item) {
+
+			} else if(card instanceof Item) {
 				lblMessage.setText(card.name);
 			}
-			
-			this.frontImg = card.frontImg;
+
+			ImageIcon frontImg = card.frontImg;
 			lblFundo.setIcon(frontImg);
 		}
 	}
