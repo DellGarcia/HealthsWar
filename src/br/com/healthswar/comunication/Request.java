@@ -1,16 +1,8 @@
-/**
- * 
- */
 package br.com.healthswar.comunication;
 
 import java.io.Serializable;
 
-/**
- * @author Anonymous - HealthsWar
- *
- */
 public enum Request implements Serializable {
-	
 	REGISTER_PLAYER,
 	UPDATE_PLAYER,
 	DELETE_PLAYER,
@@ -18,5 +10,4 @@ public enum Request implements Serializable {
 	SELECT_ALL_PLAYERS,
 	PLAY_A_SOLO_MATCH,
 	PLAY_A_DUO_MATCH
-
 }

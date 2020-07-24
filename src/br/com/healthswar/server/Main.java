@@ -1,9 +1,9 @@
 package br.com.healthswar.server;
 
-import br.com.healthswar.player.view.ControlView;
+import br.com.healthswar.player.view.ServerView;
 
 public final class Main {
-	public final static Thread init() {
-		return new Thread(() -> new ControlView());
+	public static Thread init() {
+		return new Thread(ServerView::getInstance);
 	}
 }

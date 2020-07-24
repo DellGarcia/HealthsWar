@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 
 	private static Connection connection;
-	
 	private static final String bdName	= "jdbc:mysql://localhost/bdHealthsWar";
 	private static final String user		= "root";
 	private static final String password	= "123456";
@@ -18,14 +17,16 @@ public class ConnectionFactory {
 				connection = DriverManager.getConnection(
 	                    bdName, user, password);
 			}
+
 		} catch(SQLException e) {
-			System.out.println("Não foi possivel criar a conexao com o banco de dados");
+			System.out.println("Não foi possível criar a conexão com o banco de dados");
 		}
 	}
 	
 	public static Connection getConnetion() {
 		if(connection == null)
 			openConnection();
+
 		return connection;
 	}
 }

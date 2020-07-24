@@ -5,15 +5,14 @@ import br.com.healthswar.comunication.Phases;
 import br.com.healthswar.gameplay.Field;
 import br.com.healthswar.gameplay.Player;
 
+@SuppressWarnings("UnusedReturnValue")
 public final class MainView extends MainViewStructure {
 
 	private static final long serialVersionUID = -6732925043777836792L;
-	
 	public static MainView INSTANCE;
 	
 	private MainView(Player player) {
 		this.player = player;
-		
 		this.player.setField((Field) player.read());
 		this.opponent = new Player((Field) player.read());
 		
@@ -24,24 +23,20 @@ public final class MainView extends MainViewStructure {
 	}
 	
 	private Thread awaitTurn() {
-		return new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MatchResponse turn = (MatchResponse) player.read();
-				
-				verifyMatchStatus(turn);
-				
-				refreshHealthPoints();
-				
-				setTurn(turn);
-				
-				refreshPhase((Phases) player.read());
-				
-				awaitAction();
-					
-				awaitTurn().start();
-			}
+		return new Thread(() -> {
+			MatchResponse turn = (MatchResponse) player.read();
+
+			verifyMatchStatus(turn);
+
+			refreshHealthPoints();
+
+			setTurn(turn);
+
+			refreshPhase((Phases) player.read());
+
+			awaitAction();
+
+			awaitTurn().start();
 		});
 	}
 	
@@ -49,7 +44,7 @@ public final class MainView extends MainViewStructure {
 		MatchResponse res = (MatchResponse) player.read();
 		
 		switch (res) {
-			case AVALIBLE_CARD:
+			case AVAILABLE_CARD:
 				drawCard();
 				break;
 				
@@ -65,31 +60,27 @@ public final class MainView extends MainViewStructure {
 				putEnergy();
 				break;
 				
-			case SUCCESSFUL_ATACK:
-				atack();
+			case SUCCESSFUL_ATTACK:
+				attack();
 				break;
 				
 			case YOUR_TURN:
 				setTurn(res);
 				break;
-				
-			default:
-				break;
 		}
-
 	}
 	
-	/** Singleton methods */
-		public static MainView getInstance(Player player) {
-			if(INSTANCE == null) {
-				INSTANCE = new MainView(player);
-			}
-			return INSTANCE;
+	/** [Singleton methods] */
+	public static MainView getInstance(Player player) {
+		if(INSTANCE == null) {
+			INSTANCE = new MainView(player);
 		}
-		
-		public static void destroy() {
-			INSTANCE.dispose();
-			INSTANCE = null;
-		}
-		
+
+		return INSTANCE;
+	}
+
+	public static void destroy() {
+		INSTANCE.dispose();
+		INSTANCE = null;
+	}
 }

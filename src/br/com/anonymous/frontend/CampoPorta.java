@@ -7,17 +7,16 @@ import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("serial")
 public class CampoPorta extends TextField implements KeyListener {
 
-	private Integer[] array = {
+	private final Integer[] array = {
 			KeyEvent.VK_NUMPAD0, KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3, KeyEvent.VK_NUMPAD4,
 			KeyEvent.VK_NUMPAD5, KeyEvent.VK_NUMPAD6, KeyEvent.VK_NUMPAD7, KeyEvent.VK_NUMPAD8, KeyEvent.VK_NUMPAD9,
 			KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5,
 			KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9, KeyEvent.VK_0
 	};
 	
-	private List<Integer> valores = Arrays.asList(array);
+	private final List<Integer> valores = Arrays.asList(array);
 	
 	private boolean preenchido;
 	private int length;
@@ -27,16 +26,13 @@ public class CampoPorta extends TextField implements KeyListener {
 		setFocusable(true);
 		
 		addKeyListener(this);
-		removeFocusListener(this);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-	}
+	public void keyPressed(KeyEvent e) {}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -64,20 +60,12 @@ public class CampoPorta extends TextField implements KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE && length > 0) {
 			this.setText(getText().substring(0, getText().length()-1));
 		}
-		
-		if(length >= 3 ) {
-			preenchido = true;
-		} else {
-			preenchido = false;
-		}
+
+		preenchido = length >= 3;
 	}
 	
-	public boolean ispreenchido() {
-		if(length >= 3 ) {
-			preenchido = true;
-		} else {
-			preenchido = false;
-		}
+	public boolean isPreenchido() {
+		preenchido = length >= 3;
 		return this.preenchido;
 	}
 	

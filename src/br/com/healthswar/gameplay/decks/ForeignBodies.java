@@ -2,7 +2,6 @@ package br.com.healthswar.gameplay.decks;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.energy.Energy;
 import br.com.healthswar.gameplay.fighters.Basofilo;
@@ -39,11 +38,11 @@ public class ForeignBodies extends ArrayList<Card> {
 	}
 
 	private void AddCard(Class<? extends Card> classe, int qtd) {
-		for(int i = 0; i < qtd; i++)
-			try {
-				add(classe.getDeclaredConstructor().newInstance());
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			}
+		for(int i = 0; i < qtd; i++) {
+			try { add(classe.getDeclaredConstructor().newInstance()); }
+			catch (InstantiationException | IllegalAccessException |
+					IllegalArgumentException | InvocationTargetException |
+					NoSuchMethodException | SecurityException e) { e.printStackTrace(); }
+		}
 	}
 }

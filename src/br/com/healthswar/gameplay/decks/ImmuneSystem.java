@@ -39,12 +39,12 @@ public final class ImmuneSystem extends ArrayList<Card> {
 	}
 	
 	private void AddCard(Class<? extends Card> classe, int qtd) {
-		for(int i = 0; i < qtd; i++)
-			try {
-				add(classe.getDeclaredConstructor().newInstance());
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			}
+		for(int i = 0; i < qtd; i++) {
+			try { add(classe.getDeclaredConstructor().newInstance()); }
+			catch (InstantiationException | IllegalAccessException |
+					IllegalArgumentException | InvocationTargetException |
+					NoSuchMethodException | SecurityException e) { e.printStackTrace(); }
+		}
 	}
 	
 }

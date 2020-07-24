@@ -1,50 +1,36 @@
 package br.com.healthswar.player.view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import br.com.anonymous.frontend.Button;
-import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.server.Main;
+import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
+import br.com.healthswar.utils.ImageUtil;
+import br.com.healthswar.utils.StringUtil;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 
-public class InitView extends JFrame {
-
+public class InitView extends View {
 	private static final long serialVersionUID = 7358900521851754354L;
 
-	private Toolkit tk;
-	
-	private Panel container;
-	
-	private Button soloMatch;
-	private Button duoMatch;
-	private Button localServer;
-	private Button register;
+	Panel container;
 
-	private Label logo;
-	
 	public InitView() {
-		tk = Toolkit.getDefaultToolkit();
-		
+		super();
+
 		setTitle("Health's War - Main Menu");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(tk.getScreenSize());
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-		
-		container = new Panel(Color.WHITE);
+
+		container = new Panel(new ImageIcon(ImageUtil.MAIN_BACKGROUND).getImage());
+		container.setBackground(ColorsUtil.BACKGROUND_COLOR);
 		init();
 
 		setContentPane(container);
@@ -52,50 +38,52 @@ public class InitView extends JFrame {
 	}
 
 	private void init() {
-		Font font = Fonts.TITLE;
+		Font font = Fonts.MAIN_BUTTONS;
 
-		logo = new Label(668, 157,
-				new ImageIcon(getClass().getResource("../../assets/sprites/Logos/Logo2.png")));
+		br.com.anonymous.frontend.Label logo = new br.com.anonymous.frontend.Label(489, 347,
+				new ImageIcon(new ImageIcon(ImageUtil.MAIN_LOGO)
+						.getImage().getScaledInstance(489, 347, Image.SCALE_DEFAULT)));
+
 		logo.setLocation((getWidth() - logo.getWidth()) / 2, 0);
 
-		soloMatch = new Button(
-				210, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				font, "Solo Match",
-				new Color(125, 15, 15), 3,
-				new Color(60, 10, 10),
-                Color.WHITE, 45);
-		soloMatch.setLocation(getWidth()/2 - 100, getHeight()/2 - 25 - 65);
+		br.com.anonymous.frontend.Button soloMatch = new br.com.anonymous.frontend.Button(
+				300, 75,
+				null, Color.WHITE,
+				font, StringUtil.SOLO_MATCH,
+				null, 0,
+				null, ColorsUtil.LETTERS_COLOR);
+
+		soloMatch.setLocation((getWidth() - soloMatch.getWidth()) / 2, getHeight() / 2 + 45);
 		soloMatch.addActionListener(matchAction(Request.PLAY_A_SOLO_MATCH));
 
-		duoMatch = new Button(
-				210, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				font, "Duo Match",
-				new Color(125, 15, 15), 3,
-				new Color(60, 10, 10),
-				Color.WHITE, 45);
-		duoMatch.setLocation(getWidth()/2 - 100, getHeight()/2 - 25);
+		br.com.anonymous.frontend.Button duoMatch = new br.com.anonymous.frontend.Button(
+				300, 75,
+				null, Color.WHITE,
+				font, StringUtil.DUO_MATCH,
+				null, 0,
+				null, ColorsUtil.LETTERS_COLOR);
+
+		duoMatch.setLocation((getWidth() - duoMatch.getWidth()) / 2, getHeight() / 2 + 120);
 		duoMatch.addActionListener(matchAction(Request.PLAY_A_DUO_MATCH));
 
-		localServer = new Button(
-				210, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				font, "Local Server",
-				new Color(125, 15, 15), 3,
-				new Color(60, 10, 10),
-				Color.WHITE, 45);
-		localServer.setLocation(getWidth()/2 - 100, getHeight()/2 - 25 + 65);
+		br.com.anonymous.frontend.Button localServer = new br.com.anonymous.frontend.Button(
+				350, 75,
+				null, Color.WHITE,
+				font, StringUtil.LOCAL_SERVER,
+				null, 0,
+				null, ColorsUtil.LETTERS_COLOR);
+
+		localServer.setLocation((getWidth() - localServer.getWidth()) / 2, getHeight() / 2 + 195);
 		localServer.addActionListener(openHostPage());
 
-		register = new Button(
-				210, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				font, "Register",
-				new Color(125, 15, 15), 3,
-				new Color(60, 10, 10),
-				Color.WHITE, 45);
-		register.setLocation(getWidth()/2 - 100, getHeight()/2 - 25 + 65 + 65);
+		br.com.anonymous.frontend.Button register = new Button(
+				300, 75,
+				null, Color.WHITE,
+				font, StringUtil.REGISTER,
+				null, 0,
+				null, ColorsUtil.LETTERS_COLOR);
+
+		register.setLocation((getWidth() - register.getWidth()) / 2, getHeight() / 2 + 270);
 		register.addActionListener(openRegisterPage());
 
 		container.add(logo);
@@ -104,37 +92,29 @@ public class InitView extends JFrame {
 		container.add(localServer);
 		container.add(register);
 	}
-	
+
 	private ActionListener openHostPage() {
-		return actionEvent -> Main.init().start();
+		return actionEvent ->  {
+			if(ServerView.getInstance() == null) {
+				Main.init().start();
+			} else {
+				ServerView.getInstance().setVisible(true);
+			}
+
+			dispose();
+		};
 	}
-	
+
 	private ActionListener openRegisterPage() {
 		return actionEvent -> new RegisterView();
 	}
-	
+
 	private ActionListener matchAction(Request request) {
-		return actionEvent -> {
-
-			try {
-				Player player = new Player(new Socket(JOptionPane.showInputDialog(
-						"Qual o ip do servidor?", "localhost"), 2222));
-
-				player.write(request);
-
-				Response response = (Response) player.read();
-				if(response == Response.MATCH_FOUND) {
-					new AwaitView(player);
-					dispose();
-				}
-
-			} catch (IOException e2) {
-				JOptionPane.showMessageDialog(null,
-						"Problemas ao tentar conectar ao servidor");
-				e2.printStackTrace();
-			}
-
-		};
+		return actionEvent -> new ServerIPDialog(request, this);
 	}
-	
+
+	public void goMatch(Player player) {
+		new AwaitView(player);
+		dispose();
+	}
 }

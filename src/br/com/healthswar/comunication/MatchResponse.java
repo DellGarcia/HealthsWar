@@ -3,8 +3,7 @@ package br.com.healthswar.comunication;
 import java.io.Serializable;
 
 public enum MatchResponse implements Serializable {
-	
-	AVALIBLE_CARD,
+	AVAILABLE_CARD,
 	NO_CARDS,
 	FIGHTER_READY,
 	NO_FIGHTER,
@@ -12,12 +11,11 @@ public enum MatchResponse implements Serializable {
 	IMPOSSIBLE_TO_USE,
 	ENERGY_READY,
 	BATTLE_STARTED,
-	SUCCESSFUL_ATACK,
-	ATACK_FAILED,
+	SUCCESSFUL_ATTACK,
+	ATTACK_FAILED,
 	YOUR_TURN,
 	OPPONENT_TURN,
 	END_GAME,
 	YOU_WIN,
-	YOU_LOSE;
-	
+	YOU_LOSE
 }

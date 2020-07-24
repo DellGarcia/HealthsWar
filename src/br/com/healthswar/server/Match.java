@@ -9,11 +9,11 @@ import br.com.healthswar.gameplay.effects.EffectMachine;
 public class Match extends Thread {
 
 	private Player[] players;
-	private int playersConneted;
+	private int playersConnected;
 	private boolean complete;
 
 	public Match(Request MATCH_TYPE) {
-		this.playersConneted = 0;
+		this.playersConnected = 0;
 		this.complete = false;
 
 		switch (MATCH_TYPE) {
@@ -24,18 +24,15 @@ public class Match extends Thread {
 			case PLAY_A_DUO_MATCH:
 				this.players = new Player[2];
 				break;
-				
-			default:
-				break;
 		}
 	}
 
 	public void addPlayer(Player player) {
 		if (!complete) {
-			this.players[playersConneted] = player;
-			this.playersConneted++;
-			if (playersConneted == players.length)
-				complete = true;
+			this.players[playersConnected] = player;
+			this.playersConnected++;
+
+			if (playersConnected == players.length) complete = true;
 		}
 	}
 
@@ -75,7 +72,7 @@ public class Match extends Thread {
 					game.startBattle();
 					break;
 					
-				case ATACK_THE_OPONENT:
+				case ATTACK_THE_OPPONENT:
 					game.atack();
 					break;
 				
@@ -84,6 +81,7 @@ public class Match extends Thread {
 					break;
 			}
 		}
+
 		game.endGame();
 	}
 

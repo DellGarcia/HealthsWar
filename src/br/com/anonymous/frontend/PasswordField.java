@@ -21,7 +21,8 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 	private Color onFocusBorderColor;
 	private Color onFocusTextColor;
 	
-	public PasswordField(int largura, int altura, String placeHolder, Font font, Color background, Color foreground) {
+	public PasswordField(int largura, int altura, String placeHolder,
+						 Font font, Color background, Color foreground, Color border) {
 		setSize(largura, altura);
 		setFont(font);
 		setBackground(background);
@@ -30,9 +31,8 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 		setToolTipText(placeHolder);
 		setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		setText(placeHolder);
-		setForeground(Color.LIGHT_GRAY);
 		
-		this.onFocusBorderColor = Color.RED;
+		this.onFocusBorderColor = border;
 		this.onFocusTextColor = foreground;
 		this.placeHolder = placeHolder;
 		
@@ -82,6 +82,6 @@ public class PasswordField extends JPasswordField implements FocusListener, KeyL
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		filled = !(this.getPassword().length > 0) ? true : false;
+		filled = !(this.getPassword().length > 0);
 	}
 }

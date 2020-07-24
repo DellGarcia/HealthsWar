@@ -6,14 +6,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import br.com.healthswar.utils.CardIdentifier;
 
 public abstract class Card extends JLabel implements MouseListener, MouseMotionListener {
-
 	private static final long serialVersionUID = 7106990056333713852L;
 	
 	public int id;
@@ -38,9 +36,9 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 	
 	public void setImage() {
 		ImageIcon icon = 
-				new ImageIcon((turned?backImg:frontImg)
+				new ImageIcon((turned? backImg : frontImg)
 						.getImage()
-							.getScaledInstance(getWidth(), getHeight(), 1));
+						.getScaledInstance(getWidth(), getHeight(), 1));
 		
 		setIcon(icon);
 	}
@@ -72,12 +70,14 @@ public abstract class Card extends JLabel implements MouseListener, MouseMotionL
 
 	protected ImageIcon loadImage(String path) {
 		Image image = null;
+
 		try {
 			BufferedInputStream bis = new BufferedInputStream(getClass().getResourceAsStream(path));
 			byte[] bytes = new byte[bis.available()];
 			int byteRead = bis.read(bytes,0,bis.available());
-			image = Toolkit.getDefaultToolkit().createImage(bytes,0,byteRead);
+			image = Toolkit.getDefaultToolkit().createImage(bytes,0, byteRead);
 			bis.close();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

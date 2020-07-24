@@ -61,9 +61,10 @@ public final class State {
 	public MatchResponse drawCard() {
 		Field field = active.getField();
 		phase = Phases.MAIN_PHASE;
+
 		if(!field.getDeck().isEmpty() && field.getHand().size() < 7) {
 			field.getHand().add(field.getDeck().removeFirst());
-			return MatchResponse.AVALIBLE_CARD;
+			return MatchResponse.AVAILABLE_CARD;
 		} else {
 			return MatchResponse.NO_CARDS;
 		}
@@ -104,7 +105,7 @@ public final class State {
 	public MatchResponse putEnergy(Fighter fighter, Energy energy) {
 		if(phase == Phases.MAIN_PHASE && energyAvalible) {
 			Field field = active.getField();
-			Fighter fighters[] = field.getFighters();
+			Fighter[] fighters = field.getFighters();
 			
 			for(Fighter lutador: fighters) {
 				if(lutador.id == fighter.id) {
@@ -118,6 +119,7 @@ public final class State {
 				}
 			}
 		}
+
 		return MatchResponse.IMPOSSIBLE_TO_USE;
 	}
 	
@@ -132,39 +134,40 @@ public final class State {
 				opponent.getField().removeFighter(target);
 			}
 			
-			return MatchResponse.SUCCESSFUL_ATACK;
+			return MatchResponse.SUCCESSFUL_ATTACK;
 		}
-		return MatchResponse.ATACK_FAILED;
+
+		return MatchResponse.ATTACK_FAILED;
 	}
 	
 	public void endTurn() {
 		init(players);
 	}
 	
-	/** Getter e Setters */
-		public int getTurn() {
-			return turn;
-		}
-	
-		public Player getActive() {
-			return active;
-		}
-	
-		private void setActive() {
-			active = players[turn % 2 == 0 ? 0 : 1];
-			opponent = players[turn % 2 != 0 ? 0 : 1];
-		}
-	
-		public Player getOpponent() {
-			return opponent;
-		}
-	
-		public Phases getPhase() {
-			return phase;
-		}
-	
-		public void setPhase(Phases phase) {
-			this.phase = phase;
-		}
+	/** [Getter e Setters] */
+	public int getTurn() {
+		return turn;
+	}
+
+	public Player getActive() {
+		return active;
+	}
+
+	private void setActive() {
+		active = players[turn % 2 == 0 ? 0 : 1];
+		opponent = players[turn % 2 != 0 ? 0 : 1];
+	}
+
+	public Player getOpponent() {
+		return opponent;
+	}
+
+	public Phases getPhase() {
+		return phase;
+	}
+
+	public void setPhase(Phases phase) {
+		this.phase = phase;
+	}
 	
 }

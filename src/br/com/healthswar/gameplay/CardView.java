@@ -39,12 +39,12 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	}
 	
 	private void init() {
-		lblMessage = new Label(getWidth(), getHeight(), "", Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
+		lblMessage = new Label(getWidth(), getHeight(), null, Fonts.DESTAQUE, Color.WHITE, new Color(0, 0, 0, 60), SwingConstants.CENTER, SwingConstants.CENTER);
 		lblMessage.setVisible(false);
 		lblMessage.setOpaque(true);
 		this.add(lblMessage);
 		
-		lblFundo = new Label(getWidth(), getHeight(), "", Fonts.DESTAQUE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
+		lblFundo = new Label(getWidth(), getHeight(), null, Fonts.DESTAQUE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
 		this.add(lblFundo);
 	}
 
@@ -72,14 +72,10 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -111,13 +107,9 @@ public class CardView extends Panel implements MouseListener, MouseMotionListene
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		
-	}
+	public void mouseMoved(MouseEvent e) {}
 
 }

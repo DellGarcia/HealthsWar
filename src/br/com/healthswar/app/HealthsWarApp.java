@@ -1,6 +1,6 @@
 package br.com.healthswar.app;
 
-import br.com.healthswar.player.view.InitView;
+import br.com.healthswar.player.view.SplashView;
 
 /**
  * @author Anonymous - HealthsWar
@@ -8,6 +8,6 @@ import br.com.healthswar.player.view.InitView;
 
 public class HealthsWarApp {
 	public static void main(String[] args) {
-		new InitView();
+		new SplashView();
 	}
 }

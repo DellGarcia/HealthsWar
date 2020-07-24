@@ -1,7 +1,6 @@
 package br.com.healthswar.gameplay.energy;
 
 import java.awt.event.MouseEvent;
-
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.player.view.main.MainView;
 
@@ -11,57 +10,47 @@ public class Energy extends Card  {
 
 	public Energy() {
 		super();
+
 		name = "ATP";
 		frontImg = loadImage("../../assets/energy-md.jpg");
 		setImage();
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
 				if(!isTurned()) 
-					MainView.INSTANCE.mostarCardView(this);
+					MainView.INSTANCE.showCardView(this);
 				break;
 				
 			case FIELD:
-				
 				break;
 				
 			case MEMORY:
-				
 				break;
+
 			case DESCARTE:
 				break;
+
 			case SELECTOR:
-				break;
-			default:
 				break;
 		}
 	}
-
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
@@ -70,27 +59,23 @@ public class Energy extends Card  {
 				break;
 				
 			case FIELD:
-				
 				break;
 				
 			case MEMORY:
-				
 				break;
+
 			case DESCARTE:
 				break;
+
 			case SELECTOR:
-				break;
-			default:
 				break;
 		}
 	}
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
@@ -99,31 +84,22 @@ public class Energy extends Card  {
 				break;
 				
 			case FIELD:
-				
 				break;
 				
 			case MEMORY:
-				
 				break;
+
 			case DESCARTE:
 				break;
+
 			case SELECTOR:
-				break;
-			default:
 				break;
 		}
 	}
 
+	@Override
+	public void mouseDragged(MouseEvent e) {}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		
-	}
-
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		
-	}
-
+	public void mouseMoved(MouseEvent e) {}
 }
