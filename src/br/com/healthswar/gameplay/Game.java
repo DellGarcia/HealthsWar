@@ -50,11 +50,14 @@ public final class Game {
 		state.getOpponent().write(Response.MATCH_READY);
 		state.getOpponent().write(state.getOpponent().getField());
 		state.getOpponent().write(state.getActive().getField());
+		
+		state.getActive().setField(null);
+		state.getOpponent().setField(null);
 	}
 	
 	public void resolve() {
 		State state = State.getState();
-		state.phaseResolve();
+		state.resolve();
 	}
 	
 	/** Player actions */

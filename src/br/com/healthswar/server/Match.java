@@ -47,6 +47,8 @@ public class Match extends Thread {
 		final Game game = new Game(players);
 		final EffectMachine effectMachine = EffectMachine.getInstance(); 
 
+		players = null;
+		
 		while (game.isAtivo()) {
 			game.resolve();
 			

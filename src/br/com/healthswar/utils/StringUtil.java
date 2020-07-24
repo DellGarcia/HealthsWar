@@ -11,6 +11,8 @@ public final class StringUtil {
     public static final String REGISTER = "<Register>";
 
     /* [Server View] */
+    //26.93.175.222
+    public static final String DEFAULT_IP = "localhost";
     public static final String LOG_MESSAGE = "Inicie o servidor e veja o status aqui no Log!";
     public static final String START_BUTTON = "<Start>";
     public static final String STOP_BUTTON = "<Stop>";

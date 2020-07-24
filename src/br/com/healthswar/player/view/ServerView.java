@@ -93,7 +93,7 @@ public class ServerView extends View {
 		log.grabFocus();
 		log.setEditable(false);
 
-		inputIP = new TextField(300, 75, "127.0.0.1", Fonts.INPUT, null, Color.WHITE);
+		inputIP = new TextField(300, 75, StringUtil.DEFAULT_IP, Fonts.INPUT, null, Color.WHITE);
 		inputIP.setLocation((getWidth() - inputIP.getWidth()) / 2 + (log.getWidth() / 2),
 				(getHeight() - inputIP.getHeight()) / 2 - 75 * 2);
 

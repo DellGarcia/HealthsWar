@@ -41,40 +41,48 @@ public class MainViewStructure extends MainViewBase {
 		}
 	}
 
-
-		protected void drawCard() {
-			Player target = getActive();
-			Field field = (Field) player.read();
-			
-			target.getField().getHand().removeHandFromPanel(container);
-			container.remove(target.getField().getDeck().get(0));
-			target.setField(field);
-			
-			Deck();
-			Hand();
-			Fighters();
-		}
-	
+	protected void drawCard() {
+		Player target = getActive();
+		Field field = (Field) player.read();
 		
-		protected void sendFighter() {
-			Field campo = (Field) player.read();
-			Fighter fighter = (Fighter) player.read();
-			FighterField[] field = myTurn?myFighters:opFighters;
-			Player target = getActive();
-			
-			target.getField().getHand().removeHandFromPanel(container);
-			
-			target.setField(campo);
-			
-			for(int i = 0; i < field.length; i++)
-				if(field[i].getFighter() == null) {
-					field[i].setFighter(fighter);
-					break;
-				}
-			
-			Hand();
-			Fighters();
-		}
+		target.getField().getHand().removeHandFromPanel(container);
+		container.remove(target.getField().getDeck().get(0));
+		target.setField(field);
+		
+		Deck();
+		Hand();
+		Fighters();
+		
+		field = null;
+		target = null;
+	}
+
+	
+	protected void sendFighter() {
+		Field campo = (Field) player.read();
+		Fighter fighter = (Fighter) player.read();
+		FighterField[] field = myTurn?myFighters:opFighters;
+		Player target = getActive();
+		
+		target.getField().getHand().removeHandFromPanel(container);
+		
+		target.setField(campo);
+		
+		for(int i = 0; i < field.length; i++) {
+			if(field[i].getFighter() == null) {
+				field[i].setFighter(fighter);
+				break;
+			}
+		}	
+		
+		Hand();
+		Fighters();
+		
+		campo = null;
+		fighter = null;
+		field = null;
+		target = null;
+	}
 
 	protected void useItem() {
 		Field field = (Field) player.read();
@@ -83,8 +91,15 @@ public class MainViewStructure extends MainViewBase {
 		target.getField().getHand().removeHandFromPanel(container);
 		target.setField(field);
 
+		for(int i = 0; i < myFighters.length; i++) 
+			myFighters[i].setFighter(field.getFighters()[i]);
+		
+		Fighters();
 		Discard();
 		Hand();
+		
+		target = null;
+		field = null;
 	}
 
 	protected void putEnergy() {
@@ -106,6 +121,11 @@ public class MainViewStructure extends MainViewBase {
 		Fighters();
 		Hand();
 		Discard();
+		
+		fighter = null;
+		field = null;
+		target = null;
+		fighters = null;
 	}
 	
 	protected void attack() {

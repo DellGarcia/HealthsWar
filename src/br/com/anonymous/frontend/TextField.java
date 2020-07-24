@@ -10,6 +10,8 @@ import javax.swing.*;
 
 public class TextField extends JTextField implements FocusListener, KeyListener {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private String placeHolder;
 	private Color onFocusBorderColor;
 	private Color onFocusTextColor;

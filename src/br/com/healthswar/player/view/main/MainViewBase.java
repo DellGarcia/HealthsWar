@@ -106,6 +106,7 @@ public class MainViewBase extends View {
 				SwingConstants.CENTER, SwingConstants.CENTER);
 		lblTurn.setLocation((getWidth() - lblTurn.getWidth()) / 2, 0);
 
+		container.remove(lblTurn);
 		container.add(lblTurn);
 	}
 
@@ -120,6 +121,9 @@ public class MainViewBase extends View {
 				SwingConstants.CENTER, SwingConstants.CENTER);
 		opHP.setLocation(getWidth() - opHP.getWidth(), 0);
 
+		
+		container.remove(myHP);
+		container.remove(opHP);
 		container.add(myHP);
 		container.add(opHP);
 	}
@@ -136,6 +140,7 @@ public class MainViewBase extends View {
 				x++;
 				y++;
 			}
+			container.remove(myDeck.get(i));
 			container.add(myDeck.get(i));
 		}
 		
@@ -147,6 +152,7 @@ public class MainViewBase extends View {
 				x--;
 				y--;
 			}
+			container.remove(opDeck.get(i));
 			container.add(opDeck.get(i));
 		}
 	}
@@ -286,6 +292,9 @@ public class MainViewBase extends View {
 
 			container.add(opDiscard.get(i));
 		}
+		
+		myDiscard = null;
+		opDiscard = null;
 	}
 
 	public Player getActive() {

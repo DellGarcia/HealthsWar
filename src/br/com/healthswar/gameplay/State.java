@@ -49,13 +49,15 @@ public final class State {
 		this.setActive();
 	}
 	
-	public void phaseResolve() {
+	public void resolve() {
 		active.write(MatchResponse.YOUR_TURN);
 		active.write(phase);
 		active.write(turn);
 		opponent.write(MatchResponse.OPPONENT_TURN);
 		opponent.write(phase);
 		opponent.write(turn);
+		active.setField(null);
+		opponent.setField(null);
 	}
 	
 	public MatchResponse drawCard() {
@@ -96,7 +98,7 @@ public final class State {
 		active.getField().getHand().remove(item);
 		active.getField().getDescarte().add(item);
 		EffectMachine.getInstance().useItemEffect(item);
-		active.getField().setDamage(1);
+		//active.getField().setDamage(1);
 		
 		item.local = CardLocal.DESCARTE;
 		
@@ -155,6 +157,8 @@ public final class State {
 	}
 
 	private void setActive() {
+		active = null;
+		opponent = null;
 		active = players[turn % 2 == 0 ? 0 : 1];
 		opponent = players[turn % 2 != 0 ? 0 : 1];
 	}
