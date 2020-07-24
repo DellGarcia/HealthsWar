@@ -1,30 +1,21 @@
 package br.com.healthswar.player.view;
 
-import java.awt.Color;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-
 import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.player.view.main.MainView;
+import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 
-@SuppressWarnings("serial")
-public class AwaitView extends JFrame {
+@SuppressWarnings("BusyWait")
+public class AwaitView extends View {
 
-	private Toolkit tk;
-	
-	private Player player;
-	
-	private Panel container;
-	
+	private final Panel container;
+	private final Player player;
 	private Label lblMsg;
-	
+
 	public AwaitView(Player player) {
-		tk = Toolkit.getDefaultToolkit();
 		this.player = player;
 		
 		setTitle("Health's War - Await View");
@@ -32,23 +23,30 @@ public class AwaitView extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setLayout(null);
-		
+
 		container = new Panel();
-		container.setBackground(Color.WHITE);
+		container.setBackground(ColorsUtil.BACKGROUND_COLOR);
+
+		init();
+
 		setContentPane(container);
-		
-		lblMsg = new Label(350, 50, "Aguardando os outros jogadores...",
-				Fonts.TITLE_2, new Color(154, 26, 26));
-		lblMsg.setLocation(this.getWidth()/2 - lblMsg.getWidth()/2, this.getHeight()/2 - lblMsg.getHeight()/2);
-		container.add(lblMsg);
-		
 		setVisible(true);
-		animacao("Aguardando segundo jogador").start();
-	
-		aguardarPartida().start();
+
+		animation().start();
+		waitMatch().start();
 	}
 
-	private Thread aguardarPartida() {
+	private void init() {
+		lblMsg = new Label(450, 50,
+				"Aguardando os outros jogadores...", Fonts.INPUT, ColorsUtil.LETTERS_COLOR);
+
+		lblMsg.setLocation((getWidth() - lblMsg.getWidth()) / 2,
+				(getHeight() - lblMsg.getHeight()) / 2);
+
+		container.add(lblMsg);
+	}
+
+	private Thread waitMatch() {
 		return new Thread(() -> {
 			Response response = (Response) player.read();
 			if(response == Response.MATCH_READY) {
@@ -58,19 +56,21 @@ public class AwaitView extends JFrame {
 		});
 	}
 	
-	private Thread animacao(String message) {
+	private Thread animation() {
 		return new Thread(() -> {
 			while(true) {
 				try {
-					lblMsg.setText(message);
+					lblMsg.setText("Aguardando segundo jogador");
+
 					Thread.sleep(500);
+
 					for(int i = 0; i < 3; i++) {
 						lblMsg.setText(lblMsg.getText() + ".");
 						Thread.sleep(500);
 					}
-				} catch(Exception ignored) { }
+
+				} catch(Exception ignored) {}
 			}
 		});
-		
 	}
 }

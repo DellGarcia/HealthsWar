@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
-
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.Label;
@@ -19,105 +19,111 @@ import br.com.healthswar.player.model.Person;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 
-public class RegisterView extends JDialog {
+public class RegisterView extends View {
 
 	private static final long serialVersionUID = -5727293124800406361L;
 
-	private Panel container;
-	private Panel formulario;
-	
-	private Label lblNome;
+	private final Panel container;
+	private Panel form;
+
+	private Label lblName;
 	private Label lblEmail;
-	private Label lblSenha;
-	private Label lblConfirmaSenha;
-	
-	private TextField txtNome;
+	private Label lblPassword;
+	private Label lblConfirmPass;
+	private TextField txtName;
 	private TextField txtEmail;
-	private PasswordField txtSenha;
-	private PasswordField txtConfirmaSenha;
-	
-	private Button btnConfirmar;
-	private Button btnVoltar;
-	
+	private PasswordField txtPassword;
+	private PasswordField txtConfirmPass;
+	private Button btnConfirm;
+	private Button btnBack;
+
 	public RegisterView() {
 		setTitle("HealthsWar - Cadastro");
-		setSize(600, 500);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setSize(tk.getScreenSize());
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setResizable(false);
-		setModal(true);
+		setUndecorated(true);
 		
-		container = new Panel(Color.WHITE);
-		container.setSize(this.getSize());
+		container = new Panel(ColorsUtil.BACKGROUND_COLOR);
+		initForm();
+		initFormItens();
+
 		setContentPane(container);
-		
-		init();
-		
 		setVisible(true);
 	}
+
+	private void initForm() {
+		form = new Panel(container.getBackground());
+		form.setSize(450, 500);
+
+		form.setLocation(
+				getWidth() / 2 - form.getWidth() / 2,
+				getHeight() / 2 - form.getHeight() / 2);
+
+		container.add(form);
+	}
 	
-	private void init() {
+	private void initFormItens() {
 		Color titleColor = ColorsUtil.LETTERS_COLOR;
+		Color backgroundColor = ColorsUtil.BACKGROUND_COLOR;
+		int width = form.getWidth();
+
+		Border lineBorder = BorderFactory.createLineBorder(titleColor, 2);
+		Border border = BorderFactory.createCompoundBorder(lineBorder,
+				BorderFactory.createEmptyBorder(5, 10, 5, 5));
+
+		lblName = new Label(100, 40, "Nome:",
+				Fonts.DESTAQUE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
+		lblName.setLocation(0, 10);
 		
-		formulario = new Panel(container.getBackground());
-		formulario.setSize(300, 500);
-		formulario.setLocation(
-				container.getWidth() / 2 - formulario.getWidth() / 2, 
-				container.getHeight() / 2 - formulario.getHeight() / 2);
-		
-		lblNome = new Label(100, 40, "Nome:",
-				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
-		lblNome.setLocation(0, 10);
-		formulario.add(lblNome);
-		
-		txtNome = new TextField(300, 40,
-				"Digite seu nome", Fonts.DESTAQUE, null, Color.BLACK);
-		txtNome.setLocation(0, 50);
-		formulario.add(txtNome);
-		
+		txtName = new TextField(width, 40,
+				"Digite seu nome", Fonts.DESTAQUE, null, Color.WHITE);
+		txtName.setLocation(0, 50);
+
 		lblEmail = new Label(100, 40,
-				"Email:", Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
+				"Email:", Fonts.DESTAQUE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
 		lblEmail.setLocation(0, 100);
-		formulario.add(lblEmail);
 		
-		txtEmail = new TextField(300, 40,
-				"Digite seu email", Fonts.DESTAQUE, null, Color.BLACK);
+		txtEmail = new TextField(width, 40,
+				"Digite seu email", Fonts.DESTAQUE, null, Color.WHITE);
 		txtEmail.setLocation(0, 140);
-		formulario.add(txtEmail);
+
+		lblPassword = new Label(100, 40, "Senha:",
+				Fonts.DESTAQUE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
+		lblPassword.setLocation(0, 190);
 		
-		lblSenha = new Label(100, 40, "Senha:",
-				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
-		lblSenha.setLocation(0, 190);
-		formulario.add(lblSenha);
+		txtPassword = new PasswordField(width, 40,
+				null, Fonts.DESTAQUE, null, Color.WHITE, Color.RED);
+		txtPassword.setLocation(0, 230);
+
+		lblConfirmPass = new Label(200, 40, "Confirme a Senha:",
+				Fonts.DESTAQUE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
+		lblConfirmPass.setLocation(0, 280);
 		
-		txtSenha = new PasswordField(300, 40,
-				null, Fonts.DESTAQUE, null, Color.BLACK);
-		txtSenha.setLocation(0, 230);
-		formulario.add(txtSenha);
-		
-		lblConfirmaSenha = new Label(200, 40, "Confirme a Senha:",
-				Fonts.TITLE, titleColor, null, SwingConstants.LEFT, SwingConstants.CENTER);
-		lblConfirmaSenha.setLocation(0, 280);
-		formulario.add(lblConfirmaSenha);
-		
-		txtConfirmaSenha = new PasswordField(300, 40, null,
-				Fonts.DESTAQUE, null, Color.BLACK);
-		txtConfirmaSenha.setLocation(0, 320);
-		formulario.add(txtConfirmaSenha);
-		
-		btnConfirmar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE,
-				Fonts.DESTAQUE, "Confirmar", null, 0, new Color(154, 26, 26), Color.WHITE);
-		btnConfirmar.setLocation(formulario.getWidth() - 100, 380);
-		btnConfirmar.addActionListener(registerAction());
-		formulario.add(btnConfirmar);
-		
-		btnVoltar = new Button(100, 40, Color.DARK_GRAY, Color.WHITE,
-				Fonts.DESTAQUE, "Voltar", null, 0, new Color(154, 26, 26), Color.WHITE);
-		btnVoltar.setLocation(0, 380);
-		btnVoltar.addActionListener(backAction());
-		formulario.add(btnVoltar);
-		
-		container.add(formulario);
+		txtConfirmPass = new PasswordField(width, 40, null,
+				Fonts.DESTAQUE, null, Color.WHITE, Color.RED);
+		txtConfirmPass.setLocation(0, 320);
+
+		btnBack = new Button(150, 40, backgroundColor, titleColor,
+				Fonts.DESTAQUE, "Voltar", titleColor, 3, titleColor, backgroundColor);
+		btnBack.setLocation(0, 380);
+		btnBack.addActionListener(backAction());
+
+		btnConfirm = new Button(150, 40, backgroundColor, titleColor,
+				Fonts.DESTAQUE, "Confirmar", titleColor, 3, titleColor, backgroundColor);
+		btnConfirm.setLocation(form.getWidth() - btnConfirm.getWidth(), 380);
+		btnConfirm.addActionListener(registerAction());
+
+		form.add(lblName);
+		form.add(txtName);
+		form.add(lblEmail);
+		form.add(txtEmail);
+		form.add(lblPassword);
+		form.add(txtPassword);
+		form.add(lblConfirmPass);
+		form.add(txtConfirmPass);
+		form.add(btnConfirm);
+		form.add(btnBack);
 	}
 	
 	private ActionListener backAction() {
@@ -126,13 +132,13 @@ public class RegisterView extends JDialog {
 	
 	private ActionListener registerAction() {
 		return e -> {
-			String nome = txtNome.getText();
+			String nome = txtName.getText();
 			String email = txtEmail.getText();
-			String senha = new String(txtSenha.getPassword());
-			String confirmaSenha = new String(txtConfirmaSenha.getPassword());
+			String senha = new String(txtPassword.getPassword());
+			String confirmaSenha = new String(txtConfirmPass.getPassword());
 
 			if(!nome.isEmpty() && !email.isEmpty() && !senha.isEmpty() && !confirmaSenha.isEmpty() &&
-				!nome.equals(txtNome.getPlaceHolder()) && !email.equals(txtEmail.getPlaceHolder())) {
+				!nome.equals(txtName.getPlaceHolder()) && !email.equals(txtEmail.getPlaceHolder())) {
 				if(senha.equals(confirmaSenha)) {
 
 					Person person = new Person();
@@ -153,9 +159,10 @@ public class RegisterView extends JDialog {
 						Response response = (Response) player.read();
 
 						if(response == Response.SUCCESSFULLY_REGISTERED) {
-							JOptionPane.showMessageDialog(null, "Cadastro efeutado com sucesso");
+							JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
+
 						} else {
-							JOptionPane.showMessageDialog(null, "Não foi possivel realizar o cadastro");
+							JOptionPane.showMessageDialog(null, "Não foi possível realizar o cadastro");
 						}
 
 					} catch (IOException e1) {
@@ -171,5 +178,5 @@ public class RegisterView extends JDialog {
 			}
 		};
 	}
-	
+
 }

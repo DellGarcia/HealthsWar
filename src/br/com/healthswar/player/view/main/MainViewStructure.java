@@ -1,7 +1,6 @@
 package br.com.healthswar.player.view.main;
 
 import javax.swing.JOptionPane;
-
 import br.com.healthswar.comunication.MatchRequest;
 import br.com.healthswar.comunication.MatchResponse;
 import br.com.healthswar.comunication.Phases;
@@ -19,254 +18,249 @@ public class MainViewStructure extends MainViewBase {
 
 	private static final long serialVersionUID = 1702140455193280420L;
 	
-	/** Match Actions */
-		protected void verifyMatchStatus(MatchResponse turnResponse) {
-			if(turnResponse == MatchResponse.END_GAME) {
-				MatchResponse response = (MatchResponse) player.read();
-				if(response == MatchResponse.YOU_WIN) {
-					JOptionPane.showMessageDialog(null, "VOCÊ GANHOU");
-				} else if(response == MatchResponse.YOU_LOSE) {
-					JOptionPane.showMessageDialog(null, "VOCÊ PERDEU");
-				}
-				
-				if(JOptionPane.showConfirmDialog(null, "Deseja ter uma revanche?", "Revanche", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
-					// Revanche em breve kkk
-					new InitView();
-					MainView.destroy();
-				} else {
-					new InitView();
-					MainView.destroy();
-				}
+	/* [Match Actions] */
+	protected void verifyMatchStatus(MatchResponse turnResponse) {
+		if(turnResponse == MatchResponse.END_GAME) {
+			MatchResponse response = (MatchResponse) player.read();
+
+			if(response == MatchResponse.YOU_WIN) {
+				JOptionPane.showMessageDialog(null, "VOCÊ GANHOU");
+
+			} else if(response == MatchResponse.YOU_LOSE) {
+				JOptionPane.showMessageDialog(null, "VOCÊ PERDEU");
+			}
+
+			if(JOptionPane.showConfirmDialog(null, "Deseja ter uma revanche?", "Revanche", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+				// Revanche em breve kkk
+				new InitView();
+				MainView.destroy();
+			} else {
+				new InitView();
+				MainView.destroy();
 			}
 		}
-	
-		protected void drawCard() {
-			Player target = myTurn?player:opponent;
-			
-			Card card = target.getField().getDeck().get(0);
-			card.setTurned(false);
-			card.setLocal(CardLocal.HAND);
-			target.getField().getHand().add(card);
-			target.getField().getDeck().remove(0);
-			container.remove(card);
-			colocarDeck();
-			colocarMao();
-		}
-	
-		
-		protected void sendFighter() {
-			Fighter fighter = (Fighter) player.read();
-			FighterField[] field = myTurn?myFighters:opFighters;
-			Player target = myTurn?player:opponent;
-			
-			for(int i = 0; i < field.length; i++) {
-				if(field[i].getFighter() == null) {
-					field[i].setFighter(fighter);
-					target.getField().getFighters()[i] = fighter;
-					Card c = target.getField().getHand().remove(fighter);
-					container.remove(c);
-					colocarMao();
-					colocarFighters();
-					break;
-				}
+	}
+
+	protected void drawCard() {
+		Player target = myTurn? player : opponent;
+
+		Card card = target.getField().getDeck().get(0);
+		card.setTurned(false);
+		card.setLocal(CardLocal.HAND);
+		target.getField().getHand().add(card);
+		target.getField().getDeck().remove(0);
+		container.remove(card);
+		Deck();
+		Hand();
+	}
+
+	protected void sendFighter() {
+		Fighter fighter = (Fighter) player.read();
+		FighterField[] field = myTurn? myFighters : opFighters;
+		Player target = (myTurn)? player : opponent;
+
+		for(int i = 0; i < field.length; i++) {
+			if(field[i].getFighter() == null) {
+				field[i].setFighter(fighter);
+				target.getField().getFighters()[i] = fighter;
+				Card c = target.getField().getHand().remove(fighter);
+				container.remove(c);
+				Hand();
+				Fighters();
+				break;
 			}
 		}
-		
-		protected void useItem() {
-			Item item = (Item) player.read();
-			Field field = (Field) player.read();
-			Player target = myTurn?player:opponent;
-			
-			target.setField(field);
-			
-			System.out.println(target.getField().getDescarte().size());
-			//target.getField().getDescarte().add(item);
-			container.remove(target.getField().getHand().remove(item));
-			
-			colocarDescarte();
-			colocarMao();
-		}
-		
-		protected void putEnergy() {
-			Fighter fighter = (Fighter) player.read();
-			Energy energy = (Energy) player.read();
-			Player target = myTurn?player:opponent;
-			FighterField[] fighters = myTurn?myFighters:opFighters;
-			
-			for(Fighter lutador: target.getField().getFighters()) {
-				if(lutador.id == fighter.id) {
-					container.remove(target.getField().getHand().remove(energy));
-					target.getField().getDescarte().add(energy);
-					lutador = fighter;
-					break;
-				}
-			}
-			
-			for(FighterField fi: fighters) {
-				if(fi.getFighter().id == fighter.id) {
-					fi.setFighter(fighter);
-					break;
-				}
-			}
-			
-			colocarFighters();
-			colocarMao();
-			colocarDescarte();
-		}
-		
-		protected void atack() {
-			Fighter attacker = (Fighter) player.read();
-			Fighter fighterTarget = (Fighter) player.read();
-			
-			if(fighterTarget.getHealthPoints() < 0) {
-				(!myTurn?player:opponent)
-					.getField().setDamage(fighterTarget.getHealthPoints());
-				
-				FighterField[] targetField = (!myTurn?myFighters:opFighters);
-				for(int i = 0; i < targetField.length; i++) {
-					if(targetField[i].getFighter() != null) {
-						if(targetField[i].getFighter().id == fighterTarget.id) {
-							targetField[i].setFighter(null);
-						}
-					}
-				}
-				
-				fighterTarget.setLocal(CardLocal.MEMORY);
-				(myTurn?player:opponent).getField().getMemory().add(fighterTarget);
-				(!myTurn?player:opponent).getField().removeFighter(fighterTarget);
-				
-				colocarMemoria();
-			}
-			
-			for(FighterField fi: myTurn?myFighters:opFighters) {
-				if(fi.getFighter() != null) {
-					if(fi.getFighter().id == attacker.id) {
-						fi.setFighter(attacker);
-						break;
-					}
-				}
-			}
-			
-			for(FighterField fi: !myTurn?myFighters:opFighters) {
-				if(fi.getFighter() != null) {
-					if(fi.getFighter().id == fighterTarget.id) {
-						fi.setFighter(fighterTarget);
-						break;
-					}
-				}	
-			}
-		}
-	
-	/** Request Player Actions */ 
-		protected void resquestDrawCard() {
-			player.write(MatchRequest.DRAW_A_CARD);
-		}	
-		
-		public void requestSendFighter(Fighter fighter) {
-			if(myTurn) {
-				player.write(MatchRequest.SEND_A_FIGHTER);
-				player.write(fighter);
-			}
-		}
-		
-		public void requestUseItem(Item item) {
-			if(myTurn) {
-				player.write(MatchRequest.USE_AN_ITEM);
-				player.write(item);
-			}
-		}
-		
-		public void requestPutEnergy(Fighter fighter) {
-			if(myTurn) {
-				Energy energy = (Energy)cardView.getCard();
-				player.write(MatchRequest.PUT_ENERGY);
-				player.write(fighter);
-				player.write(energy);
-			}
-		}
-		
-		public void requestAtack(Fighter attacker, Fighter target) {
-			if(myTurn) {
-				player.write(MatchRequest.ATACK_THE_OPONENT);
-				player.write(attacker);
-				player.write(target);
+	}
+
+	protected void useItem() {
+		Item item = (Item) player.read();
+		Field field = (Field) player.read();
+		Player target = (myTurn)? player : opponent;
+
+		target.setField(field);
+
+		System.out.println(target.getField().getDescarte().size());
+		//target.getField().getDescarte().add(item);
+		container.remove(target.getField().getHand().remove(item));
+
+		Discard();
+		Hand();
+	}
+
+	protected void putEnergy() {
+		Fighter fighter = (Fighter) player.read();
+		Energy energy = (Energy) player.read();
+		Player target = (myTurn)? player : opponent;
+		FighterField[] fighters = myTurn? myFighters : opFighters;
+
+		for(Fighter lutador : target.getField().getFighters()) {
+			if(lutador.id == fighter.id) {
+				container.remove(target.getField().getHand().remove(energy));
+				target.getField().getDescarte().add(energy);
+				lutador = fighter;
+				break;
 			}
 		}
 
-	/** Display methods */
-		public void mostarCardView(Card card) {
-			cardView.setCard(null);
-			cardView.setCard(card);
-			cardView.setVisible(true);
-			cardView.repaint();
-		}
-		
-		public void showSelector() {
-			if(myTurn)
-				fighterSelector.setSelector(myFighters);
-		}
-		
-		public void showEnemySelector(Fighter fighter) {
-			if(myTurn) {
-				fighterSelector.setSelector(opFighters);
-				this.attacker = fighter;
-			}		
-		}
-		
-		public void hideSelector() {
-			this.fighterSelector.setVisible(false);
-		}
-		
-		public void handleSelect(Card target) {
-			switch (phase) {
-				case MAIN_PHASE:
-					requestPutEnergy((Fighter) target);
-					break;
-	
-				case BATTLE_PHASE:
-					requestAtack(attacker,(Fighter) target);
-					break;
-					
-				default:
-					break;
+		for(FighterField fi : fighters) {
+			if(fi.getFighter().id == fighter.id) {
+				fi.setFighter(fighter);
+				break;
 			}
 		}
-		
-		protected void refreshPhase(Phases phase) {
-			this.phase = phase; 
-			int turn = (Integer) player.read();
-			String titleMsg = (myTurn?"Your Turn: ":"Opponent Turn: ") + phase;
-			
-			lblTurn.setText("Turno: " + turn);
-			lblPhase.setText(titleMsg.replace("_", " "));
-			
-			if(myTurn) {
-				switch (phase) {
-					case DRAW_PHASE:
-						resquestDrawCard();
-						break;
-					case BATTLE_PHASE:
-						btnBattle.setVisible(false);
-						break;
-					default:
-						break;
+
+		Fighters();
+		Hand();
+		Discard();
+	}
+
+	protected void attack() {
+		Fighter attacker = (Fighter) player.read();
+		Fighter fighterTarget = (Fighter) player.read();
+
+		if(fighterTarget.getHealthPoints() < 0) {
+			(!myTurn? player : opponent).getField().setDamage(fighterTarget.getHealthPoints());
+
+			FighterField[] targetField = ((!myTurn)? myFighters : opFighters);
+			for (FighterField fighterField : targetField) {
+				if (fighterField.getFighter() != null) {
+					if (fighterField.getFighter().id == fighterTarget.id) {
+						fighterField.setFighter(null);
+					}
+				}
+			}
+
+			fighterTarget.setLocal(CardLocal.MEMORY);
+			((myTurn)? player : opponent).getField().getMemory().add(fighterTarget);
+			((!myTurn)? player : opponent).getField().removeFighter(fighterTarget);
+
+			Memory();
+		}
+
+		for(FighterField fi : (myTurn)? myFighters : opFighters) {
+			if(fi.getFighter() != null) {
+				if(fi.getFighter().id == attacker.id) {
+					fi.setFighter(attacker);
+					break;
 				}
 			}
 		}
-		
-		protected void setTurn(MatchResponse response) {
-			if(response == MatchResponse.YOUR_TURN) {
-				btnEndTurn.setVisible(true);
-				btnBattle.setVisible(true);
-				myTurn = true;
-			} else if(response == MatchResponse.OPPONENT_TURN) {
-				myTurn = false;
+
+		for(FighterField fi : (!myTurn)? myFighters : opFighters) {
+			if(fi.getFighter() != null) {
+				if(fi.getFighter().id == fighterTarget.id) {
+					fi.setFighter(fighterTarget);
+					break;
+				}
 			}
 		}
-		
-		protected void refreshHealthPoints() {
-			myHP.setText(Integer.toString(player.getField().getHealthsPoint()));
-			opHP.setText(Integer.toString(opponent.getField().getHealthsPoint()));
+	}
+	
+	/* [Request Player Actions] */
+	protected void requestDrawCard() {
+		player.write(MatchRequest.DRAW_A_CARD);
+	}
+
+	public void requestSendFighter(Fighter fighter) {
+		if(myTurn) {
+			player.write(MatchRequest.SEND_A_FIGHTER);
+			player.write(fighter);
 		}
-		
+	}
+
+	public void requestUseItem(Item item) {
+		if(myTurn) {
+			player.write(MatchRequest.USE_AN_ITEM);
+			player.write(item);
+		}
+	}
+
+	public void requestPutEnergy(Fighter fighter) {
+		if(myTurn) {
+			Energy energy = (Energy) cardView.getCard();
+			player.write(MatchRequest.PUT_ENERGY);
+			player.write(fighter);
+			player.write(energy);
+		}
+	}
+
+	public void requestAttack(Fighter attacker, Fighter target) {
+		if(myTurn) {
+			player.write(MatchRequest.ATTACK_THE_OPPONENT);
+			player.write(attacker);
+			player.write(target);
+		}
+	}
+
+	/* [Display Methods] */
+	public void showCardView(Card card) {
+		cardView.setCard(null);
+		cardView.setCard(card);
+		cardView.setVisible(true);
+		cardView.repaint();
+	}
+
+	public void showSelector() {
+		if(myTurn)
+			fighterSelector.setSelector(myFighters);
+	}
+
+	public void showEnemySelector(Fighter fighter) {
+		if(myTurn) {
+			fighterSelector.setSelector(opFighters);
+			this.attacker = fighter;
+		}
+	}
+
+	public void hideSelector() {
+		this.fighterSelector.setVisible(false);
+	}
+
+	public void handleSelect(Card target) {
+		switch (phase) {
+			case MAIN_PHASE:
+				requestPutEnergy((Fighter) target);
+				break;
+
+			case BATTLE_PHASE:
+				requestAttack(attacker,(Fighter) target);
+				break;
+		}
+	}
+
+	protected void refreshPhase(Phases phase) {
+		this.phase = phase;
+		int turn = (Integer) player.read();
+		String titleMsg = ((myTurn)? "Your Turn: " : "Opponent Turn: ") + phase;
+
+		lblTurn.setText("Turno: " + turn);
+		lblPhase.setText(titleMsg.replace("_", " "));
+
+		if(myTurn) {
+			switch (phase) {
+				case DRAW_PHASE:
+					requestDrawCard();
+					break;
+
+				case BATTLE_PHASE:
+					btnBattle.setVisible(false);
+					break;
+			}
+		}
+	}
+
+	protected void setTurn(MatchResponse response) {
+		if(response == MatchResponse.YOUR_TURN) {
+			btnEndTurn.setVisible(true);
+			btnBattle.setVisible(true);
+			myTurn = true;
+		} else if(response == MatchResponse.OPPONENT_TURN) {
+			myTurn = false;
+		}
+	}
+
+	protected void refreshHealthPoints() {
+		myHP.setText(Integer.toString(player.getField().getHealthsPoint()));
+		opHP.setText(Integer.toString(opponent.getField().getHealthsPoint()));
+	}
 }

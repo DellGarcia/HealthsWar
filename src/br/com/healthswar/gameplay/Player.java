@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import br.com.healthswar.player.model.Person;
 
 public class Player extends Person {
 	
 	private static final long serialVersionUID = -6102667841735506917L;
-	
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
-	
 	private Field field;
 	
 	public Player(Socket socket) throws IOException {
@@ -49,6 +46,7 @@ public class Player extends Person {
 			System.out.println("Erro ao tentar ler o objeto");
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 

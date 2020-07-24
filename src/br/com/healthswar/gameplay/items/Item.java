@@ -36,7 +36,7 @@ public abstract class Item extends Card  {
 	
 			case HAND:
 				if(!isTurned()) 
-					MainView.INSTANCE.mostarCardView(this);
+					MainView.INSTANCE.showCardView(this);
 				break;
 				
 			case FIELD:

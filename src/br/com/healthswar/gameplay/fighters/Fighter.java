@@ -3,7 +3,6 @@ package br.com.healthswar.gameplay.fighters;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import br.com.healthswar.gameplay.Card;
 import br.com.healthswar.gameplay.CardLocal;
 import br.com.healthswar.gameplay.energy.Energy;
@@ -20,7 +19,7 @@ public abstract class Fighter extends Card implements Serializable {
 	
 	public Fighter() {
 		super();
-		this.energies = new ArrayList<Energy>();
+		this.energies = new ArrayList<>();
 		setImage();
 	}
 
@@ -60,12 +59,11 @@ public abstract class Fighter extends Card implements Serializable {
 	public void mouseReleased(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
 				if(!isTurned()) 
-					MainView.INSTANCE.mostarCardView(this);
+					MainView.INSTANCE.showCardView(this);
 				break;
 				
 			case FIELD:
@@ -73,8 +71,8 @@ public abstract class Fighter extends Card implements Serializable {
 				break;
 				
 			case MEMORY:
-				
 				break;
+
 			case DESCARTE:
 				break;
 				
@@ -82,10 +80,6 @@ public abstract class Fighter extends Card implements Serializable {
 				MainView.INSTANCE.handleSelect(this);
 				MainView.INSTANCE.hideSelector();
 				this.local = CardLocal.FIELD;
-				break;
-				
-			default:
-				
 				break;
 		}
 	}
@@ -95,7 +89,6 @@ public abstract class Fighter extends Card implements Serializable {
 	public void mouseEntered(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
@@ -104,22 +97,15 @@ public abstract class Fighter extends Card implements Serializable {
 				break;
 				
 			case FIELD:
-				
 				break;
 				
 			case MEMORY:
-				
 				break;
 				
 			case DESCARTE:
 				break;
 				
 			case SELECTOR:
-				
-				break;
-				
-			default:
-				
 				break;
 		}
 	}
@@ -129,7 +115,6 @@ public abstract class Fighter extends Card implements Serializable {
 	public void mouseExited(MouseEvent e) {
 		switch (local) {
 			case DECK:
-				
 				break;
 	
 			case HAND:
@@ -138,32 +123,22 @@ public abstract class Fighter extends Card implements Serializable {
 				break;
 				
 			case FIELD:
-				
 				break;
 				
 			case MEMORY:
-				
 				break;
 				
 			case DESCARTE:
 				break;
 				
 			case SELECTOR:
-				
-				break;
-				
-			default:
-				
 				break;
 		}
 	}
 
-
 	@Override
 	public void mouseDragged(MouseEvent e) {}
 
-
 	@Override
 	public void mouseMoved(MouseEvent e) {}
-	
 }

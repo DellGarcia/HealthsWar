@@ -8,9 +8,6 @@ import br.com.healthswar.utils.Fonts;
 
 public class FighterSelector extends Panel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8790766783548959664L;
 
 	private Label lblMensagem;
