@@ -1,83 +1,112 @@
 package br.com.healthswar.gameplay;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JTextArea;
-
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import br.com.anonymous.frontend.Label;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.gameplay.fighters.Fighter;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 
-public class FighterField extends Panel {
+public class FighterField extends Panel implements MouseListener {
 
-	private static final long serialVersionUID = -149395871309683109L;
+	private static final long serialVersionUID = 4058110155034721813L;
 
 	private Fighter fighter;
 	private ImageIcon image;
-	public JTextArea energyCounter;
+	private Label lblFundo;
+	public JTextPane energyCounter;
 
 	public FighterField() {
 		super();
+
 		setBackground(null);
 		setSize(100, 141);
-		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setBorder(BorderFactory.createLineBorder(ColorsUtil.SPLASH_BACKGROUND_COLOR));
+
 		init();
+		addMouseListener(this);
+		energyCounter.addMouseListener(this);
 	}
 
 	private void init() {
-		energyCounter = new JTextArea("");
-		energyCounter.setSize(100, 60);
-		energyCounter.setFont(Fonts.NORMAL);
-		energyCounter.setOpaque(false);
-		energyCounter.setBackground(null);
-		energyCounter.setForeground(ColorsUtil.LETTERS_COLOR);
+		lblFundo = new Label(getWidth(), getHeight(), null,
+				Fonts.DESTAQUE, ColorsUtil.INVISIBLE,null,
+				SwingConstants.CENTER, SwingConstants.CENTER);
+
+
+
+		energyCounter = new JTextPane();
+		energyCounter.setSize(100, 141);
+		energyCounter.setFont(Fonts.DESTAQUE);
+		energyCounter.setForeground(Color.WHITE);
+		energyCounter.setOpaque(true);
+		energyCounter.setBackground(ColorsUtil.BLACK_TRANSLUCIDE);
 		energyCounter.setEditable(false);
 		energyCounter.setVisible(false);
+		energyCounter.setLocation(0, 0);
+
+		SimpleAttributeSet align = new SimpleAttributeSet();
+		StyleConstants.setAlignment(align, StyleConstants.ALIGN_CENTER);
+		energyCounter.setParagraphAttributes(align, false);
+
 		fighter = null;
+		add(energyCounter);
+		add(lblFundo);
 	}
-	
+
 	public void setFighter(Fighter fighter) {
 		this.fighter = fighter;
-		
+
 		if(this.fighter != null) {
 			this.fighter.local = CardLocal.FIELD;
 			addMouseListener(fighter);
-			this.image = this.fighter.frontImg;
-			this.energyCounter.setText(Integer.toString(fighter.getEnergies().size()));
-			this.energyCounter.setVisible(true);
-			energyCounter.setText("HP: " + fighter.getHealthPoints()
-								+"\nATK: " + fighter.getAtkPower()
-								+"\nEnergies: " + fighter.getEnergies().size());
+			energyCounter.addMouseListener(fighter.getMouseListeners()[0]);
+
+			image = this.fighter.frontImg;
+			energyCounter.setText("HP: " + this.fighter.getHealthPoints()
+					+"\nATK: " + this.fighter.getAtkPower()
+					+"\nATP: " + this.fighter.getEnergies().size());
+
+			ImageIcon frontImg = new ImageIcon(image.getImage()
+					.getScaledInstance(100, 141, Image.SCALE_DEFAULT));
+			lblFundo.setIcon(frontImg);
+
 		} else {
-			this.energyCounter.setVisible(false);
+			lblFundo.setIcon(null);
 		}
-		repaint();
 	}
 
 	public Fighter getFighter() {
-		return this.fighter;
+		return fighter;
 	}
 
 	public void removeFighter() {
-		this.fighter = null;
+		fighter = null;
 	}
-	
+
 	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		int width = 100, height = 141;
+	public void mouseClicked(MouseEvent e) {}
 
-		if (fighter != null) {
-			g2d.drawImage(image.getImage(), 0, 0, width, height, this);
-		}
+	@Override
+	public void mousePressed(MouseEvent e) {}
 
-		g2d.dispose();
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if(fighter != null)
+			energyCounter.setVisible(true);
 	}
 
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if(fighter != null)
+			energyCounter.setVisible(false);
+	}
 }

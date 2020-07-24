@@ -1,6 +1,5 @@
 package br.com.healthswar.player.view.main;
 
-import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.SwingConstants;
@@ -22,58 +21,58 @@ import br.com.healthswar.utils.Fonts;
 public class MainViewBase extends View {
 
 	private static final long serialVersionUID = 6543296877886261474L;
-	
+
 	protected Player player;
 	protected Player opponent;
-	
+
 	protected Panel container;
 
 	protected CardView cardView;
 	protected FighterSelector fighterSelector;
-	
+
 	protected Label lblPhase;
 	protected Label myHP;
 	protected Label opHP;
 	protected Label lblTurn;
-	
+
 	protected FighterField[] myFighters;
 	protected FighterField[] opFighters;
-	
+
 	protected boolean myTurn;
 	protected Phases phase;
 	protected Fighter attacker;
-	
+
 	protected Button btnEndTurn, btnBattle;
-	
+
 	protected MainViewBase() {
 		setTitle("Health's War");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(tk.getScreenSize());
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-		
+
 		container = new Panel(ColorsUtil.BACKGROUND_COLOR);
 		setContentPane(container);
-		
+
 		myFighters = new FighterField[5];
 		for(int i = 0; i < myFighters.length; i++) {
 			myFighters[i] = new FighterField();
 		}
-		
+
 		opFighters = new FighterField[5];
 		for(int i = 0; i < opFighters.length; i++) {
 			opFighters[i] = new FighterField();
 		}
-		
+
 		cardView = new CardView(null);
 		cardView.setLocation(getWidth() / 2 - cardView.getWidth() / 2, getHeight() / 2 - cardView.getHeight() / 2);
 		container.add(cardView);
-		
+
 		fighterSelector = new FighterSelector();
 		fighterSelector.setLocation(getWidth() / 2 - fighterSelector.getWidth() / 2, getHeight() / 2 - fighterSelector.getHeight() / 2);
 		container.add(fighterSelector);
 	}
-	
+
 	protected void initializeComponents() {
 		Phase();
 		Turn();
@@ -123,12 +122,12 @@ public class MainViewBase extends View {
 		container.add(myHP);
 		container.add(opHP);
 	}
-	
+
 	protected void Deck() {
 		ArrayList<Card> myDeck = player.getField().getDeck();
 		ArrayList<Card> opDeck = opponent.getField().getDeck();
-		
-		int x = 1920 - 200, y = getHeight() - 200;
+
+		int x = getWidth() - 200, y = getHeight() - 200;
 		for(int i = 0; i < myDeck.size(); i++) {
 			myDeck.get(i).setSize(100, 141);
 			myDeck.get(i).setLocation(x, y);
@@ -138,7 +137,7 @@ public class MainViewBase extends View {
 			}
 			container.add(myDeck.get(i));
 		}
-		
+
 		x = 200; y = 80;
 		for(int i = 0; i < opDeck.size(); i++) {
 			opDeck.get(i).setSize(100, 141);
@@ -150,11 +149,11 @@ public class MainViewBase extends View {
 			container.add(opDeck.get(i));
 		}
 	}
-	
+
 	protected void Hand() {
 		ArrayList<Card> myHand = player.getField().getHand();
 		ArrayList<Card> opHand = opponent.getField().getHand();
-		
+
 		int x = getWidth() / 2 - (myHand.size() * 110 - 10) / 2;
 		for(Card card: myHand) {
 			card.setSize(100, 141);
@@ -163,7 +162,7 @@ public class MainViewBase extends View {
 			container.add(card);
 			x += 110;
 		}
-		
+
 		x = getWidth() / 2 - (opHand.size() * 110 - 10) / 2;
 		for(Card card: opHand) {
 			card.setSize(100, 141);
@@ -173,25 +172,22 @@ public class MainViewBase extends View {
 			container.add(card);
 			x += 110;
 		}
+
 		container.repaint();
 	}
 
 	protected void Fighters() {
 		int x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField myFighter : myFighters) {
-			myFighter.setLocation(x, getHeight() - 400);
-			myFighter.energyCounter.setLocation(x, getHeight() - 250);
+			myFighter.setLocation(x, getHeight() - 360);
 			container.add(myFighter);
-			container.add(myFighter.energyCounter);
 			x += 120;
 		}
 
 		x = getWidth() / 2 - (5 * 120 - 20) / 2;
 		for (FighterField opFighter : opFighters) {
-			opFighter.setLocation(x, 280);
-			opFighter.energyCounter.setLocation(x, 220);
+			opFighter.setLocation(x, 240);
 			container.add(opFighter);
-			container.add(opFighter.energyCounter);
 			x += 120;
 		}
 	}
@@ -200,7 +196,9 @@ public class MainViewBase extends View {
 		ArrayList<Fighter> myMemory = player.getField().getMemory();
 		ArrayList<Fighter> opMemory = opponent.getField().getMemory();
 
-		int x = getWidth()/2 - (7 * 120 - 20) / 2, y = getHeight() - 400;
+		int x = getWidth() / 2 - (7 * 120 - 20) / 2;
+		int y = getHeight() - 400;
+
 		for(int i = 0; i < myMemory.size(); i++) {
 			myMemory.get(i).setSize(100, 141);
 			myMemory.get(i).setLocation(x, y);
@@ -226,30 +224,28 @@ public class MainViewBase extends View {
 			container.add(opMemory.get(i));
 		}
 	}
-	
+
 	protected void Battle() {
 		btnBattle = new Button(
 				160, 50,
-				new Color(154, 26, 26), Color.WHITE,
-				Fonts.NORMAL, "Battle",
-				new Color(125, 15, 15), 3,
-				new Color(65, 10, 10),
-				Color.WHITE, 45);
+				ColorsUtil.LETTERS_COLOR, ColorsUtil.BACKGROUND_COLOR,
+				Fonts.INPUT, "Battle",
+				null, 3,
+				ColorsUtil.BACKGROUND_COLOR, ColorsUtil.LETTERS_COLOR);
 		btnBattle.setLocation(getWidth() - btnBattle.getWidth() - 20,
 				getHeight() / 2 - 50 / 2 - 50);
 		btnBattle.setVisible(false);
 		btnBattle.addActionListener(startBattle());
 		container.add(btnBattle);
 	}
-	
+
 	protected void EndTurn() {
 		btnEndTurn = new Button(
-				btnBattle.getWidth(), btnBattle.getHeight(),
-				new Color(154, 26, 26), Color.WHITE,
-				Fonts.NORMAL, "End Turn",
-				new Color(125, 15, 15), 3,
-				new Color(65, 10, 10),
-				Color.WHITE, 45);
+				160, 50,
+				ColorsUtil.LETTERS_COLOR, ColorsUtil.BACKGROUND_COLOR,
+				Fonts.INPUT, "End Turn",
+				null, 3,
+				ColorsUtil.BACKGROUND_COLOR, ColorsUtil.LETTERS_COLOR);
 
 		btnEndTurn.setLocation(btnBattle.getX(),
 				getHeight() / 2 - 50 / 2 + 50);
@@ -257,11 +253,11 @@ public class MainViewBase extends View {
 		btnEndTurn.addActionListener(endTurn());
 		container.add(btnEndTurn);
 	}
-	
+
 	protected void Discard() {
 		ArrayList<Card> myDiscard = player.getField().getDescarte();
 		ArrayList<Card> opDiscard = opponent.getField().getDescarte();
-		
+
 		int x = getWidth() / 2 + (6 * 120) / 2, y = getHeight() - 400;
 		for(int i = myDiscard.size() - 1; i >= 0 ; i--) {
 			myDiscard.get(i).setSize(100, 141);
@@ -274,7 +270,7 @@ public class MainViewBase extends View {
 
 			container.add(myDiscard.get(i));
 		}
-		
+
 		y = 280;
 		for(int i = opDiscard.size() - 1; i >= 0; i--) {
 			opDiscard.get(i).setSize(100, 141);
@@ -287,7 +283,11 @@ public class MainViewBase extends View {
 			container.add(opDiscard.get(i));
 		}
 	}
-	
+
+	public Player getActive() {
+		return myTurn?player:opponent;
+	}
+
 	/** [Actions Listeners] */
 	private ActionListener startBattle() {
 		return ActionEvent -> {
