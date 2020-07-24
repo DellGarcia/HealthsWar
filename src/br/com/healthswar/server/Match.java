@@ -24,6 +24,8 @@ public class Match extends Thread {
 			case PLAY_A_DUO_MATCH:
 				this.players = new Player[2];
 				break;
+			default:
+				break;
 		}
 	}
 
@@ -47,13 +49,13 @@ public class Match extends Thread {
 
 		while (game.isAtivo()) {
 			game.resolve();
-			effectMachine.resolveEffects();
 			
 			MatchRequest request = (MatchRequest) game.getState().getActive().read();
 			
 			switch (request) {
 				case DRAW_A_CARD:
 					game.drawCard();
+					effectMachine.resolveEffects();
 					break;
 
 				case SEND_A_FIGHTER:

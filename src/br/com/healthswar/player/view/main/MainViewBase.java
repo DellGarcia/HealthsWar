@@ -287,6 +287,10 @@ public class MainViewBase extends View {
 			container.add(opDiscard.get(i));
 		}
 	}
+
+	public Player getActive() {
+		return myTurn?player:opponent;
+	}
 	
 	/** [Actions Listeners] */
 	private ActionListener startBattle() {

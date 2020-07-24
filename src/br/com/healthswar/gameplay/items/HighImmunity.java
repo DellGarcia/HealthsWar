@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.items;
 
 public class HighImmunity extends Item {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8445349697921104083L;
 
 	public HighImmunity() {
 		super();

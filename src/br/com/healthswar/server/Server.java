@@ -20,6 +20,14 @@ public class Server extends ServerSocket {
 	private final ArrayList<Match> solo;
 	private final ArrayList<Match> duo;
 
+	private Server(int port) throws IOException {
+		super(port);
+		solo = new ArrayList<Match>();
+		duo = new ArrayList<Match>();
+		solo.add(new Match(Request.PLAY_A_SOLO_MATCH));
+		duo.add(new Match(Request.PLAY_A_DUO_MATCH));
+	}
+	
 	private Server(int port, String ip) throws IOException {
 		super(port, 50, InetAddress.getByName(ip));
 
@@ -99,6 +107,8 @@ public class Server extends ServerSocket {
 					
 				case PLAY_A_DUO_MATCH:
 					duo.add(new Match(request));
+					break;
+				default:
 					break;
 			}
 

@@ -8,7 +8,7 @@ import br.com.healthswar.gameplay.decks.ImmuneSystem;
 
 public class Deck extends ArrayList<Card> implements Serializable {
 
-	private static final long serialVersionUID = -2304845787652432479L;
+	private static final long serialVersionUID = -5697876099165407024L;
 	
 	private DeckTheme deckTheme;
 	

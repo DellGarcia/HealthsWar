@@ -6,7 +6,7 @@ import br.com.healthswar.player.view.main.MainView;
 
 public class Energy extends Card  {
 
-	private static final long serialVersionUID = -1138132937122501319L;
+	private static final long serialVersionUID = 6421238430091360337L;
 
 	public Energy() {
 		super();

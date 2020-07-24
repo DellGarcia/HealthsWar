@@ -22,8 +22,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ServerIPDialog extends JDialog {
-
-    private final Request request;
+	
+	private static final long serialVersionUID = 1L;
+	
+	private final Request request;
     private final View view;
     private Panel container;
     private Label lblAviso;
@@ -77,7 +79,7 @@ public class ServerIPDialog extends JDialog {
 
         ip = new TextField(500 - 100, 75, Fonts.DESTAQUE, Color.WHITE);
         ip.setLocation((getWidth() - 500) / 2, (getHeight() - ip.getHeight()) / 2);
-        ip.setText("127.0.0.1:2222");
+        ip.setText("26.93.175.222:2222");
         ip.setBorder(titledBorder);
         ip.setCaretColor(Color.WHITE);
 

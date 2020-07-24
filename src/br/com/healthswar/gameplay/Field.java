@@ -7,8 +7,8 @@ import br.com.healthswar.gameplay.fighters.Fighter;
 
 public class Field implements Serializable {
 
-	private static final long serialVersionUID = 6683097949155783980L;
-
+	private static final long serialVersionUID = -3459851222097829713L;
+	
 	private int healthsPoint;
 	private Fighter[] fighters;
 	private ArrayList<Fighter> memory;
@@ -23,7 +23,6 @@ public class Field implements Serializable {
 		this.healthsPoint = 10;
 		this.deck = deck;
 		this.hand = new Hand(deck);
-		
 		for(int i = 0; i < fighters.length; i++) {
 			fighters[i] = null;
 		}

@@ -1,20 +1,21 @@
 package br.com.healthswar.player.view;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+
 import br.com.anonymous.frontend.Button;
 import br.com.anonymous.frontend.Panel;
 import br.com.healthswar.comunication.Request;
-import br.com.healthswar.comunication.Response;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.server.Main;
 import br.com.healthswar.utils.ColorsUtil;
 import br.com.healthswar.utils.Fonts;
 import br.com.healthswar.utils.ImageUtil;
 import br.com.healthswar.utils.StringUtil;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
 
 public class InitView extends View {
 	private static final long serialVersionUID = 7358900521851754354L;

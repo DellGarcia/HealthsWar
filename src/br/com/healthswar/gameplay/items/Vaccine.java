@@ -2,7 +2,7 @@ package br.com.healthswar.gameplay.items;
 
 public class Vaccine extends Item {
 
-	private static final long serialVersionUID = -8713122582115476336L;
+	private static final long serialVersionUID = -8481454111349995139L;
 
 	public Vaccine() {
 		super();

@@ -41,103 +41,98 @@ public class MainViewStructure extends MainViewBase {
 		}
 	}
 
-	protected void drawCard() {
-		Player target = myTurn? player : opponent;
 
-		Card card = target.getField().getDeck().get(0);
-		card.setTurned(false);
-		card.setLocal(CardLocal.HAND);
-		target.getField().getHand().add(card);
-		target.getField().getDeck().remove(0);
-		container.remove(card);
-		Deck();
-		Hand();
-	}
-
-	protected void sendFighter() {
-		Fighter fighter = (Fighter) player.read();
-		FighterField[] field = myTurn? myFighters : opFighters;
-		Player target = (myTurn)? player : opponent;
-
-		for(int i = 0; i < field.length; i++) {
-			if(field[i].getFighter() == null) {
-				field[i].setFighter(fighter);
-				target.getField().getFighters()[i] = fighter;
-				Card c = target.getField().getHand().remove(fighter);
-				container.remove(c);
-				Hand();
-				Fighters();
-				break;
-			}
+		protected void drawCard() {
+			Player target = getActive();
+			Field field = (Field) player.read();
+			
+			target.getField().getHand().removeHandFromPanel(container);
+			container.remove(target.getField().getDeck().get(0));
+			target.setField(field);
+			
+			Deck();
+			Hand();
+			Fighters();
 		}
-	}
+	
+		
+		protected void sendFighter() {
+			Field campo = (Field) player.read();
+			Fighter fighter = (Fighter) player.read();
+			FighterField[] field = myTurn?myFighters:opFighters;
+			Player target = getActive();
+			
+			target.getField().getHand().removeHandFromPanel(container);
+			
+			target.setField(campo);
+			
+			for(int i = 0; i < field.length; i++)
+				if(field[i].getFighter() == null) {
+					field[i].setFighter(fighter);
+					break;
+				}
+			
+			Hand();
+			Fighters();
+		}
 
 	protected void useItem() {
-		Item item = (Item) player.read();
 		Field field = (Field) player.read();
 		Player target = (myTurn)? player : opponent;
 
+		target.getField().getHand().removeHandFromPanel(container);
 		target.setField(field);
-
-		System.out.println(target.getField().getDescarte().size());
-		//target.getField().getDescarte().add(item);
-		container.remove(target.getField().getHand().remove(item));
 
 		Discard();
 		Hand();
 	}
 
 	protected void putEnergy() {
+		Field field = (Field) player.read();
 		Fighter fighter = (Fighter) player.read();
-		Energy energy = (Energy) player.read();
-		Player target = (myTurn)? player : opponent;
-		FighterField[] fighters = myTurn? myFighters : opFighters;
-
-		for(Fighter lutador : target.getField().getFighters()) {
-			if(lutador.id == fighter.id) {
-				container.remove(target.getField().getHand().remove(energy));
-				target.getField().getDescarte().add(energy);
-				lutador = fighter;
-				break;
-			}
-		}
-
-		for(FighterField fi : fighters) {
+		Player target = getActive();
+		FighterField[] fighters = myTurn?myFighters:opFighters;
+		
+		target.getField().getHand().removeHandFromPanel(container);
+		target.setField(field);
+		
+		for(FighterField fi: fighters) {
 			if(fi.getFighter().id == fighter.id) {
 				fi.setFighter(fighter);
 				break;
 			}
 		}
-
+		
 		Fighters();
 		Hand();
 		Discard();
 	}
-
+	
 	protected void attack() {
 		Fighter attacker = (Fighter) player.read();
 		Fighter fighterTarget = (Fighter) player.read();
-
+		
 		if(fighterTarget.getHealthPoints() < 0) {
-			(!myTurn? player : opponent).getField().setDamage(fighterTarget.getHealthPoints());
-
-			FighterField[] targetField = ((!myTurn)? myFighters : opFighters);
-			for (FighterField fighterField : targetField) {
-				if (fighterField.getFighter() != null) {
-					if (fighterField.getFighter().id == fighterTarget.id) {
-						fighterField.setFighter(null);
+			(!myTurn?player:opponent)
+				.getField().setDamage(fighterTarget.getHealthPoints());
+			
+			FighterField[] targetField = (!myTurn?myFighters:opFighters);
+			for(int i = 0; i < targetField.length; i++) {
+				if(targetField[i].getFighter() != null) {
+					if(targetField[i].getFighter().id == fighterTarget.id) {
+						targetField[i].setFighter(null);
 					}
 				}
 			}
-
+			
 			fighterTarget.setLocal(CardLocal.MEMORY);
-			((myTurn)? player : opponent).getField().getMemory().add(fighterTarget);
-			((!myTurn)? player : opponent).getField().removeFighter(fighterTarget);
-
+			(myTurn?player:opponent).getField().getMemory().add(fighterTarget);
+			(!myTurn?player:opponent).getField().removeFighter(fighterTarget);
+			
 			Memory();
 		}
-
-		for(FighterField fi : (myTurn)? myFighters : opFighters) {
+		
+		for(FighterField fi: myTurn?myFighters:opFighters) {
 			if(fi.getFighter() != null) {
 				if(fi.getFighter().id == attacker.id) {
 					fi.setFighter(attacker);
@@ -145,45 +140,58 @@ public class MainViewStructure extends MainViewBase {
 				}
 			}
 		}
-
-		for(FighterField fi : (!myTurn)? myFighters : opFighters) {
+		
+		for(FighterField fi: !myTurn?myFighters:opFighters) {
 			if(fi.getFighter() != null) {
 				if(fi.getFighter().id == fighterTarget.id) {
 					fi.setFighter(fighterTarget);
 					break;
 				}
-			}
+			}	
 		}
 	}
 	
-	/* [Request Player Actions] */
-	protected void requestDrawCard() {
+	/** Request Player Actions */ 
+	protected void resquestDrawCard() {
 		player.write(MatchRequest.DRAW_A_CARD);
-	}
-
+		player.write(player.getField());
+	}	
+	
 	public void requestSendFighter(Fighter fighter) {
 		if(myTurn) {
 			player.write(MatchRequest.SEND_A_FIGHTER);
+			player.write(player.getField());
 			player.write(fighter);
 		}
 	}
-
+	
 	public void requestUseItem(Item item) {
 		if(myTurn) {
 			player.write(MatchRequest.USE_AN_ITEM);
+			player.write(player.getField());
 			player.write(item);
 		}
 	}
-
+	
 	public void requestPutEnergy(Fighter fighter) {
 		if(myTurn) {
-			Energy energy = (Energy) cardView.getCard();
+			Energy energy = (Energy)cardView.getCard();
 			player.write(MatchRequest.PUT_ENERGY);
+			player.write(player.getField());
 			player.write(fighter);
 			player.write(energy);
 		}
 	}
+	
+	public void requestAtack(Fighter attacker, Fighter target) {
+		if(myTurn) {
+			player.write(MatchRequest.ATTACK_THE_OPPONENT);
+			player.write(attacker);
+			player.write(target);
+		}
+	}
 
+	
 	public void requestAttack(Fighter attacker, Fighter target) {
 		if(myTurn) {
 			player.write(MatchRequest.ATTACK_THE_OPPONENT);
@@ -225,6 +233,8 @@ public class MainViewStructure extends MainViewBase {
 			case BATTLE_PHASE:
 				requestAttack(attacker,(Fighter) target);
 				break;
+			default:
+				break;
 		}
 	}
 
@@ -239,11 +249,13 @@ public class MainViewStructure extends MainViewBase {
 		if(myTurn) {
 			switch (phase) {
 				case DRAW_PHASE:
-					requestDrawCard();
+					resquestDrawCard();
 					break;
 
 				case BATTLE_PHASE:
 					btnBattle.setVisible(false);
+					break;
+				default:
 					break;
 			}
 		}

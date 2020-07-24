@@ -15,7 +15,6 @@ import br.com.healthswar.gameplay.items.Item;
 public final class Game {
 
 	private boolean active;
-	private State state;
 
 	private Deck array[] = {
 			new Deck(DeckTheme.IMMUNE_SYSTEM),
@@ -26,7 +25,7 @@ public final class Game {
 	public Game(Player[] players) {
 		sortDeck(players);
 		active = true;
-		state = State.create(players);
+		State.create(players);
 		Collections.shuffle(decks);
 		init();
 	}
@@ -43,6 +42,7 @@ public final class Game {
 	}
 	
 	public void init() {
+		State state = State.getState();
 		state.getActive().write(Response.MATCH_READY);
 		state.getActive().write(state.getActive().getField());
 		state.getActive().write(state.getOpponent().getField());
@@ -53,32 +53,47 @@ public final class Game {
 	}
 	
 	public void resolve() {
+		State state = State.getState();
 		state.phaseResolve();
 	}
 	
 	/** Player actions */
 		public void drawCard() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
+			Field field = (Field) player.read();
+			
+			player.setField(field);
 			
 			MatchResponse res = state.drawCard();
 			
 			player.write(res);
+			player.write(state.getActive().getField());
 			opponent.write(res);
+			opponent.write(state.getActive().getField());
 		}
 		
 		public void sendFighter() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
+			Field field = (Field) player.read();
 			Fighter fighter = (Fighter) player.read();
+			
+			player.setField(field);
 			
 			MatchResponse response = state.summon(fighter);
 			
 			switch (response) {
 				case FIGHTER_READY:
+					field = state.getActive().getField();
+					
 					player.write(response);
+					player.write(field);
 					player.write(fighter);
 					opponent.write(response);
+					opponent.write(field);
 					opponent.write(fighter);
 					break;
 				case NO_FIGHTER:
@@ -91,22 +106,24 @@ public final class Game {
 		}
 		
 		public void useItem() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
+			Field field = (Field) player.read();
 			Item item = (Item) player.read();
 			
-			System.out.println(player.getField().getDescarte().size());
+			player.setField(field);
+			
 			MatchResponse res = state.useItem(item);
-			System.out.println(player.getField().getDescarte().size());
 			
 			switch (res) {
 				case ITEM_USED:
+					field = state.getActive().getField();
+					
 					player.write(res);
-					player.write(item);
-					player.write(player.getField());
+					player.write(field);
 					opponent.write(res);
-					opponent.write(item);
-					opponent.write(player.getField());
+					opponent.write(field);
 					break;
 	
 				case IMPOSSIBLE_TO_USE:
@@ -117,28 +134,31 @@ public final class Game {
 				default:
 					break;
 			}
-			
 		}
 		
 		public void putEnergy() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
+			Field field = (Field) player.read();
 			Fighter fighter = (Fighter) player.read();
 			Energy energy = (Energy) player.read();
+			
+			player.setField(field);
 			
 			MatchResponse response = state.putEnergy(fighter, energy);
 			
 			switch (response) {
 				case ENERGY_READY:
-					fighter.getEnergies().add(energy);
+					field = state.getActive().getField();
 					
 					player.write(response);
+					player.write(field);
 					player.write(fighter);
-					player.write(energy);
 					
 					opponent.write(response);
+					opponent.write(field);
 					opponent.write(fighter);
-					opponent.write(energy);
 					break;
 	
 				case IMPOSSIBLE_TO_USE:
@@ -152,12 +172,14 @@ public final class Game {
 		}
 		
 		public void startBattle() {
+			State state = State.getState();
 			state.setPhase(Phases.BATTLE_PHASE);
 			state.getActive().write(MatchResponse.BATTLE_STARTED);
 			state.getOpponent().write(MatchResponse.BATTLE_STARTED);
 		}
 		
 		public void atack() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
 			Fighter attacker = (Fighter) player.read();
@@ -189,6 +211,7 @@ public final class Game {
 		}
 		
 		public void endTurn() {
+			State state = State.getState();
 			state.getActive().write(MatchResponse.OPPONENT_TURN);
 			state.getOpponent().write(MatchResponse.YOUR_TURN);
 			state.setPhase(Phases.DRAW_PHASE);
@@ -196,6 +219,7 @@ public final class Game {
 		}
 		
 		public void endGame() {
+			State state = State.getState();
 			Player player = state.getActive();
 			Player opponent = state.getOpponent();
 			MatchResponse response = MatchResponse.END_GAME;
@@ -216,6 +240,6 @@ public final class Game {
 		}
 
 		public State getState() {
-			return state;
+			return State.getState();
 		}
 }

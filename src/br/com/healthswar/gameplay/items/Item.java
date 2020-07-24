@@ -7,9 +7,10 @@ import br.com.healthswar.player.view.main.MainView;
 
 public abstract class Item extends Card  {
 
-	private static final long serialVersionUID = -5422150266430590077L;
-
-	private int duration;
+	private static final long serialVersionUID = 6383545494201764091L;
+	
+	protected int duration;
+	protected boolean applied;
 	
 	public Item() {
 		super();
@@ -127,6 +128,10 @@ public abstract class Item extends Card  {
 
 	public void reduceDuration() {
 		this.duration--;
+	}
+	
+	public void setApplied(boolean applied) {
+		this.applied = applied;
 	}
 
 }
